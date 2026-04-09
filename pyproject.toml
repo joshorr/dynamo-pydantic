@@ -1,0 +1,95 @@
+[project]
+name = "pydantic-dyn"
+version = "0.1.0"
+description = "Pydantic models that dynamically verify types when attributes are set."
+authors = [{ name = "Josh Orr", email = "josh@orr.blue" }]
+requires-python = ">=3.12,<4"
+readme = "README.md"
+classifiers = [
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "License :: OSI Approved :: The Unlicense (Unlicense)",
+]
+dependencies = [
+    "typing-inspect>=0,<1",
+    "xloop>=1.0.1,<2",
+    "xinject>=1.4.0,<2",
+    "xsentinels>=1.2.1,<2",
+    "xurls>=1.2.1,<2",
+    "ciso8601>=2.3.0,<3",
+    "xboto>=1.1.1,<2",
+    "xbool>=1.1.0,<2",
+    "pydantic>=2.9.2,<3",
+    "orjson>=3.10.9,<4",
+    "pydantic-partials>=1.0.8,<2",
+]
+
+[project.urls]
+Repository = "https://github.com/joshorr/pydantic-dynamic"
+
+[dependency-groups]
+dev = [
+    "pytest>=7.2.2,<8",
+    "pycodestyle>=2.10.0,<3",
+    "pytest-mock>=3.10.0,<4",
+    "pytest-pycodestyle>=2.3.1,<3",
+    "pdoc3>=0,<1",
+    "black",
+    "mkdocstrings[python]>=0,<1",
+    "mkdocs-autorefs>=0,<1",
+    "mkdocs-git-revision-date-plugin>=0,<1",
+    "mkdocs>=1.4.2,<2",
+    "mkdocs-material>=9.0.12,<10",
+    "mike>=1.1.2,<2",
+    "tomlkit>=0.11.7,<0.12",
+    "pyright>=1.1.341,<2",
+]
+
+[tool.hatch.build.targets.sdist]
+include = ["pydantic_dynamic"]
+
+[tool.hatch.build.targets.wheel]
+include = ["pydantic_dynamic"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.custom.xpublish]
+extra-module-docs = ['xsentinels', 'xloop', 'xinject', 'xurls']
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+
+# By default, reuse db schema
+# (speeds up unit test starts after first unit test run)
+# If test-db schmea gets messed up, drop `--reuse-db`
+# and it will recreate db next time you run unit tests.
+addopts = "--verbose --pycodestyle"
+
+testpaths = ["tests", "xurls"]
+python_files = "tests.py test_*.py *_tests.py tests/*"
+norecursedirs = "lib/* tests/scripts .serverless .eggs dist/* node_modules"
+
+[tool.black]
+line-length = 99
+target_version = ['py310']
+skip-string-normalization = 1
+include = '\.pyi?$'
+exclude = '''
+(
+  /(
+      \.eggs         # exclude a few common directories in the
+    | \.git          # root of the project
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+  )/
+  | foo.py           # also separately exclude a file named foo.py in
+                     # the root of the project
+)
+'''
