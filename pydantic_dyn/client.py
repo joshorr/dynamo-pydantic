@@ -1,19 +1,23 @@
+from contextlib import ExitStack
 from email.policy import default
-from functools import cache
+from functools import cache, cached_property
 from typing import (
     TYPE_CHECKING, TypeVar, Union, Sequence, Iterable, Optional, List, Dict, Any, Set, Generic, Type, Self, ClassVar
 )
 from boto3.dynamodb import conditions
-from boto3.dynamodb.table import BatchWriter, TableResource
+from boto3.dynamodb.table import BatchWriter
+from mypy_boto3_dynamodb.service_resource import Table
 from pydantic import BaseModel
 from xbool import bool_value
+from xcon import xcon_settings
 from xinject import Dependency
+from pydantic_dyn import settings
 
 # from .db import DynamoDB
 # from xcon import xcon_settings
 from logging import getLogger
 # from .const import CONDITIONAL_CHECK_FAILED_KEY
-# from xboto.resource import dynamodb
+from xboto.resource import dynamodb
 # from xmodel.common.types import FieldNames, JsonDict
 # from xmodel.remote import XRemoteError
 # from xmodel.base.fields import Converter
@@ -21,14 +25,21 @@ from logging import getLogger
 # from xdynamo.common_types import (
 #     DynKey, DynParams, _ProcessedQuery, get_dynamo_type_from_python_type
 # )
-# from xdynamo.resources import _DynBatchResource
+# from xdynamo.resources import DynBatchResource
 from xsentinels.default import Default, DefaultType
-from xurls.url import UrlStr, Query
+from xurls.url import UrlStr
 from xloop import xloop
-from .types import Key, Query
+
+from .errors import DynamoError, DynamoConditionError
+from .table import table_repo
+from .types import Key, Query, DynField, KeyType, DynFieldInfo
+from . import _internal
+
+if TYPE_CHECKING:
+    from .base import DynamoModel
+
 
 M = TypeVar('M', default=dict)
-
 log = getLogger(__name__)
 
 
@@ -49,7 +60,7 @@ dyn_client_options = DynClientOptions.proxy()
 """
 
 
-class DynClient(Generic[M]):
+class DynClient(Dependency, Generic[M]):
     """
     Skeleton/Placeholder Class for future work, see story and the other classes in
     this file for more details: https://app.clubhouse.io/xyngular/story/13989
@@ -61,25 +72,176 @@ class DynClient(Generic[M]):
     obj_type: Type[M] = dict
     """ This also works when using the generic type directly, ie: `DynClient[SomeModel].obj_type is SomeMode`;
         although type-checkers will flag it, but it still works.
-        I set it at class level 
+        I set it at class-generic level (so both class and instances know about it).
     """
 
-    partition_key_field: str
-    sort_key_field: str
+    full_key_deliminator = '||'
+    """ What to use to separate the hash and sort keys when combined together into a string string,
+        representing an entire/full key/id for the item in the dynamo table.
+    """
 
-    def __init__(self, obj_type: Type[M] | None = None):
-        if obj_type is not None:
-            self.obj_type = obj_type
+    name: str
+    table_prefix: str | None | DefaultType = Default
+    """ Prefix for table name, prepended before `DynClient.name` when constructing the full table name.
+    
+        You can get the full table name via `DynClient.table_name`
+        
+        By default, this will consult with the `pydantic_dyn.settings.default_prefix_generator`
+        for the prefix, whenever it's needed, if one is set there.
+        
+        Otherwise, if one is not set directly here, there is no prefix generator,
+        or DynClient.table_prefix is `None`, prefix won't be used.
+    """
 
-    def __class_getitem__(cls, typevar_value: Type[Self]):
-        from pydantic_dyn._internal._generic_subclasses import create_generic_submodel  # noqa
+    dyn_fields: dict[str, DynFieldInfo] = Default
+
+    def __init__(self, fields: list[DynFieldInfo] | DefaultType = Default):
+        if fields:
+            dyn_fields = {}
+            for v in fields:
+                if not v.name:
+                    raise DynamoError('When providing fields directly to DynClient, must ')
+            self.dyn_fields = dyn_fields
+
+        # TODO: Check to see if there is at least one hash-field,
+        #  not just that there is at least one field.
+        if not fields:
+            raise DynamoError('DynClient needs at least one defined hash-field when created.')
+        self.dyn_fields = {v.name: v for v in fields if v.name is not None}
+
+    def __class_getitem__(cls, typevar_value: Type[Self]):  # noqa
         name = f'{cls.__name__}[{typevar_value.__name__}]'
-
-        return create_generic_submodel(name, cls, typevar_value)
+        return _internal.create_generic_submodel(name, cls, typevar_value)
 
     def __init_subclass__(cls, _generic_typevar: Type[Any] | None = None, **kwargs):
         cls.obj_type = _generic_typevar  # type: ignore
         return super().__init_subclass__(**kwargs)
+
+    @property
+    def attr_names(self) -> frozenset[str]:
+        names = {self.hash_key_info.name}
+        if v := self.sort_key_name:
+            names.add(v)
+        return frozenset(names)
+
+    @property
+    def hash_key_name(self) -> str:
+        if v := self._override_hash_key_name:
+            return v
+        hash_type = KeyType.hash
+        names = [k for k, v in self.dyn_fields.items() if v.key_type is hash_type]
+        if len(names) == 1:
+            return names[0]
+
+        # TODO: Consider an easy way to default the hash-key name to 'id',
+        #  in cases where there is more than one hash-key field?
+        return '.'.join(names)
+
+    @property
+    def sort_key_name(self) -> str | None:
+        if v := self._override_sort_key_name:
+            return v
+        sort_type = KeyType.sort
+        names = [k for k, v in self.dyn_fields.items() if v.key_type is sort_type]
+        if len(names) == 1:
+            return names[0]
+
+        # TODO: Consider an easy way to default the sort-key name to 'id',
+        #  in cases where there is more than one hash-key field?
+        return '.'.join(names)
+
+    _override_hash_key_name: str | DefaultType = Default
+    _override_sort_key_name: str | None | DefaultType = Default
+
+    @hash_key_name.setter
+    def hash_key_name(self, value: str):
+        self._override_hash_key_name = value
+
+    @sort_key_name.setter
+    def sort_key_name(self, value: str):
+        self._override_sort_key_name = value
+
+    def _generate_or_find_field_info_for(self, key_type: KeyType) -> DynFieldInfo | None:
+        fields = {k: v for k, v in self.dyn_fields.items() if v.key_type is key_type}
+
+        num_fields = len(fields)
+        if num_fields <= 0:
+            return None
+
+        if num_fields == 1:
+            return next(iter(fields.values()))
+
+        # Return a composited field-info; we always use `str` type with a composite attr key.
+        return DynFieldInfo(
+            key_type=key_type,
+            py_type=str,
+            name=None,
+            names=[k for k in fields],
+            dy_name='id'  # TODO: <-- GENERATE NAME AUTOMATICALLY based on underlying fields.
+        )
+
+    @property
+    def hash_key_info(self) -> DynFieldInfo:
+        result = self._generate_or_find_field_info_for(KeyType.hash)
+        if result is None:
+            raise DynamoError(f'DynClient ({self}) must have at least one `hash` (partition) key field.')
+        return result
+
+    @property
+    def sort_key_info(self) -> DynFieldInfo | None:
+        return self._generate_or_find_field_info_for(KeyType.sort)
+
+    def _dy_names_for_dyn_field(self, dyn_field: DynFieldInfo) -> set[str]:
+        if dyn_field.name is not None:
+            return {dyn_field.dy_name}
+
+        assert len(dyn_field.names) > 1
+        dyn_fields = self.dyn_fields
+        dy_names = set()
+        for other_field_name in dyn_field.names:
+            other_info = dyn_fields[other_field_name]
+            assert other_info.name and len(other_info.names) == 1
+            dy_names.add(other_info.dy_name)
+        return dy_names
+
+    @property
+    def hash_key_dy_names(self) -> set[str]:
+        hash_info = self.hash_key_info
+        assert hash_info
+        return self._dy_names_for_dyn_field(hash_info)
+
+    @property
+    def sort_key_dy_names(self) -> set[str] | None:
+        if v := self.sort_key_info:
+            return self._dy_names_for_dyn_field(v)
+        return None
+
+    @property
+    def table(self) -> Table:
+        """ Returns the boto3 table resource to use for our related DynModel.
+            Don't cache or hang onto this, it's already properly cached for you via the current
+            Context and so will work in every situation [unit-tests, config-changes, etc]...
+        """
+        return table_repo.table__for_client(self, create_if_needed=True)
+
+    @property
+    def table_name(self) -> str:
+        """
+        Fully qualified name of the table in Dynamo as a str.
+        Format is: '{self.table_prefix}-{self.name}' or just `{self.name}` if no prefix configured.
+        """
+        prefix = self.table_prefix
+        name = self.name
+        if not name:
+            raise DynamoError(f'DynClient ({self}) must have a `name` assigned to generate table_name with.')
+
+        if name is Default and (v := settings.default_prefix_generator):
+            prefix = v(self)
+
+        if not prefix:
+            return name
+
+        return f'{prefix}-{name}'
 
     def id_for(self, obj: M) -> str:
         pass
@@ -93,7 +255,7 @@ class DynClient(Generic[M]):
     def delete_id(self, hash_key):
         pass
 
-    def delete(self, obj: Union[str, M, Key], *, condition: Query = None):
+    def delete(self, items: Iterable[str | M | Key] | str | M | Key, *, condition: Query | None = None):
         """
          Attempts to delete passed in object from dynamodb table.
 
@@ -108,7 +270,7 @@ class DynClient(Generic[M]):
          (bypassing any current batch-writer that may be in use).
 
          Args:
-            obj: Object to delete, it MUST have values for it's primary key(s)
+            items: Object to delete, it MUST have values for it's primary key(s)
                 (no other values are required, the primary-key values are the only ones used).
             condition: Optional, if passed in we will send this as a `ConditionExpression`
                 to dynamo.  You can pass in a Query, ie: the same structure that is used
@@ -141,80 +303,55 @@ class DynClient(Generic[M]):
                 or you can use `xyn_model_dynamo.const.CONDITIONAL_CHECK_FAILED_KEY` for
                 the field key.
          """
+        if isinstance(items, (str, dict, BaseModel)):
+            all_items = [items]
+        else:
+            all_items = list(items)
 
-        # Get the DynKey
-        # If we don't get a dyn-key, check for that and raise nicer, higher-level error.
-        _QueryDict.from_client(self, )
-        key = obj if isinstance(obj, DynKey) else DynKey.via_obj(obj)
-        params = {
-            'Key': key.key_as_dict(),
-        }
+        exceptions = []
+        with ExitStack() as stack:
+            # Conditionally use the batch-resource writer via the ExitStack.
+            if len(all_items) > 1 and not condition:
+                stack.enter_context(_internal.batching.DynBatchResource.grab().current_writer(create_if_none=True))
 
-        # To keep things simple, I am using 'put' which replaces entire item,
-        # so get all properties of item regardless if they changed or not.
-        # todo: Check for primary key and raise a nicer, higher-level exception in that case.
+            for item in all_items:
+                # Get the DynKey
+                # If we don't get a dyn-key, check for that and raise nicer, higher-level error.
+                crit = _internal.QueryCriteria.from_client__for_key(self, item, condition)
+                params = {'Key': crit.key_as_dict}
 
-        if not condition:
-            resource = self._table_or_batch_writer()
-            resource.delete_item(**params)
-            return
+                # To keep things simple, I am using 'put' which replaces entire item,
+                # so get all properties of item regardless if they changed or not.
+                # todo: Check for primary key and raise a nicer, higher-level exception in that case.
 
-        # Add the conditional query to the dynamodb params dict...
-        # (can't batch-delete things with conditions, so we do them one at a time instead).
-        self._add_conditions_from_query(
-            query=condition, params=params, filter_key='ConditionExpression', consistent_read=False
-        )
+                if not crit.condition:
+                    resource = self._table_or_batch_writer()
+                    resource.delete_item(**params)
+                    continue
 
-        try:
-            self.api.table.delete_item(**params)
-        except dynamodb.meta.client.exceptions.ConditionalCheckFailedException as e:
-            # By default, we ignore conditional check failed, because this means we did not want
-            # to delete the item on purpose; ie: it's not an error.
-            # conditions are mostly used to prevent race-conditions, hence ignored by default.
-            # If someone in the future ends up wanting the exception, we can have an argument
-            # or some other way to indicate that we should re-raise the condition check exception.
-            # See `self.delete_obj` doc comment (above) for more details.
-            log.info(
-                f"Didn't delete dynamo obj ({obj}) due to condition not met ({condition}), "
-                f"exception from dynamo ({e})."
-            )
-            state = obj.api.response_state
-            state.had_error = True
-            state.errors = [
-                'The conditional check failed, item was not deleted.',
-                {'conditional-check-failed-exception': e}
-            ]
-            state.add_field_error(field=CONDITIONAL_CHECK_FAILED_KEY, code='failed')
+                # Add the conditional query to the dynamodb params dict...
+                # (can't batch-delete things with conditions, so we do them one at a time instead).
+                self._add_conditions_from_query(
+                    query=crit.condition, params=params, filter_key='ConditionExpression', consistent_read=False
+                )
 
-    def delete_objs(self, objs: Sequence[Union[M, DynKey]], condition: Query = None):
-        """ Uses a batch-writer to put the items. Much more efficient than doing it one at a time.
+                try:
+                    self.table.delete_item(**params)
+                except dynamodb.meta.client.exceptions.ConditionalCheckFailedException as e:
+                    # TODO: Decide if we should log this and/or log item too???
+                    log.info(
+                        f"Didn't delete dynamo item ({item}) due to condition not met ({condition}), "
+                        f"exception from dynamo ({e})."
+                    )
+                    exceptions.append(DynamoConditionError(item=item, condition=condition or {}, original=e))
 
-            If you pass in a `condition`, the batch-writer can't be used and normal single-deletes
-            will automatically be used instead.
+        num_exceptions = len(exceptions)
+        if num_exceptions > 1:
+            raise ExceptionGroup("Group of dynamo conditional errors when deleting objects.", exceptions)
+        elif num_exceptions == 1:
+            raise exceptions[0].with_traceback(exceptions[0].__traceback__)
 
-            If you only give me one item, directly calls `delete_obj` without a batch-writer.
-        """
-        if not objs:
-            return
-
-        if len(objs) == 1:
-            self.delete_obj(obj=objs[0], condition=condition)
-            return
-
-        with _DynBatchResource.grab().current_writer(create_if_none=True):
-            for i in objs:
-                self.delete_obj(obj=i, condition=condition)
-
-    # todo: Someday support an iterable for `objs`
-    #  (ie: open it wider then a Sequence, ie: to support generators).
-    def send_objs(
-            self,
-            objs: Sequence[M],
-            *,
-            condition: Query = None,
-            url: UrlStr = None,
-            send_limit: int = None
-    ):
+    def put(self, items: Iterable[M], *, condition: Query = None):
         """
         Used to send any number of objects to Dynamo in as efficient a manner as possible.
 
@@ -228,10 +365,7 @@ class DynClient(Generic[M]):
         more items per-request at a time with condition(s).
 
         Args:
-            objs: Objects to send to dynamo.
-            url: Not used in Dynamo, ignore
-            send_limit: Currently unused, we try to push as much as possible.
-
+            items: Objects to send to dynamo.
             condition: Optional, if passed in we will send this as a `ConditionExpression`
                 to dynamo.  You can pass in a Query, ie: the same structure that is used
                 for `self.query()` and `self.scan()`.
@@ -262,28 +396,40 @@ class DynClient(Generic[M]):
                 the field key.
 
         """
-        if not objs:
+        if not items:
             return
 
-        if len(objs) == 1:
-            self._put_item(item=objs[0], condition=condition)
+        # For now to simplify logic, convert to a list
+        # (although we leave open the possibility of handling generators differently/more-efficently
+        #  internally here in the future someday, if desirable).
+        if isinstance(items, (str, dict, BaseModel)):
+            items = [items]
+        else:
+            items = list(items)
+
+        num_items = len(items)
+        if num_items == 0:
+            return
+
+        if num_items == 1:
+            self._put_item(item=items[0], condition=condition)
             return
 
         if condition:
-            for i in objs:
+            for i in items:
                 self._put_item(item=i, condition=condition)
             return
 
-        with _DynBatchResource.grab().current_writer(create_if_none=True):
-            for i in objs:
+        with _internal.batching.DynBatchResource.grab().current_writer(create_if_none=True):
+            for i in items:
                 self._put_item(item=i)
 
     def get(
             self,
             query: Query = None,
             *,
-            top: int = None,
-            fields: FieldNames = Default,
+            # top: int = None,
+            # fields: FieldNames = Default,
             allow_scan: bool = False,
             consistent_read: bool | DefaultType = Default,
             **dynamo_params,
@@ -427,14 +573,13 @@ class DynClient(Generic[M]):
         #               I. This is just something we will do later, don't need `scan` at moment.
         #
 
-        query = _ProcessedQuery.process_query(query, api=self.api)
-        structure = self.api.structure
-        have_range_key = bool(structure.dyn_range_key_name)
+        query = _internal.QueryCriteria.from_client__for_query(self, query)
+        have_range_key = bool(self.sort_key_name)
 
         # Check to see if we only have key fields (without other filtering criteria);
         # if so we can do a batch-get, which is the fastest way to get a number of specific
         # values.  If we
-        if query.contains_only_keys():
+        if query.contains_only_keys:
             dyn_keys = query.dyn_keys()
 
             # If we have no range-key, they all dyn-gets support get-batch.
@@ -699,7 +844,7 @@ class DynClient(Generic[M]):
                 "conditions on every item in the table."
             )
 
-        for dyn_key in query.dyn_keys():
+        for dyn_key in keys:
             params = {**dynamo_params}
             self._add_conditions_from_query(
                 query=query,
@@ -883,23 +1028,23 @@ class DynClient(Generic[M]):
                 exp = exp & key if exp is not None else key
                 params[param_key] = exp
 
-    def _table_or_batch_writer(self) -> Union[BatchWriter, TableResource]:
+    def _table_or_batch_writer(self) -> Union[BatchWriter, Table]:
         """
         Gets either a table or a batch-writer. So you should only call methods that are
         supported by a BatchWriter on this [since it could be one].
-        All BatchWriter methods are also supported by a Dynamo TableResource so you'll be safe
+        All BatchWriter methods are also supported by a dynamodb Table resource so you'll be safe
         as long as you limit calls to what BatchWriter supports.
         """
-        batch_writer = _DynBatchResource.grab().current_writer()
+        batch_writer = _internal.batching.DynBatchResource.grab().current_writer()
         if batch_writer:
-            return batch_writer.batch_writer(api=self.api)
+            return batch_writer.batch_writer(client=self)
 
-        return self.api.table
+        return self.table
 
     # todo: BaseModel objects are capable of letting us know if something actually changed or not.
     #       At some point take advantage of that.
     #       This would allow us to prevent putting an unchanged item into dynamo [saves cost].
-    def _put_item(self, item: 'DynModel', condition: Query = None):
+    def _put_item(self, item: M, condition: Query = None):
         """
         Put item into dynamo-table. WON'T use any current batch-writer if a condition is supplied.
         If a condition is supplied, we always use the table and execute put immediately.
@@ -925,34 +1070,32 @@ class DynClient(Generic[M]):
                 or you can use `xyn_model_dynamo.const.CONDITIONAL_CHECK_FAILED_KEY` for
                 the field key.
         """
-        # Check to see if there is anything I actually need to send.
-        if not item.api.json(only_include_changes=True, log_output=True, include_removals=True):
-            log.info(f"Dynamo - {item} did not have any changes to send, skipping.")
-            return
+        # # Check to see if there is anything I actually need to send.
+        # if not item.api.json(only_include_changes=True, log_output=True, include_removals=True):
+        #     log.info(f"Dynamo - {item} did not have any changes to send, skipping.")
+        #     return
 
-        structure = self.api.structure
-        hash_name = structure.dyn_hash_key_name
-        if not getattr(item, hash_name, None):
-            raise XRemoteError(f"Item {item} needs a value for hash key ({hash_name}).")
+        hash_name = self.hash_key_info.name
+        # if isinstance(item, dict):
+        #
+        # if not getattr(item, hash_name, None):
+        #     raise DynamoError(f"Item {item} needs a value for partition key ({hash_name}).")
+        #
+        # range_name = self.sort_key_name
+        # if range_name and not getattr(item, range_name, None):
+        #     raise DynamoError(f"Item {item} needs a value for sort key ({range_name}).")
 
-        range_name = structure.dyn_range_key_name
-        if range_name and not getattr(item, range_name, None):
-            raise XRemoteError(f"Item {item} needs a value for range key ({range_name}).")
+        dump_data = item
+        if isinstance(item, BaseModel):
+            dump_data = item.model_dump()
 
-        # To keep things simple, I am using 'put' which replaces entire item,
-        # so get all properties of item regardless if they changed or not.
-        # todo: Check for primary key and raise a nicer, higher-level exception in that case.
-        item.api.response_state.reset()
-
-        params = {
-            "Item": item.api.json()
-        }
+        params = {"Item": dump_data}
 
         resource = self._table_or_batch_writer()
         if condition:
 
             # Can't batch-put things with conditions, so we do them one at a time instead.
-            resource = self.api.table
+            resource = self.table
 
             # Add the conditional query to the dynamodb params dict...
             self._add_conditions_from_query(
@@ -960,26 +1103,23 @@ class DynClient(Generic[M]):
             )
 
         # Finally, tell the boto resource to put the item:
+        exceptions = []
         try:
             resource.put_item(**params)
         except dynamodb.meta.client.exceptions.ConditionalCheckFailedException as e:
-            # By default, we ignore conditional check failed, because this means we did not want
-            # to delete the item on purpose; ie: it's not an error.
-            # conditions are mostly used to prevent race-conditions, hence ignored by default.
-            # If someone in the future ends up wanting the exception, we can have an argument
-            # or some other way to indicate that we should re-raise the condition check exception.
-            # See `self.delete_obj` doc comment (above) for more details.
             log.info(
-                f"Didn't send/put dynamo obj ({item}) due to condition not met ({condition}), "
+                f"Didn't put dynamo item ({item}) due to condition not met ({condition}), "
                 f"exception from dynamo ({e})."
             )
-            state = item.api.response_state
-            state.had_error = True
-            state.errors = [
-                'The conditional check failed, item was not deleted.',
-                {'conditional-check-failed-exception': e}
-            ]
-            state.add_field_error(field=CONDITIONAL_CHECK_FAILED_KEY, code='failed')
+            exceptions.append(DynamoConditionError(item=item, condition=condition or {}, original=e))
+
+        num_exceptions = len(exceptions)
+        if num_exceptions > 1:
+            raise ExceptionGroup("Group of dynamo conditional errors when deleting objects.", exceptions)
+        elif num_exceptions == 1:
+            raise exceptions[0].with_traceback(exceptions[0].__traceback__)
+
+    # TODO: *** STOPPED HERE *** --> Also, test the 'self.put()' function next!
 
     def _get_all_items(self, consistent_read: bool | DefaultType = Default):
         params = {}
@@ -1036,85 +1176,3 @@ class DynClient(Generic[M]):
             params['RequestItems'] = unprocessed
             continue
 
-    def create_table(self):
-        """
-        This is mainly here to create table when mocking aws for unit tests. If the table
-        really does not exist in reality, this also can create it.
-
-        Time To Live Notes:
-
-        We can't enable TimeToLive during table creation, we have to wait until after it's
-        created. This is a minor issue, since the table will still function correctly,
-        the queries will still filter out expired items like normal.  The only difference
-        is we could get charged extra for storage we are not using. We need to still filter
-        items out of our queries because deletion does not happen immediately [could take up
-        to 48 hours].
-
-        At this point, it's expected that you'll have to go into the AWS dynamo console
-        to setup automatic TimeToLive item deletion for a table if you want this to create it for
-        you.
-
-        In reality, serverless framework is expected to setup the real tables for services that
-        are running directly in aws; and that's where you should setup the TTL stuff for real
-        tables.
-        """
-        structure = self.api.structure
-        hash_key = structure.dyn_hash_key_name
-        hash_type = structure.get_field(hash_key).type_hint
-        key_schemas = [
-            # Partition Key
-            {'AttributeName': hash_key, 'KeyType': 'HASH'}
-        ]
-        attribute_definitions = [
-            {
-                'AttributeName': hash_key,
-                'AttributeType': get_dynamo_type_from_python_type(hash_type)
-            }
-        ]
-
-        # If we have a range-key, add that in.
-        range_key = structure.dyn_range_key_name
-        if range_key:
-            range_type = structure.get_field(range_key).type_hint
-            key_schemas.append({
-                'AttributeName': range_key,
-                'KeyType': 'RANGE'
-            })
-            attribute_definitions.append({
-                'AttributeName': range_key,
-                'AttributeType': get_dynamo_type_from_python_type(range_type)
-            })
-
-        return DynamoDB.grab().db.create_table(
-            TableName=structure.fully_qualified_table_name(),
-            KeySchema=key_schemas,
-            AttributeDefinitions=attribute_definitions,
-            BillingMode='PAY_PER_REQUEST',
-            Tags=[{'Key': 'DDBTableGroupKey', 'Value': xcon_settings.service}]
-        )
-
-
-class _QueryCriteria(dict):
-    client: DynClient
-    key: Key | None
-
-    @classmethod
-    def from_client__for_query(cls, client: DynClient, query: Query):
-        if isinstance(query, _QueryCriteria):
-            assert query.client is client
-            return query
-
-        obj = _QueryDict(query)
-        obj.client = client
-        return obj
-
-    @classmethod
-    def from_client__for_key(cls, client: DynClient, key: Key):
-        if isinstance(key, _QueryCriteria):
-            assert key.client is client
-            return key
-
-        # TODO: Accommodate 'BaseModel' keys.
-        obj = _QueryDict(key)
-        obj.client = client
-        return obj

@@ -1,8 +1,15 @@
-from typing import Union, Iterable
+import dataclasses
+from dataclasses import dataclass
+from enum import StrEnum, auto
+from functools import cached_property
+from typing import Union, Iterable, Annotated, TypeVar, Self, Type
 import datetime as dt
 from uuid import UUID
 
 from pydantic import BaseModel
+from xsentinels import Default
+from xsentinels.default import DefaultType
+from pydantic_dyn import _internal
 
 QueryValue = Union[
     str,
@@ -29,6 +36,118 @@ Key = Query | BaseModel
     ```
 """
 
+Item = dict[str, QueryValue] | BaseModel
 
 
+_T = TypeVar('_T')
 
+
+class KeyType(StrEnum):
+    hash = auto()
+    sort = auto()
+
+
+class DynField:
+    """ Way to customize with dynamo-specific field options.
+        Any found for the same field will be merged together.
+        The final result will convert into a `DynFieldInfo` object.
+        If the parent class has any DynFieldInfo's, they will also be merged into the final result.
+    """
+    def __init__(
+            self, *,
+            py_type: Type | DefaultType = Default,
+            dy_type: str | None | DefaultType = Default,
+            key_type: KeyType | None | DefaultType = Default
+    ):
+        self.key_type = key_type
+        self.py_type = py_type
+        if dy_type is not None:
+            self.dy_type = dy_type
+        elif py_type is not Default:
+            self.dy_type = _internal.get_dynamo_type_from_python_type(dy_type)
+
+    def copy(self) -> DynField:
+        return DynField(self.key_type)
+
+    def merge(self, other: DynField):
+        # We go though all of are attrs, and set the ones that have a value.
+        # Consider anything with the `Default` sentinal-value as not having any value.
+        for k in ['key_type', 'py_type', 'dy_type']:
+            v = getattr(other, k)
+            if v is not Default:
+                setattr(self, k, v)
+
+    key_type: KeyType | None | DefaultType = Default
+    py_type: Type | DefaultType = Default
+    dy_type: str | DefaultType = Default
+
+
+@dataclasses.dataclass
+class DynFieldInfo:
+    """ Final dynamo-specific field info, after merging any found `DynField` and pydantic field info.
+    """
+    @classmethod
+    def from_field(cls, dyn_field: DynField, name: str) -> DynFieldInfo:
+        return DynFieldInfo(
+            key_type=dyn_field.key_type or None,
+            py_type=dyn_field.py_type or None,
+            name=name,
+            dy_name=name,
+        )
+
+    def __post_init__(self):
+        if (v := self.dy_name) and not self.names and not self.name:
+            self.name = v
+            self.names = [v]
+
+        if not self.names:
+            if v := self.name:
+                self.names = [v]
+            elif v := self.dy_name:
+                self.names = [v]
+                self.name = v
+
+        if not self.dy_name:
+            if v := self.name:
+                self.dy_name = v
+            if (v := self.names) and len(v) == 1:
+                self.dy_name = v[0]
+
+        assert self.dy_name
+        assert self.names
+
+        if len(self.names) > 1:
+            self.name = None
+
+    def merge_with_field(self, dyn_field: DynField):
+        # We go though all of are attrs, and set the ones that have a value.
+        # Consider anything with the `Default` sentinal-value as not having any value.
+        for k in ['key_type', 'py_type', 'dy_type']:
+            v = getattr(dyn_field, k)
+            if v is not Default:
+                setattr(self, k, v)
+
+    dy_name: str = Default
+    """ Dynamo-attribute name.
+        Defaults to `self.name`, but could be different based on alias/more-than-one-field for a key; etc.
+    """
+
+    @cached_property
+    def dy_type(self) -> str:
+        return _internal.get_dynamo_type_from_python_type(self.py_type)
+
+    name: str | None = None
+    """ If there is only one field, we set that here. If there is more that one this is `None`, see `self.names`.
+    """
+
+    names: list[str] = None
+    """ Regardless if this came from one or more fields, we list them here,
+        So there will always be a list with at least one value in it.
+    """
+
+    py_type: Type = str
+    key_type: KeyType | None = None
+
+
+HashKey = Annotated[_T, DynField(key_type=KeyType.hash)]
+SortKey = Annotated[_T, DynField(key_type=KeyType.sort)]

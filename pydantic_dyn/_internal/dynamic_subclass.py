@@ -35,7 +35,6 @@ def create_generic_submodel(name: str, origin: Type[Any], generic_typevar: Type[
     created_model = meta(name, bases, namespace, _generic_typevar=generic_typevar, **kwargs)
 
     model_module, called_globally = get_caller_frame_info(depth=3)
-    # create global reference and therefore allow pickling
     if called_globally:
         object_by_reference = None
         reference_name = name

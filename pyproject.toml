@@ -3,7 +3,7 @@ name = "pydantic-dyn"
 version = "0.1.0"
 description = "Pydantic models that dynamically verify types when attributes are set."
 authors = [{ name = "Josh Orr", email = "josh@orr.blue" }]
-requires-python = ">=3.12,<4"
+requires-python = ">=3.14,<4"
 readme = "README.md"
 classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
@@ -21,6 +21,8 @@ dependencies = [
     "pydantic>=2.9.2,<3",
     "orjson>=3.10.9,<4",
     "pydantic-partials>=1.0.8,<2",
+    "xcon>=1.1.1",
+    "xdynamo>=0.10.3",
 ]
 
 [project.urls]
@@ -42,6 +44,7 @@ dev = [
     "mike>=1.1.2,<2",
     "tomlkit>=0.11.7,<0.12",
     "pyright>=1.1.341,<2",
+    "boto3-stubs[essential]>=1.42.87",
 ]
 
 [tool.hatch.build.targets.sdist]
