@@ -64,31 +64,16 @@ class DynKey:
     #
     #     return DynKey(api=obj.api, hash_key=hash_value, range_key=range_value)
 
-    # # TODO: Only seems to be used by passing DynKey's to `DynClient.batch_get`,
-    # #     and that's a public-method. So I probably want to do something different there.
-    # #     (as DynKey is an internal-object only now, that may go away in the future).
-    # def key_as_dict(self):
-    #     structure = self.api.structure
-    #     hash_field = structure.dyn_hash_field
-    #     range_field = structure.dyn_range_field
-    #
-    #     def run_converter(field: 'DynField', value) -> Any:
-    #         converter = field.converter
-    #         if not converter:
-    #             return value
-    #
-    #         return converter(
-    #             self.api,
-    #             Converter.Direction.to_json,
-    #             field,
-    #             value
-    #         )
-    #
-    #     # Append the keys for the items we want into what we will request.
-    #     item_request = {hash_field.name: run_converter(hash_field, self.hash_key)}
-    #     if range_field:
-    #         item_request[range_field.name] = run_converter(range_field, self.range_key)
-    #     return item_request
+    def key_as_dict(self):
+        client = self.client
+        hash_field = client.hash_key_info
+        range_field = client.sort_key_info
+
+        # Append the keys for the items we want into what we will request.
+        item_request = {hash_field.dy_name: self.hash_key}
+        if range_field:
+            item_request[range_field.dy_name] = self.range_key
+        return item_request
 
     def __post_init__(self):
         client = self.client
@@ -197,12 +182,20 @@ class QueryCriteria(dict):
     # key: Key | None = None
     condition: Query | None = None
 
-    @classmethod
-    def from_client__for_query(cls, client: DynClient, query: Query, condition: Query | None | DefaultType = Default):
-        return cls.from_client__for_key(client, query, condition)
+    def copy(self) -> QueryCriteria:
+        qc = QueryCriteria(self)
+        qc.client = self.client
+        qc.condition = self.condition
+        return qc
 
     @classmethod
-    def from_client__for_key(cls, client: DynClient, key: Key | str, condition: Query | None | DefaultType = Default):
+    def from_client__for_query(
+            cls, client: DynClient, query: Query | QueryCriteria, *, condition: Query | None | DefaultType = Default
+    ) -> QueryCriteria:
+        return cls.from_client__for_key(client, query, condition=condition)  # noqa
+
+    @classmethod
+    def from_client__for_key(cls, client: DynClient, key: Key | str, *, condition: Query | None | DefaultType = Default) -> QueryCriteria:
         if isinstance(key, QueryCriteria):
             assert key.client is client
             if condition is Default:

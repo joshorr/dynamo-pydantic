@@ -2,7 +2,7 @@ import dataclasses
 from dataclasses import dataclass
 from enum import StrEnum, auto
 from functools import cached_property
-from typing import Union, Iterable, Annotated, TypeVar, Self, Type
+from typing import Union, Iterable, Annotated, TypeVar, Self, Type, Any
 import datetime as dt
 from uuid import UUID
 
@@ -19,6 +19,8 @@ QueryValue = Union[
     UUID,
     Iterable[str | int | UUID | dt.date],
 ]
+
+DynParams = dict[str, Any]
 
 Query = dict[str, QueryValue]
 """ A `Query` signifies that any combinations of fields/keys can be included.

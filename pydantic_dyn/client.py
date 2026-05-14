@@ -1,6 +1,7 @@
 from contextlib import ExitStack
 from email.policy import default
 from functools import cache, cached_property
+from itertools import batched
 from typing import (
     TYPE_CHECKING, TypeVar, Union, Sequence, Iterable, Optional, List, Dict, Any, Set, Generic, Type, Self, ClassVar
 )
@@ -32,7 +33,7 @@ from xloop import xloop
 
 from .errors import DynamoError, DynamoConditionError
 from .table import table_repo
-from .types import Key, Query, DynField, KeyType, DynFieldInfo
+from .types import Key, Query, DynField, KeyType, DynFieldInfo, DynParams
 from . import _internal
 
 if TYPE_CHECKING:
@@ -580,7 +581,7 @@ class DynClient(Dependency, Generic[M]):
         # if so we can do a batch-get, which is the fastest way to get a number of specific
         # values.  If we
         if query.contains_only_keys:
-            dyn_keys = query.dyn_keys()
+            dyn_keys = query.dyn_keys
 
             # If we have no range-key, they all dyn-gets support get-batch.
             # it's only the lack of range-key, or a non 'eq' operator for range-key
@@ -605,10 +606,10 @@ class DynClient(Dependency, Generic[M]):
             # Dynamo will fetch these in parallel!
             # TODO: If we only have one key, use `get_item` instead of `batch_get_item`.
             if all_support_batch_get and dyn_keys:
-                return self.batch_get(keys=dyn_keys, consistent_read=consistent_read)
+                return self._batch_get(keys=dyn_keys, consistent_read=consistent_read)
 
         # If we have some sort of key(s) we can use (a hash key with an optional range key).
-        if query.dyn_keys():
+        if query.dyn_keys:
             # todo: Support `top` and `fields`.
             # todo: Support multiple hash-keys [one query per hash key].
             # todo: unless this table does not have a range key [no hash/range to tie].
@@ -638,8 +639,12 @@ class DynClient(Dependency, Generic[M]):
             "attributes are in global-index as well."
         )
 
-    def batch_get(
-            self, keys: Iterable[DynKey], *, consistent_read: bool | DefaultType = Default, **params: DynParams
+    def _batch_get(
+            self,
+            keys: Iterable[_internal.DynKey],
+            *,
+            consistent_read: bool | DefaultType = Default,
+            **params: DynParams
     ) -> Iterable[M]:
         """
         Will fetch keys in the largest batch it can at a time it can from Dynamo;
@@ -674,9 +679,11 @@ class DynClient(Dependency, Generic[M]):
         Returns: An Iterable/Generator that will efficiently paginate though the results for you.
 
         """
-        structure = self.api.structure
-        hash_name = structure.dyn_hash_key_name
-        range_name = structure.dyn_range_key_name
+        hash_info = self.hash_key_info
+        sort_info = self.sort_key_info
+        have_range = bool(sort_info)
+        table_name = self.table_name
+
         base_params = {**params}
 
         if consistent_read is Default:
@@ -688,8 +695,6 @@ class DynClient(Dependency, Generic[M]):
         def batch_pagination_generator(items):
             if not items:
                 return xloop()
-
-            table_name = structure.fully_qualified_table_name()
 
             # We want to merge our items with anything that could already be there...
             copy_params = base_params.copy()
@@ -710,16 +715,16 @@ class DynClient(Dependency, Generic[M]):
         # Go though all the keys and grab them 100 at a time from Dynamo.
         # Dynamo only supports a max of 100 keys at a time when doing a 'batch_get_item'.
         items_requested = []
-        have_range = bool(range_name)
 
         uniquified_keys = keys
+        # We MUST uniquify them, otherwise if there is a duplicate-key in the list dynamo will produce an error.
         if not isinstance(keys, set):
             uniquified_keys = set(uniquified_keys)
         uniquified_keys = list(uniquified_keys)
 
-        for i in range(0, len(uniquified_keys), 100):
-            key_subset = [key.key_as_dict() for key in set(uniquified_keys[i:i + 100])]
-            for x in batch_pagination_generator(list(key_subset)):
+        for batch in batched(uniquified_keys, 100):
+            key_dics = [key.key_as_dict() for key in batch]
+            for x in batch_pagination_generator(key_dics):
                 yield x
 
     def _parse_keys_from_query(self, query: Query) -> Optional[List[DynKey]]:
@@ -741,18 +746,31 @@ class DynClient(Dependency, Generic[M]):
 
         return keys
 
+    _consistent_reads: bool | DefaultType = Default
+
     @property
     def consistent_reads(self) -> bool:
-        # Check for injected default, use that if it exists.
-        injected_default = dyn_client_options.consistent_read
-        if injected_default is not Default:
-            return injected_default
+        self_value = self._consistent_reads
 
-        # Otherwise use the model's default for consistent reads.
-        return self.api.structure.dyn_consistent_read or False
+        if self_value is not Default:
+            return self_value
+
+        injected_value = dyn_client_options.consistent_read
+        if injected_value is Default:
+            return False
+
+        return True
+
+    @consistent_reads.setter
+    def consistent_reads(self, value: bool | DefaultType):
+        self._consistent_reads = value
 
     def query(
-            self, query: Query = None, *, consistent_read: bool | DefaultType = Default, **dynamo_params: DynParams
+            self,
+            query: Query | _internal.QueryCriteria,
+            *,
+            consistent_read: bool | DefaultType = Default,
+            **dynamo_params: DynParams
     ) -> Iterable[M]:
         """
         Forces `DynClient` to use a query. If you want a way for client to automatically
@@ -815,23 +833,18 @@ class DynClient(Dependency, Generic[M]):
         # todo: support in/lists as values....
         # todo: support `id`.
 
-        structure = self.api.structure
-        hash_key = structure.dyn_hash_key_name
-        query = _ProcessedQuery.process_query(query, api=self.api)
+        query = _internal.QueryCriteria.from_client__for_query(client=self, query=query)
 
-        # if 'id' in query:
-        #
-        #
-        # hash_key in query:
-
+        # # TODO: Look though this list and curate it; I think 1 + 2 may already happen now;
+        # #     just need to do 3 sometime.
         # 1. If we have 'id', iterate though that and get DynKey's out of them
         # 2. Look at hash/range keys and try to match them up if they are lists into DynKey's
         # 3. Considering auto-finding out if we have a list of keys and can just do batch-get
 
         # Query for each dyn-key we find.
-        keys = query.dyn_keys()
+        keys = query.dyn_keys
         if not keys:
-            raise XRemoteError(
+            raise DynamoError(
                 "query got called with a query that had no valid DynKey's in it. "
                 "This means we could not find any part(s) of the primary key we could use to do "
                 "a query on (a Dynamo query requires at least a hash-key). "
@@ -857,7 +870,7 @@ class DynClient(Dependency, Generic[M]):
                 yield value
 
     def scan(
-            self, query: Query = None, *, consistent_read: bool | DefaultType = Default, **dynamo_params: DynParams
+            self, query: Query | None = None, *, consistent_read: bool | DefaultType = Default, **dynamo_params: DynParams
     ) -> Iterable[M]:
         """ Scans entire table (vs doing a `DynClient.query`, which is much more efficient).
             Looks at every item in the table, evaluating `query` to filter which ones to return.
@@ -875,9 +888,9 @@ class DynClient(Dependency, Generic[M]):
 
     def _add_conditions_from_query(
             self,
-            query: Query,
+            query: Query | None,
             params: DynParams,
-            dyn_key: DynKey = None,
+            dyn_key: _internal.DynKey = None,
             filter_key: str = 'FilterExpression',
             consistent_read: bool | DefaultType = Default
     ):
@@ -890,17 +903,17 @@ class DynClient(Dependency, Generic[M]):
         if not query and not dyn_key:
             return
 
-        query = _ProcessedQuery.process_query(query, api=self.api)
+        if query:
+            query = _internal.QueryCriteria.from_client__for_query(self, query)
+
         key_names: Set[str] = set()
-        api = self.api
-        structure = self.api.structure
+        hash_key_info = self.hash_key_info
 
         if dyn_key:
             key_names.add('id')
-            key_names.add(structure.dyn_hash_key_name)
-            range_name = structure.dyn_range_key_name
-            if range_name:
-                key_names.add(range_name)
+            key_names.add(hash_key_info.dy_name)
+            if (info := self.sort_key_info) and (name := info.dy_name):
+                key_names.add(name)
 
         def add_criterion(cond_list, condition_base, name, operator, value):
             # It just so happens the basic Django filter operators are generally named the same
@@ -929,15 +942,9 @@ class DynClient(Dependency, Generic[M]):
             operator = getattr(condition_base(name), operator, None)
             condition = None
             if operator:
-                field = structure.get_field(name)
-                if operator_needs_param and field and field.converter:
-                    if isinstance(value, list) and op_name == 'between':
-                        sub_results = []
-                        for sub_v in value:
-                            sub_results.append(field.converter(api, Converter.Direction.to_json, field, sub_v))
-                        value = sub_results
-                    else:
-                        value = [field.converter(api, Converter.Direction.to_json, field, value)]
+                # TODO: See if we should assert/validate `value` is a list here when using `between`?
+                if operator_needs_param and (not isinstance(value, list) or op_name != 'between'):
+                        value = [value]
 
                 operator_params = value if operator_needs_param else []
                 condition = operator(*operator_params)
@@ -967,7 +974,7 @@ class DynClient(Dependency, Generic[M]):
                     f"auto-route to a scan operation when needed."
                 )
 
-            raise XRemoteError(
+            raise DynamoError(
                 f"Using unknown boto3/dynamo operator ({pre_lookup_operator}), "
                 f"for query on attr ({name}); "
                 f"the available ones are ({available}). "
@@ -1000,13 +1007,15 @@ class DynClient(Dependency, Generic[M]):
             add_criterion(
                 cond_list=keys,
                 condition_base=conditions.Key,
-                name=structure.dyn_hash_key_name,
+                name=hash_key_info.dy_name,
                 operator='eq',
                 value=dyn_key.hash_key
             )
 
             range_key = dyn_key.range_key
             if range_key:
+                sort_key_info = self.sort_key_info
+                assert sort_key_info
                 operator = dyn_key.range_operator or 'eq'
                 # If we have an 'in' operator, we translate that to 'eq' for this purpose.
                 # We should be called with separate values if there is more than one dyn_key,
@@ -1016,7 +1025,7 @@ class DynClient(Dependency, Generic[M]):
                 add_criterion(
                     cond_list=keys,
                     condition_base=conditions.Key,
-                    name=structure.dyn_range_key_name,
+                    name=sort_key_info.dy_name,
                     operator=operator,
                     value=range_key
                 )
@@ -1027,6 +1036,8 @@ class DynClient(Dependency, Generic[M]):
                 exp = params.get(param_key)
                 exp = exp & key if exp is not None else key
                 params[param_key] = exp
+
+    # TODO: *** STOPPED HERE (Wed) ***
 
     def _table_or_batch_writer(self) -> Union[BatchWriter, Table]:
         """
@@ -1119,8 +1130,6 @@ class DynClient(Dependency, Generic[M]):
         elif num_exceptions == 1:
             raise exceptions[0].with_traceback(exceptions[0].__traceback__)
 
-    # TODO: *** STOPPED HERE *** --> Also, test the 'self.put()' function next!
-
     def _get_all_items(self, consistent_read: bool | DefaultType = Default):
         params = {}
         if consistent_read is Default:
@@ -1137,12 +1146,13 @@ class DynClient(Dependency, Generic[M]):
             params: Dict[str, Any],
             use_table=True,
     ) -> Iterable[M]:
-        api = self.api
-        model_type = api.model_type
+        model_type = self.obj_type
+        is_pydantic_model = issubclass(model_type, BaseModel)
+
         # Get table name, and also ensures table exists.
-        table = api.table
+        table = self.table
         table_name = table.name
-        resource = table if use_table else DynamoDB.grab().db
+        resource = table if use_table else dynamodb
 
         while True:
             table_method = getattr(resource, method)
@@ -1160,7 +1170,12 @@ class DynClient(Dependency, Generic[M]):
                     db_datas = tuple()
 
             for data in db_datas:
-                yield model_type(data)
+                if is_pydantic_model:
+                    model_type: BaseModel
+                    yield model_type.model_validate(data)
+                else:
+                    # Return the raw dict-data.
+                    yield data
 
             if last_key:
                 params['ExclusiveStartKey'] = last_key

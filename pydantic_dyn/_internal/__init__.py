@@ -1,4 +1,4 @@
-from .query_criteria import QueryCriteria
+from .query_criteria import QueryCriteria, DynKey
 from .internal_types import get_dynamo_type_from_python_type
 from .dynamic_subclass import create_generic_submodel
 from . import batching
