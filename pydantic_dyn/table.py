@@ -23,7 +23,6 @@ from xinject import DependencyPerThread
 
 from xboto.resource import dynamodb
 
-from . import _internal
 from .errors import DynamoError
 
 log = logging.getLogger(__name__)

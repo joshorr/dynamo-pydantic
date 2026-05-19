@@ -1,11 +1,12 @@
 from functools import cache
-from typing import Any
+from typing import Any, TYPE_CHECKING
 
 from pydantic import BaseModel, TypeAdapter
 from pydantic_core import CoreSchema, SchemaValidator, SchemaSerializer
 
-from pydantic_dyn.client import DynClient
-from pydantic_dyn.types import DynFieldInfo
+if TYPE_CHECKING:
+    from pydantic_dyn.client import DynClient
+    from pydantic_dyn.types import DynFieldInfo
 
 
 def find_field_schema(model: type[BaseModel], field_name: str) -> CoreSchema:

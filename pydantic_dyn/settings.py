@@ -1,2 +1,7 @@
+from typing import Callable, TYPE_CHECKING
 
-default_prefix_generator = None
+if TYPE_CHECKING:
+    from pydantic_dyn.client import DynClient
+
+
+default_prefix_generator: Callable[DynClient] = None

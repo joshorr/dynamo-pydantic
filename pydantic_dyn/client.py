@@ -97,22 +97,25 @@ class DynClient(Dependency, Generic[M]):
     dyn_fields: dict[str, DynFieldInfo] = Default
 
     def __init__(self, fields: list[DynFieldInfo] | DefaultType = Default):
-        if fields:
+        if fields is not Default:
             dyn_fields = {}
             for v in fields:
                 if not v.name:
-                    raise DynamoError('When providing fields directly to DynClient, must ')
+                    raise DynamoError(f'When providing fields directly to a ({type(self)}) instance, '
+                                      f'must have a `name` assigned to it, currently blank or unassigned.')
+                dyn_fields[v.name] = v
             self.dyn_fields = dyn_fields
 
-        # TODO: Check to see if there is at least one hash-field,
-        #  not just that there is at least one field.
-        if not fields:
-            raise DynamoError('DynClient needs at least one defined hash-field when created.')
-        self.dyn_fields = {v.name: v for v in fields if v.name is not None}
-
     def __class_getitem__(cls, typevar_value: Type[Self]):  # noqa
-        name = f'{cls.__name__}[{typevar_value.__name__}]'
-        return _internal.create_generic_submodel(name, cls, typevar_value)
+        # This happens only for the type-hint/annotation it's self (to indicate it's the current subclass)
+        # there is no need to use a special subclass with `Self`, so just return our plain/current `cls`.
+        if typevar_value is Self:
+            return cls
+
+        if v := _internal.get_client_for_model_type(cls, typevar_value):
+            return v
+
+        return _internal.get_or_create_client_for_model_type(cls, typevar_value)
 
     def __init_subclass__(cls, _generic_typevar: Type[Any] | None = None, **kwargs):
         cls.obj_type = _generic_typevar  # type: ignore
@@ -236,7 +239,7 @@ class DynClient(Dependency, Generic[M]):
         if not name:
             raise DynamoError(f'DynClient ({self}) must have a `name` assigned to generate table_name with.')
 
-        if name is Default and (v := settings.default_prefix_generator):
+        if v := settings.default_prefix_generator:
             prefix = v(self)
 
         if not prefix:
@@ -318,7 +321,7 @@ class DynClient(Dependency, Generic[M]):
             for item in all_items:
                 # Get the DynKey
                 # If we don't get a dyn-key, check for that and raise nicer, higher-level error.
-                crit = _internal.QueryCriteria.from_client__for_key(self, item, condition)
+                crit = _internal.QueryCriteria.from_client__for_key(self, item, condition=condition)
                 params = {'Key': crit.key_as_dict}
 
                 # To keep things simple, I am using 'put' which replaces entire item,
@@ -352,7 +355,7 @@ class DynClient(Dependency, Generic[M]):
         elif num_exceptions == 1:
             raise exceptions[0].with_traceback(exceptions[0].__traceback__)
 
-    def put(self, items: Iterable[M], *, condition: Query = None):
+    def put(self, items: Iterable[M] | M, *, condition: Query = None):
         """
         Used to send any number of objects to Dynamo in as efficient a manner as possible.
 
@@ -403,7 +406,7 @@ class DynClient(Dependency, Generic[M]):
         # For now to simplify logic, convert to a list
         # (although we leave open the possibility of handling generators differently/more-efficently
         #  internally here in the future someday, if desirable).
-        if isinstance(items, (str, dict, BaseModel)):
+        if isinstance(items, (dict, BaseModel)):
             items = [items]
         else:
             items = list(items)

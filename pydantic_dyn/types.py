@@ -9,7 +9,6 @@ from uuid import UUID
 from pydantic import BaseModel
 from xsentinels import Default
 from xsentinels.default import DefaultType
-from pydantic_dyn import _internal
 
 QueryValue = Union[
     str,
@@ -66,10 +65,11 @@ class DynField:
         if dy_type is not None:
             self.dy_type = dy_type
         elif py_type is not Default:
+            from pydantic_dyn import _internal
             self.dy_type = _internal.get_dynamo_type_from_python_type(dy_type)
 
     def copy(self) -> DynField:
-        return DynField(self.key_type)
+        return DynField(py_type=self.py_type, dy_type=self.dy_type, key_type=self.key_type)
 
     def merge(self, other: DynField):
         # We go though all of are attrs, and set the ones that have a value.
@@ -121,6 +121,9 @@ class DynFieldInfo:
         if len(self.names) > 1:
             self.name = None
 
+    def copy(self) -> DynFieldInfo:
+        return dataclasses.replace(self)
+
     def merge_with_field(self, dyn_field: DynField):
         # We go though all of are attrs, and set the ones that have a value.
         # Consider anything with the `Default` sentinal-value as not having any value.
@@ -136,6 +139,7 @@ class DynFieldInfo:
 
     @cached_property
     def dy_type(self) -> str:
+        from pydantic_dyn import _internal
         return _internal.get_dynamo_type_from_python_type(self.py_type)
 
     name: str | None = None
