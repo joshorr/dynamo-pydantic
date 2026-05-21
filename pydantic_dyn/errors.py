@@ -13,6 +13,7 @@ class DynamoConditionError(DynamoError):
         self.condition = condition
         self.item = item
         self.original_boto_error = original
+        super().__init__(f'DynamoConditionError; condition failed: {condition}')
 
     condition: Query
     item: Item | Key | str

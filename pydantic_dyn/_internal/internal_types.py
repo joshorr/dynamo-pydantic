@@ -23,12 +23,17 @@ Used to normalize some common operators (that we use in other systems) to the on
 """
 
 
-def get_dynamo_type_from_python_type(some_type: Type) -> str:
+def get_dynamo_type_from_python_type(some_type: Type, is_key_type=False) -> str:
     # If it's another pydantic model, then it's a dict-type.
-    if issubclass(some_type, BaseModel):
+    if not is_key_type and isinstance(some_type, type) and issubclass(some_type, BaseModel):
         return _type_to_aws_type_map[dict]
 
     dyn_type = _type_to_aws_type_map.get(some_type)
+
+    # Key types can only be numbers, strings or binary.
+    if is_key_type and dyn_type not in {'N', 'S'}:
+        return 'S'
+
     if dyn_type is not None:
         return dyn_type
 

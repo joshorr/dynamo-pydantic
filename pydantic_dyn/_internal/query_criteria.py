@@ -2,6 +2,8 @@ import dataclasses
 from functools import cached_property
 from linecache import cache
 from typing import TYPE_CHECKING, Any, Set, Iterable
+
+from moto import swf
 from pydantic import BaseModel, TypeAdapter
 # TODO: Remove this `xdynamo` dependency.
 from xdynamo.common_types import between_operators
@@ -81,8 +83,9 @@ class DynKey:
         delimiter = client.full_key_deliminator
         sort_info = client.sort_key_info
         hash_info = client.hash_key_info
-        range_name = sort_info.dy_name
-        need_range_key = bool(range_name)
+        need_range_key = bool(sort_info)
+        if need_range_key:
+            range_name = sort_info.dy_name
 
         hash_key = self.hash_key
         range_key = self.range_key
@@ -165,8 +168,8 @@ class DynKey:
                     f"this works."
                 )
 
-            hash_key = split_id[0]
-            range_key = split_id[1]
+            hash_key = convert_to_key_type(client, client.hash_key_info, split_id[0])
+            range_key = convert_to_key_type(client, client.sort_key_info, split_id[1])
 
         object.__setattr__(self, 'hash_key', hash_key)
         object.__setattr__(self, 'range_key', range_key)
@@ -176,6 +179,18 @@ class QueryKey(BaseModel):
     values: list[str | int | float] | None
     operator: str | None
     dy_name: str
+
+
+def convert_to_key_type(client: DynClient, key_field: DynFieldInfo, value: str | int | float) -> str | int | float:
+    match key_field.dy_type:
+        case 'S':
+            return str(value)
+        case 'N':
+            if key_field.py_type is float:
+                return float(value)
+            return int(value)
+
+    raise DynamoError(f'Unsupported py_type/dy_type for key field ({key_field}) for client ({client}).')
 
 
 class QueryCriteria(dict):
@@ -209,19 +224,38 @@ class QueryCriteria(dict):
             obj.condition = condition
             return obj
 
+        if isinstance(key, BaseModel):
+            from pydantic_dyn.base import DynamoModel
+            if not isinstance(key, DynamoModel):
+                # TODO: do a model-dump to get the keys post-conversion [instead of doing it lazily later without model]
+                #   OR we could save a link to model on self for future ref in lazy property???....
+                # For now...
+                raise NotImplementedError("It's currently unsupported to use a basic Pydantic model as a lookup key.")
+
+            # Get the key's "id" value (will be either `str` or `int`), and use that.
+            key = key.dy_id
+
         # TODO: 'str' should be the key(s), in a full-id/str-format.
-        if isinstance(key, str):
+        if isinstance(key, (str, DynKey)):
             hash_info = client.hash_key_info
             sort_info = client.sort_key_info
             has_sort_key = bool(sort_info)
 
             if has_sort_key:
-                 values = key.split(client.full_key_deliminator)
-                 if len(values) != 2:
-                     raise DynamoError(f'While splitting [via "{client.full_key_deliminator}"] '
-                                       f'full-key string into hash/sort key ("{key}"), '
-                                       f'did not get exactly two values ({values}).')
-                 hash_key_value, sort_key_value = values
+                if isinstance(key, DynKey):
+                    # TODO: Probably/May need to support only a 'hash-key' (for getting all items for hash key)?
+                    values = [key.hash_key, key.range_key]
+                else:
+                    values = key.split(client.full_key_deliminator)
+
+                if len(values) != 2:
+                    raise DynamoError(f'While splitting [via "{client.full_key_deliminator}"] '
+                                      f'full-key string into hash/sort key ("{key}"), '
+                                      f'did not get exactly two values ({values}).')
+                hash_key_value, sort_key_value = values
+                # Convert them to an `int` if needed:
+                hash_key_value = convert_to_key_type(client, hash_info, hash_key_value)
+                sort_key_value = convert_to_key_type(client, sort_info, sort_key_value)
             else:
                 hash_key_value = key
                 sort_key_value = None
@@ -245,6 +279,7 @@ class QueryCriteria(dict):
         if isinstance(key, BaseModel):
             # TODO: do a model-dump to get the keys post-conversion [instead of doing it lazily later without model]
             #   OR we could save a link to model on self for future ref in lazy property???....
+
             raise NotImplementedError
 
         # TODO: Accommodate 'BaseModel' keys.
@@ -332,9 +367,15 @@ class QueryCriteria(dict):
             value = query_key.values[0]
             assert value
             dyn_values.append(query_key.values[0])
+
+        assert dyn_values, f'Must have at least one value to query for hash/sort key; query ({self}).'
+
         # We put a double-dash between each element
         # (don't need to parse this later, just need to make it a unique key for any given set of elements)
-        return "--".join(dyn_values)
+        if len(dyn_values) == 1:
+            return dyn_values[0]
+
+        return '--'.join([str(v) for v in dyn_values])
 
     def _query_keys_for_dyn_field(self, dyn_field: DynFieldInfo) -> list[QueryKey]:
         dyn_values_map = self.dyn_values_map
@@ -521,7 +562,7 @@ class QueryCriteria(dict):
                 qk = name_to_qks[name]
                 value = qk.values[i]
                 assert value is not None
-                qk_combination.append(value)
+                qk_combination.append(str(value))
 
             composite_value = '--'.join(qk_combination)
             yield operator, composite_value

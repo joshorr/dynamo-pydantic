@@ -7,15 +7,42 @@ from xsentinels.default import DefaultType, Default
 
 from . import _internal
 from .client import DynClient
-from .types import DynField, DynFieldInfo
+from .types import DynField, DynFieldInfo, Query
+
 
 # protected_namespaces=('model_', 'dyn_')
 class DynamoModel(BaseModel):
     dyn_client: ClassVar[DynClient[Self]]
 
+    def dy_save(self, *, condition: Query | None = None):
+        self.dyn_client.put(self, condition=condition)
+
+    def dy_delete(self, *, condition: Query | None = None):
+        self.dyn_client.delete(self, condition=condition)
+
+    @property
+    def dy_id(self):
+        return self.dyn_client.id_for(self)
+
+    @classmethod
+    def __init_subclass__(
+            cls, *,
+            name: str | DefaultType = Default,
+            table_name: str | DefaultType = Default,
+            table_prefix: str | None | DefaultType = Default,
+            consistent_reads: bool | DefaultType = Default,
+            **kwargs
+    ):
+        super().__init_subclass__(**kwargs)
+
     @classmethod
     def __pydantic_init_subclass__(
-            cls, *, name: str | None = None, table_prefix: str | None | DefaultType = Default, **kwargs
+            cls, *,
+            name: str | DefaultType = Default,
+            table_name: str | DefaultType = Default,
+            table_prefix: str | None | DefaultType = Default,
+            consistent_reads: bool | DefaultType = Default,
+            **kwargs
     ):
         # TODO: may want an option to prevent inheriting the keys (so one can more easily redefine them).
         super().__pydantic_init_subclass__()
@@ -35,14 +62,17 @@ class DynamoModel(BaseModel):
 
         client.obj_type = cls
         client.table_prefix = table_prefix
+        if consistent_reads is not Default:
+            client._cls_consistent_reads = consistent_reads
 
-        if not name:
+        if not table_name:
+            table_name = name
+
+        if not table_name:
             model_name = cls.__name__
             client.name = f'{model_name[:1].lower()}{model_name[1:]}' if model_name else ''
         else:
-            client.name = name
-
-
+            client.name = table_name
 
         # Collect all the dyn-fields from the immediate parent classes;
         # They should already be fully created from their own base classes, and so no need to dive/look further.
@@ -60,14 +90,23 @@ class DynamoModel(BaseModel):
         dyn_fields: dict[str, DynField] = {}
         for field_name, field_value in cls.model_fields.items():
             field_value: FieldInfo
-            for v in field_value.metadata:
+
+            others = _internal.find_annotated_metadata_for_iterative(field_value.annotation)
+            other_annotated = [v for obj in others for v in obj['metadata']]
+
+            for v in [*field_value.metadata, *other_annotated]:
                 if isinstance(v, DynField):
                     # Merge from pre-existing DynField, if needed.
                     if current := dyn_fields.get(field_name):
                         current.merge(v)
                     else:
-                        dyn_fields[field_name] = v.copy()
+                        v = v.copy()
+                        dyn_fields[field_name] = v
+                        # Copy our type into field if it has nothing defined for it yet.
+                        if v.py_type is Default:
+                            v.py_type = field_value.annotation
                     dyn_fields[field_name] = v
+
             if field_name not in dyn_fields:
                 # We create it, since we have nothing to start with.
                 dyn_fields[field_name] = DynField(py_type=field_value.annotation)

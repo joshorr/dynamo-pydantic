@@ -66,7 +66,8 @@ class DynField:
             self.dy_type = dy_type
         elif py_type is not Default:
             from pydantic_dyn import _internal
-            self.dy_type = _internal.get_dynamo_type_from_python_type(dy_type)
+            is_key = self.key_type is not None
+            self.dy_type = _internal.get_dynamo_type_from_python_type(py_type, is_key_type=is_key)
 
     def copy(self) -> DynField:
         return DynField(py_type=self.py_type, dy_type=self.dy_type, key_type=self.key_type)
@@ -79,9 +80,20 @@ class DynField:
             if v is not Default:
                 setattr(self, k, v)
 
+        if other.py_type is not Default and self.py_type is not Default:
+            from pydantic_dyn import _internal
+            is_key = self.key_type is not None
+            self.dy_type = _internal.get_dynamo_type_from_python_type(self.py_type, is_key_type=is_key)
+
     key_type: KeyType | None | DefaultType = Default
     py_type: Type | DefaultType = Default
     dy_type: str | DefaultType = Default
+
+    def __str__(self):
+        return f'<DynField key_type={self.key_type} py_type={self.py_type} dy_type={self.dy_type}>'
+
+    def __repr__(self):
+        return str(self)
 
 
 @dataclasses.dataclass

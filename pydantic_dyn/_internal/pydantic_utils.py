@@ -7,6 +7,7 @@ from pydantic_core import CoreSchema, SchemaValidator, SchemaSerializer
 if TYPE_CHECKING:
     from pydantic_dyn.client import DynClient
     from pydantic_dyn.types import DynFieldInfo
+    from pydantic_dyn.base import DynamoModel
 
 
 def find_field_schema(model: type[BaseModel], field_name: str) -> CoreSchema:
@@ -46,13 +47,36 @@ def type_adapter(py_type: type) -> TypeAdapter:
 
 
 def serialize_model_field(model: type[BaseModel], field_name: str, value: Any) -> Any:
-    return serializer(model, field_name).validate_python(value)
+    return serializer(model, field_name).to_python(value, mode='json')
 
 
 def serialize_dyn_field(client: DynClient, dyn_field: DynFieldInfo, value: Any) -> Any:
     obj_type = client.obj_type
     if dyn_field.name and issubclass(obj_type, BaseModel):
-        return serialize_model_field(obj_type, dyn_field.name , value)
+        field_name = dyn_field.name
+        if field_name in obj_type.model_fields:
+            return serialize_model_field(obj_type, dyn_field.name, value)
 
     return type_adapter(dyn_field.py_type).validate_python(value)
 
+
+def serialize_dyn_field__from_model(client: DynClient, dyn_field: DynFieldInfo, model: DynamoModel) -> Any:
+    obj_type = client.obj_type
+
+    if k := dyn_field.name:
+        values = [getattr(model, k)]
+    else:
+        values = [getattr(model, k) for k in dyn_field.names]
+
+    serialized_values = []
+    for value in values:
+        if dyn_field.name and issubclass(obj_type, BaseModel):
+            if k := dyn_field.name:
+                serialized_values.append(serialize_model_field(obj_type, k, value))
+            else:
+                serialized_values.append(type_adapter(dyn_field.py_type).validate_python(value))
+
+    if len(serialized_values) == 1:
+        return serialized_values[0]
+
+    return '--'.join([str(v) for v in serialized_values])

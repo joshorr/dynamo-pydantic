@@ -3,7 +3,8 @@ from email.policy import default
 from functools import cache, cached_property
 from itertools import batched
 from typing import (
-    TYPE_CHECKING, TypeVar, Union, Sequence, Iterable, Optional, List, Dict, Any, Set, Generic, Type, Self, ClassVar
+    TYPE_CHECKING, TypeVar, Union, Sequence, Iterable, Optional, List, Dict, Any, Set, Generic, Type, Self, ClassVar,
+    Iterator
 )
 from boto3.dynamodb import conditions
 from boto3.dynamodb.table import BatchWriter
@@ -35,6 +36,7 @@ from .errors import DynamoError, DynamoConditionError
 from .table import table_repo
 from .types import Key, Query, DynField, KeyType, DynFieldInfo, DynParams
 from . import _internal
+from decimal import Decimal
 
 if TYPE_CHECKING:
     from .base import DynamoModel
@@ -45,10 +47,10 @@ log = getLogger(__name__)
 
 
 class DynClientOptions(Dependency):
-    def __init__(self, *, consistent_read: bool | DefaultType = Default):
-        self.consistent_read = consistent_read
+    def __init__(self, *, consistent_reads: bool | DefaultType = Default):
+        self.consistent_reads = consistent_reads
 
-    consistent_read: bool | DefaultType = Default
+    consistent_reads: bool | DefaultType = Default
     """ Way to change what the default consistent read value should be,
         If set it will be used over the default value for the model
         (but won't override True/False passed directly to client as method paramter to get/scan/etc.
@@ -95,6 +97,8 @@ class DynClient(Dependency, Generic[M]):
     """
 
     dyn_fields: dict[str, DynFieldInfo] = Default
+
+    consistent_read: bool | DefaultType = Default
 
     def __init__(self, fields: list[DynFieldInfo] | DefaultType = Default):
         if fields is not Default:
@@ -248,7 +252,15 @@ class DynClient(Dependency, Generic[M]):
         return f'{prefix}-{name}'
 
     def id_for(self, obj: M) -> str:
-        pass
+        hash_key = self.hash_key_info
+        sort_key = self.sort_key_info
+
+        hash_value = _internal.serialize_dyn_field__from_model(self, hash_key, obj)
+        if not sort_key:
+            return hash_value
+
+        sort_value = _internal.serialize_dyn_field__from_model(self, sort_key, obj)
+        return f'{hash_value}{self.full_key_deliminator}{sort_value}'
 
     def key_for(self, obj: M) -> str:
         pass
@@ -355,7 +367,7 @@ class DynClient(Dependency, Generic[M]):
         elif num_exceptions == 1:
             raise exceptions[0].with_traceback(exceptions[0].__traceback__)
 
-    def put(self, items: Iterable[M] | M, *, condition: Query = None):
+    def put(self, items: Iterable[M] | M, *, condition: Query | None = None):
         """
         Used to send any number of objects to Dynamo in as efficient a manner as possible.
 
@@ -428,6 +440,23 @@ class DynClient(Dependency, Generic[M]):
             for i in items:
                 self._put_item(item=i)
 
+    def get_first(
+            self,
+            query: Query = None,
+            *,
+            # top: int = None,
+            # fields: FieldNames = Default,
+            allow_scan: bool = False,
+            consistent_read: bool | DefaultType = Default,
+            reverse: bool = False,
+    ) -> M | None:
+        """
+            Calls `DynClient.get`, and only returns the first item, or `None` if there are no items.
+            See `DynClient.get` reference documentation for more details on the parameters.
+        """
+        generator = self.get(query, allow_scan=allow_scan, consistent_read=consistent_read, reverse=reverse)
+        return next(generator, None)
+
     def get(
             self,
             query: Query = None,
@@ -436,8 +465,8 @@ class DynClient(Dependency, Generic[M]):
             # fields: FieldNames = Default,
             allow_scan: bool = False,
             consistent_read: bool | DefaultType = Default,
-            **dynamo_params,
-    ) -> Iterable[M]:
+            reverse: bool = False,
+    ) -> Iterator[M]:
         """
         This is the standard/abstract interface method that all RestClient's support.
 
@@ -529,8 +558,9 @@ class DynClient(Dependency, Generic[M]):
 
                 You can use this to override the model default. True means we use consistent
                 reads, otherwise false.
-            **dynamo_params: Extra parameters to include on the Dynamo request(s) that are
-                generated. This is 100% optional.
+            reverse: Defaults to False, which means sort order is ascending.
+                Set to True to reverse the order, which will set the "ScanIndexForward"
+                parameter to False in the query.
         Returns:
 
         """
@@ -548,8 +578,14 @@ class DynClient(Dependency, Generic[M]):
             
                 
         """
+        if reverse and (not query or allow_scan):
+            log.warning(f'The `reverse` param has been set along with no query or allow_scan=True '
+                        f'for ({self}). There is no way to Scan in reverse.')
 
         if not query:
+            if reverse:
+                raise DynamoError(f'The `reverse` param has been set along with no query or allow_scan=True '
+                                  f'for ({self}). There is no way to Scan in reverse.')
             # If no query.... just get all items via a bulk-scan.
             return self._get_all_items(consistent_read=consistent_read)
 
@@ -609,7 +645,7 @@ class DynClient(Dependency, Generic[M]):
             # Dynamo will fetch these in parallel!
             # TODO: If we only have one key, use `get_item` instead of `batch_get_item`.
             if all_support_batch_get and dyn_keys:
-                return self._batch_get(keys=dyn_keys, consistent_read=consistent_read)
+                return self._batch_get(keys=dyn_keys, consistent_read=consistent_read, reverse=reverse)
 
         # If we have some sort of key(s) we can use (a hash key with an optional range key).
         if query.dyn_keys:
@@ -618,9 +654,12 @@ class DynClient(Dependency, Generic[M]):
             # todo: unless this table does not have a range key [no hash/range to tie].
 
             # We have a query that has the hash-key in it, that's good enough to use a query.
-            return self.query(query=query, consistent_read=consistent_read)
+            return self.query(query=query, consistent_read=consistent_read, reverse=reverse)
 
         if allow_scan:
+            if reverse:
+                raise DynamoError(f'The `reverse` param has been set along with no query or allow_scan=True '
+                                  f'for ({self}). There is no way to Scan in reverse.')
             return self.scan(query=query, consistent_read=consistent_read)
 
         # todo: Support 'scans' or always raise error? Scans are very expensive.
@@ -647,8 +686,9 @@ class DynClient(Dependency, Generic[M]):
             keys: Iterable[_internal.DynKey],
             *,
             consistent_read: bool | DefaultType = Default,
+            reverse: bool = False,
             **params: DynParams
-    ) -> Iterable[M]:
+    ) -> Iterator[M]:
         """
         Will fetch keys in the largest batch it can at a time it can from Dynamo;
         Dynamo will fetch each page of values in parallel!
@@ -675,7 +715,9 @@ class DynClient(Dependency, Generic[M]):
 
                 You can use this to override the model default. True means we use consistent
                 reads, otherwise false.
-
+            reverse: Defaults to False, which means sort order is ascending.
+                Set to True to reverse the order, which will set the "ScanIndexForward"
+                parameter to False in the query.
             **params: An optional set of extra parameters to include in request to Dynamo,
                 if so desired.
 
@@ -688,9 +730,7 @@ class DynClient(Dependency, Generic[M]):
         table_name = self.table_name
 
         base_params = {**params}
-
-        if consistent_read is Default:
-            consistent_read = self.consistent_reads
+        consistent_read = self._resolve_consistent_reads(consistent_read)
 
         if not keys:
             return []
@@ -705,6 +745,8 @@ class DynClient(Dependency, Generic[M]):
             table_items = req_items_param.setdefault(table_name, {})
             if consistent_read:
                 table_items['ConsistentRead'] = True
+            if reverse:
+                params['ScanIndexForward'] = False
             table_keys = table_items.setdefault('Keys', [])
             table_keys.extend(items)
 
@@ -750,31 +792,43 @@ class DynClient(Dependency, Generic[M]):
         return keys
 
     _consistent_reads: bool | DefaultType = Default
+    _cls_consistent_reads: bool
 
     @property
-    def consistent_reads(self) -> bool:
-        self_value = self._consistent_reads
-
-        if self_value is not Default:
-            return self_value
-
-        injected_value = dyn_client_options.consistent_read
-        if injected_value is Default:
-            return False
-
-        return True
+    def consistent_reads(self) -> bool | DefaultType:
+        return self._consistent_reads
 
     @consistent_reads.setter
     def consistent_reads(self, value: bool | DefaultType):
         self._consistent_reads = value
+
+    def _resolve_consistent_reads(self, consistent_read: bool | DefaultType = Default):
+        if consistent_read is not Default:
+            return consistent_read
+
+        injected_value = dyn_client_options.consistent_reads
+        if injected_value is not Default:
+            return injected_value
+
+        self_value = self.consistent_reads
+        if self_value is not Default:
+            return self_value
+
+        try:
+            # Get setting on nearest parent class (or on own class)
+            return self._cls_consistent_reads
+        except AttributeError:
+            pass
+
+        return False
 
     def query(
             self,
             query: Query | _internal.QueryCriteria,
             *,
             consistent_read: bool | DefaultType = Default,
-            **dynamo_params: DynParams
-    ) -> Iterable[M]:
+            reverse: bool = False,
+    ) -> Iterator[M]:
         """
         Forces `DynClient` to use a query. If you want a way for client to automatically
         figure out the best way to execute your query, use one of these instead:
@@ -820,13 +874,10 @@ class DynClient(Dependency, Generic[M]):
 
                 You can use this to override the model default. True means we use consistent
                 reads, otherwise false.
-            **params (DynParams): You can provide other standard boto3 query parameters here as you
-                need. If you provide both dynamo_params and query, the ones in query will overwrite
-                ones in dynamo_params if there is a conflict;
 
-                The `query` param could use either a `KeyConditionExpression` or `FilterExpression`
-                depending on what attributes are in the query dict.
-
+            reverse: Defaults to False, which means sort order is ascending.
+                Set to True to reverse the order, which will set the "ScanIndexForward"
+                parameter to False in the query.
         Yields:
             M: (DynModel subclass instances) - The next object we got from dynamo.
                 This method returns a generator that will eventually go through all the results
@@ -861,27 +912,29 @@ class DynClient(Dependency, Generic[M]):
             )
 
         for dyn_key in keys:
-            params = {**dynamo_params}
+            # TODO: May bring back support for `params = {**dynamo_pardynamo_params}` eventually; for now remove.
+            params = {}
             self._add_conditions_from_query(
                 query=query,
                 params=params,
                 dyn_key=dyn_key,
                 consistent_read=consistent_read,
+                reverse=reverse,
             )
 
             for value in self._paginate_all_items_generator(method='query', params=params):
                 yield value
 
     def scan(
-            self, query: Query | None = None, *, consistent_read: bool | DefaultType = Default, **dynamo_params: DynParams
-    ) -> Iterable[M]:
+            self, query: Query | None = None, *, consistent_read: bool | DefaultType = Default
+    ) -> Iterator[M]:
         """ Scans entire table (vs doing a `DynClient.query`, which is much more efficient).
             Looks at every item in the table, evaluating `query` to filter which ones to return.
             The scanning/filtering happens on the server-side.
 
             If provided query is empty, will return all items in the table.
         """
-        params = {**dynamo_params}
+        params = {}
         self._add_conditions_from_query(
             query=query,
             params=params,
@@ -895,13 +948,14 @@ class DynClient(Dependency, Generic[M]):
             params: DynParams,
             dyn_key: _internal.DynKey = None,
             filter_key: str = 'FilterExpression',
-            consistent_read: bool | DefaultType = Default
+            consistent_read: bool | DefaultType = Default,
+            reverse: bool = False,
     ):
-        if consistent_read is Default:
-            consistent_read = self.consistent_reads
-
-        if consistent_read:
+        if self._resolve_consistent_reads(consistent_read):
             params['ConsistentRead'] = True
+
+        if reverse:
+            params['ScanIndexForward'] = False
 
         if not query and not dyn_key:
             return
@@ -987,7 +1041,7 @@ class DynClient(Dependency, Generic[M]):
         filters = []
         keys = []
 
-        for (name, criterion) in query.items():
+        for (name, criterion) in query.dyn_values_map.items():
             # TODO: If there are other filters beyond what we use for the RANGE-KEY query,
             #   we should not skip them and still add them as regular attribute filters.
             #   ___
@@ -1101,7 +1155,7 @@ class DynClient(Dependency, Generic[M]):
 
         dump_data = item
         if isinstance(item, BaseModel):
-            dump_data = item.model_dump()
+            dump_data = item.model_dump(mode='json')
 
         params = {"Item": dump_data}
 
@@ -1135,10 +1189,7 @@ class DynClient(Dependency, Generic[M]):
 
     def _get_all_items(self, consistent_read: bool | DefaultType = Default):
         params = {}
-        if consistent_read is Default:
-            consistent_read = self.consistent_reads
-
-        if consistent_read:
+        if self._resolve_consistent_reads(consistent_read):
             params['ConsistentRead'] = True
 
         return self._paginate_all_items_generator(method='scan', params=params)
@@ -1148,7 +1199,7 @@ class DynClient(Dependency, Generic[M]):
             method: str,
             params: Dict[str, Any],
             use_table=True,
-    ) -> Iterable[M]:
+    ) -> Iterator[M]:
         model_type = self.obj_type
         is_pydantic_model = issubclass(model_type, BaseModel)
 
