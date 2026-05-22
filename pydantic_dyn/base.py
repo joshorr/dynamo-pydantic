@@ -9,8 +9,9 @@ from . import _internal
 from .client import DynClient
 from .types import DynField, DynFieldInfo, Query
 
+print(f"Mod Name: {__name__}")
 
-# protected_namespaces=('model_', 'dyn_')
+
 class DynamoModel(BaseModel):
     dyn_client: ClassVar[DynClient[Self]]
 

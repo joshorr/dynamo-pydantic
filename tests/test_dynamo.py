@@ -705,3 +705,63 @@ def test_reverse():
     item = list(item)
     assert len(item) == 1
     assert item[0].range_field == 'range-a'
+
+
+def test_multiple_hash_fields():
+    class MultiHashFieldModel(DynModel):
+        hash_field1: HashKey[str]
+        hash_field2: HashKey[str]
+
+    o1 = MultiHashFieldModel(hash_field1='h1', hash_field2='h2')
+    MultiHashFieldModel.dyn_client.put(o1)
+
+    o1_via_get = list(MultiHashFieldModel.dyn_client.get())[0]
+    assert o1.model_dump()
+    assert o1_via_get.model_dump() == dict(hash_field1='h1', hash_field2='h2')
+    assert o1.dy_id == 'h1--h2'
+
+
+def test_multiple_hash_fields__w_sort():
+    class MultiHashFieldModel(DynModel):
+        hash_field1: HashKey[str]
+        hash_field2: HashKey[str]
+        sort_field1: SortKey[str]
+
+    o1 = MultiHashFieldModel(hash_field1='h1', hash_field2='h2', sort_field1='s1')
+    MultiHashFieldModel.dyn_client.put(o1)
+
+    o1_via_get = list(MultiHashFieldModel.dyn_client.get())[0]
+    assert o1.model_dump()
+    assert o1_via_get.model_dump() == dict(hash_field1='h1', hash_field2='h2', sort_field1='s1')
+    assert o1.dy_id == 'h1--h2||s1'
+
+
+def test_multiple_hash_and_sort_fields():
+    class MultiHashFieldModel(DynModel):
+        hash_field1: HashKey[str]
+        hash_field2: HashKey[str]
+        sort_field1: SortKey[str]
+        sort_field2: SortKey[str]
+
+    o1 = MultiHashFieldModel(hash_field1='h1', hash_field2='h2', sort_field1='s1', sort_field2='s2')
+    MultiHashFieldModel.dyn_client.put(o1)
+
+    o1_via_get = list(MultiHashFieldModel.dyn_client.get())[0]
+    assert o1.model_dump()
+    assert o1_via_get.model_dump() == dict(hash_field1='h1', hash_field2='h2', sort_field1='s1', sort_field2='s2')
+    assert o1.dy_id == 'h1--h2||s1--s2'
+
+
+def test_single_hash_and_multiple_sort_fields():
+    class MultiHashFieldModel(DynModel):
+        hash_field1: HashKey[str]
+        sort_field1: SortKey[str]
+        sort_field2: SortKey[str]
+
+    o1 = MultiHashFieldModel(hash_field1='h1', sort_field1='s1', sort_field2='s2')
+    MultiHashFieldModel.dyn_client.put(o1)
+
+    o1_via_get = list(MultiHashFieldModel.dyn_client.get())[0]
+    assert o1.model_dump()
+    assert o1_via_get.model_dump() == dict(hash_field1='h1', sort_field1='s1', sort_field2='s2')
+    assert o1.dy_id == 'h1||s1--s2'

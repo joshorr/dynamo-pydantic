@@ -49,20 +49,25 @@ dev = [
 ]
 
 [tool.hatch.build.targets.sdist]
-include = ["pydantic_dynamic"]
+include = ["pydantic_dyn"]
 
 [tool.hatch.build.targets.wheel]
-include = ["pydantic_dynamic"]
+include = ["pydantic_dyn"]
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.uv.build-backend]
+module-root = ""
 
 [tool.custom.xpublish]
 extra-module-docs = ['xsentinels', 'xloop', 'xinject', 'xurls']
 
 [tool.pytest.ini_options]
 minversion = "6.0"
+#log_cli = true
+#log_cli_level = 'DEBUG'
 
 # By default, reuse db schema
 # (speeds up unit test starts after first unit test run)

@@ -154,6 +154,10 @@ class DynFieldInfo:
         from pydantic_dyn import _internal
         return _internal.get_dynamo_type_from_python_type(self.py_type)
 
+    @property
+    def from_multiple_fields(self) -> bool:
+        return bool(len(self.names) > 1)
+
     name: str | None = None
     """ If there is only one field, we set that here. If there is more that one this is `None`, see `self.names`.
     """

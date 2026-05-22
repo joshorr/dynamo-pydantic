@@ -174,7 +174,7 @@ class TableRepo(DependencyPerThread, attributes_to_skip_while_copying=["_table",
         return table
 
     def _create_table(self, client: DynClient):
-        if not client.hash_key_info.name:
+        if not client.hash_key_info.dy_name:
             raise DynamoError(
                 f"While creating table for ({client}), found no partition-key field name; dynamo tables"
                 f"need a hash-field."
@@ -183,11 +183,11 @@ class TableRepo(DependencyPerThread, attributes_to_skip_while_copying=["_table",
         hash_info = client.hash_key_info
         key_schemas = [
             # Partition Key
-            {'AttributeName': hash_info.name, 'KeyType': 'HASH'}
+            {'AttributeName': hash_info.dy_name, 'KeyType': 'HASH'}
         ]
         attribute_definitions = [
             {
-                'AttributeName': hash_info.name,
+                'AttributeName': hash_info.dy_name,
                 'AttributeType': hash_info.dy_type
             }
         ]
@@ -195,11 +195,11 @@ class TableRepo(DependencyPerThread, attributes_to_skip_while_copying=["_table",
         # If we have a sort-key, add that in.
         if sort_info := client.sort_key_info:
             key_schemas.append({
-                'AttributeName': sort_info.name,
+                'AttributeName': sort_info.dy_name,
                 'KeyType': 'RANGE',
             })
             attribute_definitions.append({
-                'AttributeName': sort_info.name,
+                'AttributeName': sort_info.dy_name,
                 'AttributeType': sort_info.dy_type,
             })
 

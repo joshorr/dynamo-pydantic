@@ -10,6 +10,7 @@ from boto3.dynamodb import conditions
 from boto3.dynamodb.table import BatchWriter
 from mypy_boto3_dynamodb.service_resource import Table
 from pydantic import BaseModel
+from tomlkit import key
 from xbool import bool_value
 from xcon import xcon_settings
 from xinject import Dependency
@@ -179,13 +180,16 @@ class DynClient(Dependency, Generic[M]):
         if num_fields == 1:
             return next(iter(fields.values()))
 
+        names = [k for k in fields]
+        dy_name = f"({key_type}) {'--'.join(names)}"
+
         # Return a composited field-info; we always use `str` type with a composite attr key.
         return DynFieldInfo(
             key_type=key_type,
             py_type=str,
             name=None,
-            names=[k for k in fields],
-            dy_name='id'  # TODO: <-- GENERATE NAME AUTOMATICALLY based on underlying fields.
+            names=names,
+            dy_name=dy_name
         )
 
     @property
@@ -1109,6 +1113,17 @@ class DynClient(Dependency, Generic[M]):
 
         return self.table
 
+    def _inject_key_value_into_dump(self, key_info: DynFieldInfo, dump: dict):
+        if key_info.dy_name in dump:
+            return
+
+        dyn_fields = self.dyn_fields
+        if name := key_info.name:
+            dump[key_info.dy_name] = dump[dyn_fields[name].dy_name]
+
+        values = [dump[dyn_fields[k].dy_name] for k in key_info.names]
+        dump[key_info.dy_name] = "--".join(values)
+
     # todo: BaseModel objects are capable of letting us know if something actually changed or not.
     #       At some point take advantage of that.
     #       This would allow us to prevent putting an unchanged item into dynamo [saves cost].
@@ -1156,6 +1171,10 @@ class DynClient(Dependency, Generic[M]):
         dump_data = item
         if isinstance(item, BaseModel):
             dump_data = item.model_dump(mode='json')
+
+        self._inject_key_value_into_dump(self.hash_key_info, dump_data)
+        if v := self.sort_key_info:
+            self._inject_key_value_into_dump(v, dump_data)
 
         params = {"Item": dump_data}
 
