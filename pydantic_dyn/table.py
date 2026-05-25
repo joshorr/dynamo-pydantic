@@ -32,7 +32,7 @@ __all__ = ["TableRepo"]
 _auto_create_table_only_in_environments = {'unittest', 'local'}
 
 if TYPE_CHECKING:
-    from .client import DynObjManager
+    from .obj_manager import DynObjManager
 
 
 class TableRepo(DependencyPerThread, attributes_to_skip_while_copying=["_table", "_verified", "_db"]):

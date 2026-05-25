@@ -4,7 +4,7 @@ from typing import Type, Any, TYPE_CHECKING, TypeVar
 from .dynamic_subclass import create_generic_submodel
 
 if TYPE_CHECKING:
-    from pydantic_dyn.client import DynObjManager
+    from pydantic_dyn.obj_manager import DynObjManager
 
 
 T = TypeVar('T')

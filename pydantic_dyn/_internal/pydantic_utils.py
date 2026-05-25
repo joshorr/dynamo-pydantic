@@ -6,7 +6,7 @@ from pydantic_core import CoreSchema, SchemaValidator, SchemaSerializer
 from xsentinels import Default
 
 if TYPE_CHECKING:
-    from pydantic_dyn.client import DynObjManager
+    from pydantic_dyn.obj_manager import DynObjManager
     from pydantic_dyn.types import DynFieldInfo
     from pydantic_dyn.base import DynamoModel
 

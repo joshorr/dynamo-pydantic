@@ -6,7 +6,7 @@ from pydantic.fields import FieldInfo
 from xsentinels.default import DefaultType, Default
 
 from . import _internal
-from .client import DynObjManager
+from .obj_manager import DynObjManager
 from .types import DynField, DynFieldInfo, Query
 
 

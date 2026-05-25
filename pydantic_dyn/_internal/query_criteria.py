@@ -16,7 +16,7 @@ from ..types import Key, Query, DynField, DynFieldInfo
 from .internal_types import operator_alias_map
 
 if TYPE_CHECKING:
-    from pydantic_dyn.client import DynObjManager
+    from pydantic_dyn.obj_manager import DynObjManager
 
 
 @dataclasses.dataclass(frozen=True, eq=True)

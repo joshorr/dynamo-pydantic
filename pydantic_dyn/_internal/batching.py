@@ -6,7 +6,7 @@ from xinject import DependencyPerThread
 from ..errors import DynamoError
 
 if TYPE_CHECKING:
-    from pydantic_dyn.client import DynObjManager
+    from pydantic_dyn.obj_manager import DynObjManager
 
 
 class _DynBatcher(object):
