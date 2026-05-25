@@ -30,7 +30,7 @@ M = TypeVar('M', default=dict)
 log = getLogger(__name__)
 
 
-class DyObjManagerOptions(Dependency):
+class DynOptions(Dependency):
     def __init__(self, *, consistent_reads: bool | DefaultType = Default):
         self.consistent_reads = consistent_reads
 
@@ -41,13 +41,13 @@ class DyObjManagerOptions(Dependency):
     """
 
 
-dy_client_options = DyObjManagerOptions.proxy()
-""" Proxy to the current `DyObjManagerOptions` currently used/injected at the current moment.
-    Used this object use like you would use normal instance of DyObjManagerOptions.
+dyn_options = DynOptions.proxy()
+""" Proxy to the current `DynOptions` currently used/injected at the current moment.
+    Used this object use like you would use normal instance of DynOptions.
 """
 
 
-class DyObjManager(Dependency, Generic[M]):
+class DynObjManager(Dependency, Generic[M]):
     """
     Skeleton/Placeholder Class for future work, see story and the other classes in
     this file for more details: https://app.clubhouse.io/xyngular/story/13989
@@ -57,7 +57,7 @@ class DyObjManager(Dependency, Generic[M]):
     # The type-hint is not otherwise used. That var is valid/gettable on an instance.
     # See `xmodel.remote.client.RemoteClient.api` for more details.
     obj_type: Type[M] = dict
-    """ This also works when using the generic type directly, ie: `DyObjManager[SomeModel].obj_type is SomeMode`;
+    """ This also works when using the generic type directly, ie: `DynObjManager[SomeModel].obj_type is SomeMode`;
         although type-checkers will flag it, but it still works.
         I set it at class-generic level (so both class and instances know about it).
     """
@@ -69,15 +69,15 @@ class DyObjManager(Dependency, Generic[M]):
 
     name: str
     table_prefix: str | None | DefaultType = Default
-    """ Prefix for table name, prepended before `DyObjManager.name` when constructing the full table name.
+    """ Prefix for table name, prepended before `DynObjManager.name` when constructing the full table name.
     
-        You can get the full table name via `DyObjManager.table_name`
+        You can get the full table name via `DynObjManager.table_name`
         
         By default, this will consult with the `pydantic_dyn.settings.default_prefix_generator`
         for the prefix, whenever it's needed, if one is set there.
         
         Otherwise, if one is not set directly here, there is no prefix generator,
-        or DyObjManager.table_prefix is `None`, prefix won't be used.
+        or DynObjManager.table_prefix is `None`, prefix won't be used.
     """
 
     dyn_fields: dict[str, DynFieldInfo] = Default
@@ -179,7 +179,7 @@ class DyObjManager(Dependency, Generic[M]):
     def hash_key_info(self) -> DynFieldInfo:
         result = self._generate_or_find_field_info_for(KeyType.hash)
         if result is None:
-            raise DynamoError(f'DyObjManager ({self}) must have at least one `hash` (partition) key field.')
+            raise DynamoError(f'DynObjManager ({self}) must have at least one `hash` (partition) key field.')
         return result
 
     @property
@@ -228,7 +228,7 @@ class DyObjManager(Dependency, Generic[M]):
         prefix = self.table_prefix
         name = self.name
         if not name:
-            raise DynamoError(f'DyObjManager ({self}) must have a `name` assigned to generate table_name with.')
+            raise DynamoError(f'DynObjManager ({self}) must have a `name` assigned to generate table_name with.')
 
         if v := settings.default_prefix_generator:
             prefix = v(self)
@@ -438,8 +438,8 @@ class DyObjManager(Dependency, Generic[M]):
             reverse: bool = False,
     ) -> M | None:
         """
-            Calls `DyObjManager.get`, and only returns the first item, or `None` if there are no items.
-            See `DyObjManager.get` reference documentation for more details on the parameters.
+            Calls `DynObjManager.get`, and only returns the first item, or `None` if there are no items.
+            See `DynObjManager.get` reference documentation for more details on the parameters.
         """
         generator = self.get(query, allow_scan=allow_scan, consistent_read=consistent_read, reverse=reverse)
         return next(generator, None)
@@ -459,7 +459,7 @@ class DyObjManager(Dependency, Generic[M]):
 
         The idea behind this method is to figure out how to route this query in the most
         efficient manner we can do it in. If you want to guarantee a specific type of query
-        you can use `DyObjManager.query`, etc.
+        you can use `DynObjManager.query`, etc.
 
         Generally, this is the best, generally method to use since it can adapt your request
         to the most efficient way to query Dynamo. The `DynApi` will use this method generally
@@ -488,7 +488,7 @@ class DyObjManager(Dependency, Generic[M]):
                      like.
               - Table only has a hash-key (no range/sort key) and you provide nothing but
                 hash-keys (ie: no other attributes in query)
-        3. Next, we see if we can use a Dynamo query via `DyObjManager.query`.
+        3. Next, we see if we can use a Dynamo query via `DynObjManager.query`.
               - This will use multiple queries if/as needed, but while minimizing the number of
                 queries that are needed. Just depends on the query that is provided.
                 More then one query is needed if there is more then one hash-key in the query,
@@ -555,7 +555,7 @@ class DyObjManager(Dependency, Generic[M]):
         """ NOTES:
             - Use special dict sub-class to cache queries about the 'query' it's self.
                 - This will be used internally has a helper/cacher for questions about the 'query'.
-                - May also in future store a link back to a DyObjManager (for use in a future transaction class/obj/etc).
+                - May also in future store a link back to a DynObjManager (for use in a future transaction class/obj/etc).
             - Accept a single dict/query or a list of dicts/queries.
             - Try to return in hash-order, but if that can't helped due to a scan, etc;
                 see if we can use the internal dynamo continuation key as the 'cursor'
@@ -793,7 +793,7 @@ class DyObjManager(Dependency, Generic[M]):
         if consistent_read is not Default:
             return consistent_read
 
-        injected_value = dy_client_options.consistent_reads
+        injected_value = dyn_options.consistent_reads
         if injected_value is not Default:
             return injected_value
 
@@ -817,11 +817,11 @@ class DyObjManager(Dependency, Generic[M]):
             reverse: bool = False,
     ) -> Iterator[M]:
         """
-        Forces `DyObjManager` to use a query. If you want a way for client to automatically
+        Forces `DynObjManager` to use a query. If you want a way for client to automatically
         figure out the best way to execute your query, use one of these instead:
 
         - `DynApi.get`
-        - `DyObjManager.get`
+        - `DynObjManager.get`
 
         For more info see:
 
@@ -891,9 +891,9 @@ class DyObjManager(Dependency, Generic[M]):
                 "a query on (a Dynamo query requires at least a hash-key). "
                 ""
                 "If you have no conditions and just want to "
-                "simply retrieve every item in the table use `DyObjManager.get` with no parameters. "
+                "simply retrieve every item in the table use `DynObjManager.get` with no parameters. "
                 ""
-                "If you do have conditions/filters in query you need to do a `DyObjManager.dyn_scan` "
+                "If you do have conditions/filters in query you need to do a `DynObjManager.dyn_scan` "
                 "and have Dynamo scan the entire table. This will allow dynamo to evaluate your "
                 "conditions on every item in the table."
             )
@@ -915,7 +915,7 @@ class DyObjManager(Dependency, Generic[M]):
     def scan(
             self, query: Query | None = None, *, consistent_read: bool | DefaultType = Default
     ) -> Iterator[M]:
-        """ Scans entire table (vs doing a `DyObjManager.query`, which is much more efficient).
+        """ Scans entire table (vs doing a `DynObjManager.query`, which is much more efficient).
             Looks at every item in the table, evaluating `query` to filter which ones to return.
             The scanning/filtering happens on the server-side.
 

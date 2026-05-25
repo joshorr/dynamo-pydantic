@@ -6,24 +6,22 @@ from pydantic.fields import FieldInfo
 from xsentinels.default import DefaultType, Default
 
 from . import _internal
-from .client import DyObjManager
+from .client import DynObjManager
 from .types import DynField, DynFieldInfo, Query
-
-print(f"Mod Name: {__name__}")
 
 
 class DynamoModel(BaseModel):
-    dy_objs: ClassVar[DyObjManager[Self]]
+    dyn_objs: ClassVar[DynObjManager[Self]]
 
     def dy_save(self, *, condition: Query | None = None):
-        self.dy_objs.put(self, condition=condition)
+        self.dyn_objs.put(self, condition=condition)
 
     def dy_delete(self, *, condition: Query | None = None):
-        self.dy_objs.delete(self, condition=condition)
+        self.dyn_objs.delete(self, condition=condition)
 
     @property
     def dy_id(self):
-        return self.dy_objs.id_for(self)
+        return self.dyn_objs.id_for(self)
 
     @classmethod
     def __init_subclass__(
@@ -53,13 +51,13 @@ class DynamoModel(BaseModel):
         # If user provided a client-type annotation, use that for our 'client' class;
         # We still make a subclass out of it because they may use this 'client' in a number of
         # different models (and so each model should have their own subclass).
-        if client_override := my_annotations.get('dy_objs'):
+        if client_override := my_annotations.get('dyn_objs'):
             client_override = get_args(client_override)[0]
             client = _internal.get_or_create_client_for_model_type(client_override, cls, is_directly_used=True)
         else:
-            client = DyObjManager[cls]
+            client = DynObjManager[cls]
 
-        cls.dy_objs = client.proxy()
+        cls.dyn_objs = client.proxy()
 
         client.obj_type = cls
         client.table_prefix = table_prefix
@@ -84,7 +82,7 @@ class DynamoModel(BaseModel):
 
             if not issubclass(base, DynamoModel):
                 continue
-            for field_name, v in base.dy_objs.dyn_fields.items():
+            for field_name, v in base.dyn_objs.dyn_fields.items():
                 if field_name not in dyn_infos:
                     dyn_infos[field_name] = v.copy()
 

@@ -1,7 +1,7 @@
 from typing import Callable, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from pydantic_dyn.client import DyObjManager
+    from pydantic_dyn.client import DynObjManager
 
 
-default_prefix_generator: Callable[DyObjManager] = None
+default_prefix_generator: Callable[DynObjManager] = None

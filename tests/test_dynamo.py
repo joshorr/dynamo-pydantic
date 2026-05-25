@@ -3,7 +3,7 @@ from zoneinfo import ZoneInfo
 from pydantic import BaseModel, BeforeValidator
 from pydantic.fields import FieldInfo, Field
 
-from pydantic_dyn import DyObjManager, KeyType, SortKey, HashKey, DynField, DynamoModel as DynModel, DyObjManagerOptions
+from pydantic_dyn import DynObjManager, KeyType, SortKey, HashKey, DynField, DynamoModel as DynModel, DynOptions
 from pydantic_dyn import _internal
 from typing import List, Dict, Union, Optional, Type, Any, Callable, Tuple, ClassVar, Annotated
 from typing import TypeVar
@@ -40,7 +40,7 @@ class SubObj(BaseModel):
     queue: bool | None = None
 
 
-class ItemWithRangeKeyClient(DyObjManager):
+class ItemWithRangeKeyClient(DynObjManager):
     last_paginate_params: dict | None = None
 
     @property
@@ -71,7 +71,7 @@ AlwaysConvertToStr = Annotated[str, BeforeValidator(lambda x: str(x))]
 
 
 class ItemWithRangeKey(DynModel, name=None, validate_assignment=True, coerce_numbers_to_str=True):
-    dy_objs: ClassVar[ItemWithRangeKeyClient]
+    dyn_objs: ClassVar[ItemWithRangeKeyClient]
 
     hash_field: HashKey[str]
     range_field: SortKey[str]
@@ -201,7 +201,7 @@ def compute_key_serialization_from_test_values(values: ObjTestValues) -> tuple[s
     hash_value = values.hash_value
     range_value = values.range_value
     cls = values.model_cls
-    client = cls.dy_objs
+    client = cls.dyn_objs
     # if isinstance(hash_value, dt.datetime):
     hash_value = _internal.serialize_dyn_field(client, dyn_field=client.hash_key_info, value=hash_value)
 
@@ -218,7 +218,7 @@ def compute_full_key_from_test_values(values: ObjTestValues) -> str:
 
 def compute_dyn_key_from_test_values(values: ObjTestValues) -> DynKey:
     hash_value, range_value = compute_key_serialization_from_test_values(values)
-    return _internal.DynKey(client=values.model_cls.dy_objs, hash_key=hash_value, range_key=range_value)
+    return _internal.DynKey(client=values.model_cls.dyn_objs, hash_key=hash_value, range_key=range_value)
 
 
 @pytest.fixture(params=[
@@ -265,7 +265,7 @@ def simple_obj(simple_obj_def) -> 'ItemWithRangeKey':
     obj.basic_bool = True
     obj.dy_save()
 
-    assert len(list(simple_obj_def.model_cls.dy_objs.get())) == 1, "Have incorrect count."
+    assert len(list(simple_obj_def.model_cls.dyn_objs.get())) == 1, "Have incorrect count."
     return obj
 
 
@@ -282,7 +282,7 @@ def simple_obj_second(simple_obj_def) -> 'ItemWithRangeKey':
     obj2.basic_bool = True
     obj2.dy_save()
 
-    assert len(list(simple_obj_def.model_cls.dy_objs.get())) == 2, "Have incorrect count."
+    assert len(list(simple_obj_def.model_cls.dyn_objs.get())) == 2, "Have incorrect count."
     return obj2
 
 
@@ -293,7 +293,7 @@ def simple_obj_get_via_id(simple_obj, simple_obj_def) -> Optional[ItemWithRangeK
     if isinstance(get_via_id, DynModel):
         obj = get_via_id
     else:
-        obj = simple_obj_def.model_cls.dy_objs.get_first(get_via_id)
+        obj = simple_obj_def.model_cls.dyn_objs.get_first(get_via_id)
 
     assert obj, f"We were unable to retrieve object via {get_via_id}"
     return obj
@@ -306,8 +306,8 @@ def simple_obj_get_with_read_consistency(simple_obj, simple_obj_def) -> Optional
     if isinstance(get_via_id, DynModel):
         obj = get_via_id
     else:
-        obj = simple_obj_def.model_cls.dy_objs.get_first(get_via_id, consistent_read=True)
-        params = obj.dy_objs.last_paginate_params
+        obj = simple_obj_def.model_cls.dyn_objs.get_first(get_via_id, consistent_read=True)
+        params = obj.dyn_objs.last_paginate_params
         assert (
                 params.get('ConsistentRead') is True or
                 list(params['RequestItems'].values())[0]['ConsistentRead'] is True
@@ -331,7 +331,7 @@ def test_basic_dyn_class():
         hash_field_id: HashKey[str]
         basic_int: int
 
-    fields = ItemOnlyHash.dy_objs.dyn_fields
+    fields = ItemOnlyHash.dyn_objs.dyn_fields
     expected_fields = {
         'hash_field_id': DynFieldInfo(dy_name='hash_field_id', name='hash_field_id',
                                       names=['hash_field_id'], py_type=str, key_type=KeyType.hash),
@@ -355,7 +355,7 @@ def test_basic_delete(simple_obj, simple_obj_get_via_id, simple_obj_def):
     """Tests deleting data generated via simple_obj fixture via simple_obj_get_via_id fixture."""
     # Try to delete it and see if getting it again will return None now.
     simple_obj_get_via_id.dy_delete()
-    value = simple_obj_def.model_cls.dy_objs.get_first(simple_obj.dy_id)
+    value = simple_obj_def.model_cls.dyn_objs.get_first(simple_obj.dy_id)
     assert value is None
 
 
@@ -411,24 +411,24 @@ def test_getting_multiple_obj(simple_obj, simple_obj_second, simple_obj_def):
     original_obj_map = {obj.dy_id: obj for obj in all_objs}
 
     # Bulk-insert multiple objects at the same time....
-    model_cls.dy_objs.put([obj1, obj2])
+    model_cls.dyn_objs.put([obj1, obj2])
 
     # Verify we can lookup all objects in table.
-    objs = list(model_cls.dy_objs.get())
+    objs = list(model_cls.dyn_objs.get())
     assert len(objs) == len(all_objs)
 
     for obj in objs:
         obj.assert_with(original_obj_map[obj.dy_id])
 
     # lookup objects only for a specific hash....
-    objs = list(model_cls.dy_objs.get(query={"hash_field": hash2}))
+    objs = list(model_cls.dyn_objs.get(query={"hash_field": hash2}))
     original_obj_map = {obj.dy_id: obj for obj in [obj1, obj2]}
     assert len(objs) == len(original_obj_map.values())
     for obj in objs:
         obj.assert_with(original_obj_map[obj.dy_id])
 
     # See if we can query via list (which should use `in` operator by default)....
-    objs = list(model_cls.dy_objs.get(
+    objs = list(model_cls.dyn_objs.get(
         query={"hash_field": hash2, "name": [name2, name1]}
     ))
     assert len(objs) == len(original_obj_map.values())
@@ -436,7 +436,7 @@ def test_getting_multiple_obj(simple_obj, simple_obj_second, simple_obj_def):
         obj.assert_with(original_obj_map[obj.dy_id])
 
     # See if we can query via in operator explicitly
-    objs = list(model_cls.dy_objs.get(
+    objs = list(model_cls.dyn_objs.get(
         query={"hash_field": hash2, "name__in": [name2, name1]}
     ))
     assert len(objs) == len(original_obj_map.values())
@@ -445,13 +445,13 @@ def test_getting_multiple_obj(simple_obj, simple_obj_second, simple_obj_def):
 
     # name is not a list in any of the table's items, so when used `exact` with list nothing
     # should come back (since they are all strings).
-    objs = list(model_cls.dy_objs.get(
+    objs = list(model_cls.dyn_objs.get(
         query={"hash_field": hash2, "name__exact": [name2, name1]}
     ))
     assert len(objs) == 0
 
     # See if we can query by non-keys + hash at same time correctly.
-    objs = list(model_cls.dy_objs.get(
+    objs = list(model_cls.dyn_objs.get(
         query={"hash_field": hash2, "name": name2}
     ))
     original_obj_map = {obj.dy_id: obj for obj in [obj2]}
@@ -460,7 +460,7 @@ def test_getting_multiple_obj(simple_obj, simple_obj_second, simple_obj_def):
         obj.assert_with(original_obj_map[obj.dy_id])
 
     # Lookup multiple objects via different hashes:
-    objs = list(model_cls.dy_objs.get(
+    objs = list(model_cls.dyn_objs.get(
         query={"hash_field": [simple_obj.hash_field, hash2]}
     ))
     original_obj_map = {obj.dy_id: obj for obj in [simple_obj, simple_obj_other, obj1, obj2]}
@@ -469,7 +469,7 @@ def test_getting_multiple_obj(simple_obj, simple_obj_second, simple_obj_def):
         obj.assert_with(original_obj_map[obj.dy_id])
 
     # Single hash multiple range, but should only match one result.
-    objs = list(model_cls.dy_objs.get(
+    objs = list(model_cls.dyn_objs.get(
         query={
             "hash_field": simple_obj_other.hash_field,
             "range_field": [simple_obj_other.range_field, hash2]
@@ -481,7 +481,7 @@ def test_getting_multiple_obj(simple_obj, simple_obj_second, simple_obj_def):
         obj.assert_with(original_obj_map[obj.dy_id])
 
     # Single hash multiple range, but should only match two result.
-    objs = list(model_cls.dy_objs.get(
+    objs = list(model_cls.dyn_objs.get(
         query={
             "hash_field": [simple_obj_other.hash_field, obj1.hash_field],
             "range_field": [simple_obj_other.range_field, obj1.range_field]
@@ -492,12 +492,12 @@ def test_getting_multiple_obj(simple_obj, simple_obj_second, simple_obj_def):
     for obj in objs:
         obj.assert_with(original_obj_map[obj.dy_id])
 
-    range_result = list(model_cls.dy_objs.get({
+    range_result = list(model_cls.dyn_objs.get({
         'hash_field': simple_obj_other.hash_field,
         'range_field__range': [simple_obj_other.range_field, simple_obj_other.range_field]
     }))
 
-    single_obj_result = list(model_cls.dy_objs.get({
+    single_obj_result = list(model_cls.dyn_objs.get({
         'hash_field': simple_obj_other.hash_field,
         'range_field': simple_obj_other.range_field
     }))
@@ -524,7 +524,7 @@ def test_send_obj_with_related_child_and_sub_obj(simple_obj_values):
     o2.dy_save()
     assert o2.sub_item.model_dump(mode='json') == {"sub_name": "my-sub-name", "queue": True}
 
-    o_gotten = ItemOnlyHash.dy_objs.get_first("test-id3")
+    o_gotten = ItemOnlyHash.dyn_objs.get_first("test-id3")
     original_json = o_gotten.sub_item.model_dump(mode='json')
     got_json = o_gotten.sub_item.model_dump(mode='json')
 
@@ -543,7 +543,7 @@ def test_pagination(simple_obj_values):
     # Dynamo pagination is based on data size in each page of results.
     # A small number of objects with lots of data is much faster then tens of thousands of objects.
     lots_of_data = simple_obj_values.generate_range_value(0)
-    if model_cls.dy_objs.hash_key_info.py_type is str:
+    if model_cls.dyn_objs.hash_key_info.py_type is str:
         for x in range(15):
             lots_of_data += simple_obj_values.generate_range_value(x)
 
@@ -552,7 +552,7 @@ def test_pagination(simple_obj_values):
             obj = model_cls(hash_field=lots_of_data, range_field=simple_obj_values.generate_range_value(x))
             obj.dy_save()
 
-    result = list(model_cls.dy_objs.get())
+    result = list(model_cls.dyn_objs.get())
     assert len(result) == 40
 
 
@@ -582,14 +582,14 @@ def test_pagination(simple_obj_values):
 
 def test_scan_raise_exception():
     with pytest.raises(NotImplementedError, match='There are no hash-keys'):
-        ItemWithRangeKeyForStr.dy_objs.get({'name': 'hello'})
+        ItemWithRangeKeyForStr.dyn_objs.get({'name': 'hello'})
 
 
 def test_scan_with_read_consistency_works(simple_obj, simple_obj_def):
     # Just see if a simple scan works without problems
-    result = list(simple_obj_def.model_cls.dy_objs.get(consistent_read=True))
+    result = list(simple_obj_def.model_cls.dyn_objs.get(consistent_read=True))
     assert len(result) == 1
-    assert result[0].dy_objs.last_paginate_params['ConsistentRead'] is True
+    assert result[0].dyn_objs.last_paginate_params['ConsistentRead'] is True
 
 
 @pytest.mark.parametrize("test_input", [
@@ -598,7 +598,7 @@ def test_scan_with_read_consistency_works(simple_obj, simple_obj_def):
     {'hash_field': "1"}
 ])
 def test_see_if_read_consistency_used(test_input):
-    client = ItemWithRangeKeyForStr.dy_objs
+    client = ItemWithRangeKeyForStr.dyn_objs
 
     list(client.get(test_input))
     assert not client.unit_test_was_last_consistent
@@ -606,11 +606,11 @@ def test_see_if_read_consistency_used(test_input):
     list(client.get(test_input, consistent_read=True))
     assert client.unit_test_was_last_consistent
 
-    with DyObjManagerOptions(consistent_reads=True):
+    with DynOptions(consistent_reads=True):
         list(client.get(test_input))
         assert client.unit_test_was_last_consistent
 
-    with DyObjManagerOptions(consistent_reads=True):
+    with DynOptions(consistent_reads=True):
         list(client.get(test_input, consistent_read=False))
         assert not client.unit_test_was_last_consistent
 
@@ -620,7 +620,7 @@ def test_see_if_read_consistency_used(test_input):
         hash_field: HashKey[str]
         range_field: SortKey[str]
 
-    client = ItemWithRangeKeyForStrWithDefaultConsistent.dy_objs
+    client = ItemWithRangeKeyForStrWithDefaultConsistent.dyn_objs
 
     list(client.get(test_input))
     assert client.unit_test_was_last_consistent
@@ -628,7 +628,7 @@ def test_see_if_read_consistency_used(test_input):
     list(client.get(test_input, consistent_read=False))
     assert not client.unit_test_was_last_consistent
 
-    with DyObjManagerOptions(consistent_reads=False):
+    with DynOptions(consistent_reads=False):
         list(client.get(test_input))
         assert not client.unit_test_was_last_consistent
 
@@ -637,28 +637,28 @@ def test_scan_fallback():
     ItemWithRangeKeyForStr(hash_field='hash', range_field='range', name='first').dy_save()
     ItemWithRangeKeyForStr(hash_field='other-h', range_field='other-r', name='second').dy_save()
 
-    items = ItemWithRangeKeyForStr.dy_objs.get({'name': 'second'}, allow_scan=True)
+    items = ItemWithRangeKeyForStr.dyn_objs.get({'name': 'second'}, allow_scan=True)
     items = list(items)
     assert len(items) == 1
     assert items[0].hash_field == 'other-h'
-    assert 'ConsistentRead' not in items[0].dy_objs.last_paginate_params
-    assert 'ScanIndexForward' not in items[0].dy_objs.last_paginate_params
+    assert 'ConsistentRead' not in items[0].dyn_objs.last_paginate_params
+    assert 'ScanIndexForward' not in items[0].dyn_objs.last_paginate_params
 
 
 def test_conditional_delete():
     ItemWithRangeKeyForStr(hash_field='h1', range_field='r1', name='n1').dy_save()
     o = ItemWithRangeKeyForStr(hash_field='h2', range_field='r2', name='n2')
     o.dy_save()
-    assert len(list(ItemWithRangeKeyForStr.dy_objs.get())) == 2
+    assert len(list(ItemWithRangeKeyForStr.dyn_objs.get())) == 2
 
     # try to delete with a condition that fails.
     with pytest.raises(DynamoConditionError, match=r"condition failed: \{'name': 'n1'\}",
                        check=lambda e: e.condition == {'name': 'n1'}):
         o.dy_delete(condition={'name': 'n1'})
 
-    assert len(list(ItemWithRangeKeyForStr.dy_objs.get())) == 2
+    assert len(list(ItemWithRangeKeyForStr.dyn_objs.get())) == 2
     o.dy_delete(condition={'name': 'n2'})
-    objs = list(ItemWithRangeKeyForStr.dy_objs.get())
+    objs = list(ItemWithRangeKeyForStr.dyn_objs.get())
 
     assert len(objs) == 1
     assert objs[0].hash_field == 'h1'
@@ -669,39 +669,39 @@ def test_conditional_put():
     ItemWithRangeKeyForStr(hash_field='h1', range_field='r1', name='n1').dy_save()
     o = ItemWithRangeKeyForStr(hash_field='h2', range_field='r2', name='n2')
     o.dy_save()
-    assert len(list(ItemWithRangeKeyForStr.dy_objs.get())) == 2
+    assert len(list(ItemWithRangeKeyForStr.dyn_objs.get())) == 2
 
     # modify (so there is a change to send), see if it won't update due to condition.
     o.items = [{'a': 2}]
     with pytest.raises(DynamoConditionError, match=r"condition failed: \{'name': 'n1'\}",
                        check=lambda e: e.condition == {'name': 'n1'}):
-        o.dy_objs.put(o, condition={'name': 'n1'})
+        o.dyn_objs.put(o, condition={'name': 'n1'})
 
-    assert ItemWithRangeKeyForStr.dy_objs.get_first(o.dy_id).items is None
+    assert ItemWithRangeKeyForStr.dyn_objs.get_first(o.dy_id).items is None
 
     o.items = [{'a': 3}]
     o.dy_save(condition={'name': 'n2'})
 
-    assert ItemWithRangeKeyForStr.dy_objs.get_first(o.dy_id).items == [{'a': '3'}]
+    assert ItemWithRangeKeyForStr.dyn_objs.get_first(o.dy_id).items == [{'a': '3'}]
 
 
 def test_reverse():
     ItemWithRangeKeyForStr(hash_field='hash', range_field='range-a', name='first').dy_save()
     ItemWithRangeKeyForStr(hash_field='hash', range_field='range-b', name='second').dy_save()
 
-    items = ItemWithRangeKeyForStr.dy_objs.get({'hash_field': 'hash'})
+    items = ItemWithRangeKeyForStr.dyn_objs.get({'hash_field': 'hash'})
     items = list(items)
     assert len(items) == 2
     assert items[0].range_field == 'range-a'
-    assert 'ScanIndexForward' not in items[0].dy_objs.last_paginate_params
+    assert 'ScanIndexForward' not in items[0].dyn_objs.last_paginate_params
 
-    rev_items = ItemWithRangeKeyForStr.dy_objs.get({'hash_field': 'hash'}, reverse=True)
+    rev_items = ItemWithRangeKeyForStr.dyn_objs.get({'hash_field': 'hash'}, reverse=True)
     rev_items = list(rev_items)
     assert len(rev_items) == 2
     assert rev_items[0].range_field == 'range-b'
-    assert 'ScanIndexForward' in rev_items[0].dy_objs.last_paginate_params
+    assert 'ScanIndexForward' in rev_items[0].dyn_objs.last_paginate_params
 
-    item = ItemWithRangeKeyForStr.dy_objs.get({'hash_field': 'hash', 'range_field': 'range-a'}, reverse=True)
+    item = ItemWithRangeKeyForStr.dyn_objs.get({'hash_field': 'hash', 'range_field': 'range-a'}, reverse=True)
     item = list(item)
     assert len(item) == 1
     assert item[0].range_field == 'range-a'
@@ -713,9 +713,9 @@ def test_multiple_hash_fields():
         hash_field2: HashKey[str]
 
     o1 = MultiHashFieldModel(hash_field1='h1', hash_field2='h2')
-    MultiHashFieldModel.dy_objs.put(o1)
+    MultiHashFieldModel.dyn_objs.put(o1)
 
-    o1_via_get = list(MultiHashFieldModel.dy_objs.get())[0]
+    o1_via_get = list(MultiHashFieldModel.dyn_objs.get())[0]
     assert o1.model_dump()
     assert o1_via_get.model_dump() == dict(hash_field1='h1', hash_field2='h2')
     assert o1.dy_id == 'h1--h2'
@@ -728,9 +728,9 @@ def test_multiple_hash_fields__w_sort():
         sort_field1: SortKey[str]
 
     o1 = MultiHashFieldModel(hash_field1='h1', hash_field2='h2', sort_field1='s1')
-    MultiHashFieldModel.dy_objs.put(o1)
+    MultiHashFieldModel.dyn_objs.put(o1)
 
-    o1_via_get = list(MultiHashFieldModel.dy_objs.get())[0]
+    o1_via_get = list(MultiHashFieldModel.dyn_objs.get())[0]
     assert o1.model_dump()
     assert o1_via_get.model_dump() == dict(hash_field1='h1', hash_field2='h2', sort_field1='s1')
     assert o1.dy_id == 'h1--h2||s1'
@@ -744,9 +744,9 @@ def test_multiple_hash_and_sort_fields():
         sort_field2: SortKey[str]
 
     o1 = MultiHashFieldModel(hash_field1='h1', hash_field2='h2', sort_field1='s1', sort_field2='s2')
-    MultiHashFieldModel.dy_objs.put(o1)
+    MultiHashFieldModel.dyn_objs.put(o1)
 
-    o1_via_get = list(MultiHashFieldModel.dy_objs.get())[0]
+    o1_via_get = list(MultiHashFieldModel.dyn_objs.get())[0]
     assert o1.model_dump()
     assert o1_via_get.model_dump() == dict(hash_field1='h1', hash_field2='h2', sort_field1='s1', sort_field2='s2')
     assert o1.dy_id == 'h1--h2||s1--s2'
@@ -759,9 +759,9 @@ def test_single_hash_and_multiple_sort_fields():
         sort_field2: SortKey[str]
 
     o1 = MultiHashFieldModel(hash_field1='h1', sort_field1='s1', sort_field2='s2')
-    MultiHashFieldModel.dy_objs.put(o1)
+    MultiHashFieldModel.dyn_objs.put(o1)
 
-    o1_via_get = list(MultiHashFieldModel.dy_objs.get())[0]
+    o1_via_get = list(MultiHashFieldModel.dyn_objs.get())[0]
     assert o1.model_dump()
     assert o1_via_get.model_dump() == dict(hash_field1='h1', sort_field1='s1', sort_field2='s2')
     assert o1.dy_id == 'h1||s1--s2'
