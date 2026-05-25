@@ -26,10 +26,9 @@ class DynamoModel(BaseModel):
     @classmethod
     def __init_subclass__(
             cls, *,
-            name: str | DefaultType = Default,
-            table_name: str | DefaultType = Default,
-            table_prefix: str | None | DefaultType = Default,
-            consistent_reads: bool | DefaultType = Default,
+            dyn_table_name: str | DefaultType = Default,
+            dyn_table_prefix: str | None | DefaultType = Default,
+            dyn_consistent_reads: bool | DefaultType = Default,
             **kwargs
     ):
         super().__init_subclass__(**kwargs)
@@ -37,10 +36,9 @@ class DynamoModel(BaseModel):
     @classmethod
     def __pydantic_init_subclass__(
             cls, *,
-            name: str | DefaultType = Default,
-            table_name: str | DefaultType = Default,
-            table_prefix: str | None | DefaultType = Default,
-            consistent_reads: bool | DefaultType = Default,
+            dyn_table_name: str | DefaultType = Default,
+            dyn_table_prefix: str | None | DefaultType = Default,
+            dyn_consistent_reads: bool | DefaultType = Default,
             **kwargs
     ):
         # TODO: may want an option to prevent inheriting the keys (so one can more easily redefine them).
@@ -60,18 +58,15 @@ class DynamoModel(BaseModel):
         cls.dyn_objs = client.proxy()
 
         client.obj_type = cls
-        client.table_prefix = table_prefix
-        if consistent_reads is not Default:
-            client._cls_consistent_reads = consistent_reads
+        client.table_prefix = dyn_table_prefix
+        if dyn_consistent_reads is not Default:
+            client._cls_consistent_reads = bool(dyn_consistent_reads)
 
-        if not table_name:
-            table_name = name
-
-        if not table_name:
+        if not dyn_table_name:
             model_name = cls.__name__
             client.name = f'{model_name[:1].lower()}{model_name[1:]}' if model_name else ''
         else:
-            client.name = table_name
+            client.name = str(dyn_table_name)
 
         # Collect all the dyn-fields from the immediate parent classes;
         # They should already be fully created from their own base classes, and so no need to dive/look further.

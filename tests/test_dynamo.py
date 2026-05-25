@@ -70,7 +70,7 @@ class ItemWithRangeKeyClient(DynObjManager):
 AlwaysConvertToStr = Annotated[str, BeforeValidator(lambda x: str(x))]
 
 
-class ItemWithRangeKey(DynModel, name=None, validate_assignment=True, coerce_numbers_to_str=True):
+class ItemWithRangeKey(DynModel, dyn_table_name=None, validate_assignment=True, coerce_numbers_to_str=True):
     dyn_objs: ClassVar[ItemWithRangeKeyClient]
 
     hash_field: HashKey[str]
@@ -95,22 +95,22 @@ class ItemWithRangeKey(DynModel, name=None, validate_assignment=True, coerce_num
         assert self.basic_bool == other.basic_bool
 
 
-class ItemWithRangeKeyForStr(ItemWithRangeKey, name="testItemWithRangeKey"):
+class ItemWithRangeKeyForStr(ItemWithRangeKey, dyn_table_name="testItemWithRangeKey"):
     hash_field: HashKey[str]
     range_field: SortKey[str]
 
 
-class ItemWithRangeKeyForInt(ItemWithRangeKey, name="testItemWithRangeWithIntKeys"):
+class ItemWithRangeKeyForInt(ItemWithRangeKey, dyn_table_name="testItemWithRangeWithIntKeys"):
     hash_field: HashKey[int]
     range_field: SortKey[int]
 
 
-class ItemWithRangeKeyForDateTime(ItemWithRangeKey, name="testItemWithRangeWithIntKeys"):
+class ItemWithRangeKeyForDateTime(ItemWithRangeKey, dyn_table_name="testItemWithRangeWithIntKeys"):
     hash_field: HashKey[dt.datetime]
     range_field: SortKey[dt.datetime]
 
 
-class ItemOnlyHash(DynModel, name="testItemOnlyHash"):
+class ItemOnlyHash(DynModel, dyn_table_name="testItemOnlyHash"):
     hash_field_id: HashKey[str]
     basic_int: int | None = None
     dict_list: List[Dict[str, str]] | None = None
@@ -327,7 +327,7 @@ def mock_all_aws_fixture():
 # ***** My Unit Tests ******
 
 def test_basic_dyn_class():
-    class ItemOnlyHash(DynModel, name="testItemOnlyHash"):
+    class ItemOnlyHash(DynModel, dyn_table_name="testItemOnlyHash"):
         hash_field_id: HashKey[str]
         basic_int: int
 
@@ -615,7 +615,7 @@ def test_see_if_read_consistency_used(test_input):
         assert not client.unit_test_was_last_consistent
 
     # Next test the class arg `dyn_consistent_read` works correctly.
-    class ItemWithRangeKeyForStrWithDefaultConsistent(ItemWithRangeKeyForStr, consistent_reads=True):
+    class ItemWithRangeKeyForStrWithDefaultConsistent(ItemWithRangeKeyForStr, dyn_consistent_reads=True):
         # TODO: Figure out and fix why we can't inherit hash/range fields, we must define it again?
         hash_field: HashKey[str]
         range_field: SortKey[str]
