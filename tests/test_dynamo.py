@@ -91,7 +91,7 @@ class ItemWithRangeKey(DynModel, name=None, validate_assignment=True, coerce_num
         if self.do_not_compare or other.do_not_compare:
             return
         assert self.name == other.name
-        assert self.dy_id == other.dy_id
+        assert self.dyn_id == other.dyn_id
         assert self.basic_bool == other.basic_bool
 
 
@@ -230,7 +230,7 @@ def compute_dyn_key_from_test_values(values: ObjTestValues) -> DynKey:
             range_field=v.range_value,
             do_not_compare=True
     ),
-    lambda v: v.model_cls(hash_field=v.hash_value, range_field=v.range_value).dy_id,
+    lambda v: v.model_cls(hash_field=v.hash_value, range_field=v.range_value).dyn_id,
     # lambda v: _internal.DynKey.via_obj(
     #     v.model_cls(hash_field=v.hash_value, range_field=v.range_value)
     # ),
@@ -263,7 +263,7 @@ def simple_obj(simple_obj_def) -> 'ItemWithRangeKey':
     )
     obj.name = "start-name"
     obj.basic_bool = True
-    obj.dy_save()
+    obj.dyn_save()
 
     assert len(list(simple_obj_def.model_cls.dyn_objs.get())) == 1, "Have incorrect count."
     return obj
@@ -280,7 +280,7 @@ def simple_obj_second(simple_obj_def) -> 'ItemWithRangeKey':
     )
     obj2.name = range_extra
     obj2.basic_bool = True
-    obj2.dy_save()
+    obj2.dyn_save()
 
     assert len(list(simple_obj_def.model_cls.dyn_objs.get())) == 2, "Have incorrect count."
     return obj2
@@ -354,8 +354,8 @@ def test_basic_dyn_class():
 def test_basic_delete(simple_obj, simple_obj_get_via_id, simple_obj_def):
     """Tests deleting data generated via simple_obj fixture via simple_obj_get_via_id fixture."""
     # Try to delete it and see if getting it again will return None now.
-    simple_obj_get_via_id.dy_delete()
-    value = simple_obj_def.model_cls.dyn_objs.get_first(simple_obj.dy_id)
+    simple_obj_get_via_id.dyn_delete()
+    value = simple_obj_def.model_cls.dyn_objs.get_first(simple_obj.dyn_id)
     assert value is None
 
 
@@ -405,10 +405,10 @@ def test_getting_multiple_obj(simple_obj, simple_obj_second, simple_obj_def):
 
     simple_obj_other = model_cls(hash_field=simple_obj.hash_field, range_field=some_other_range,
                                  name="simple_obj_other")
-    simple_obj_other.dy_save()
+    simple_obj_other.dyn_save()
 
     all_objs = [simple_obj, obj1, obj2, simple_obj_second, simple_obj_other]
-    original_obj_map = {obj.dy_id: obj for obj in all_objs}
+    original_obj_map = {obj.dyn_id: obj for obj in all_objs}
 
     # Bulk-insert multiple objects at the same time....
     model_cls.dyn_objs.put([obj1, obj2])
@@ -418,14 +418,14 @@ def test_getting_multiple_obj(simple_obj, simple_obj_second, simple_obj_def):
     assert len(objs) == len(all_objs)
 
     for obj in objs:
-        obj.assert_with(original_obj_map[obj.dy_id])
+        obj.assert_with(original_obj_map[obj.dyn_id])
 
     # lookup objects only for a specific hash....
     objs = list(model_cls.dyn_objs.get(query={"hash_field": hash2}))
-    original_obj_map = {obj.dy_id: obj for obj in [obj1, obj2]}
+    original_obj_map = {obj.dyn_id: obj for obj in [obj1, obj2]}
     assert len(objs) == len(original_obj_map.values())
     for obj in objs:
-        obj.assert_with(original_obj_map[obj.dy_id])
+        obj.assert_with(original_obj_map[obj.dyn_id])
 
     # See if we can query via list (which should use `in` operator by default)....
     objs = list(model_cls.dyn_objs.get(
@@ -433,7 +433,7 @@ def test_getting_multiple_obj(simple_obj, simple_obj_second, simple_obj_def):
     ))
     assert len(objs) == len(original_obj_map.values())
     for obj in objs:
-        obj.assert_with(original_obj_map[obj.dy_id])
+        obj.assert_with(original_obj_map[obj.dyn_id])
 
     # See if we can query via in operator explicitly
     objs = list(model_cls.dyn_objs.get(
@@ -441,7 +441,7 @@ def test_getting_multiple_obj(simple_obj, simple_obj_second, simple_obj_def):
     ))
     assert len(objs) == len(original_obj_map.values())
     for obj in objs:
-        obj.assert_with(original_obj_map[obj.dy_id])
+        obj.assert_with(original_obj_map[obj.dyn_id])
 
     # name is not a list in any of the table's items, so when used `exact` with list nothing
     # should come back (since they are all strings).
@@ -454,19 +454,19 @@ def test_getting_multiple_obj(simple_obj, simple_obj_second, simple_obj_def):
     objs = list(model_cls.dyn_objs.get(
         query={"hash_field": hash2, "name": name2}
     ))
-    original_obj_map = {obj.dy_id: obj for obj in [obj2]}
+    original_obj_map = {obj.dyn_id: obj for obj in [obj2]}
     assert len(objs) == len(original_obj_map.values())
     for obj in objs:
-        obj.assert_with(original_obj_map[obj.dy_id])
+        obj.assert_with(original_obj_map[obj.dyn_id])
 
     # Lookup multiple objects via different hashes:
     objs = list(model_cls.dyn_objs.get(
         query={"hash_field": [simple_obj.hash_field, hash2]}
     ))
-    original_obj_map = {obj.dy_id: obj for obj in [simple_obj, simple_obj_other, obj1, obj2]}
+    original_obj_map = {obj.dyn_id: obj for obj in [simple_obj, simple_obj_other, obj1, obj2]}
     assert len(objs) == len(original_obj_map.values())
     for obj in objs:
-        obj.assert_with(original_obj_map[obj.dy_id])
+        obj.assert_with(original_obj_map[obj.dyn_id])
 
     # Single hash multiple range, but should only match one result.
     objs = list(model_cls.dyn_objs.get(
@@ -475,10 +475,10 @@ def test_getting_multiple_obj(simple_obj, simple_obj_second, simple_obj_def):
             "range_field": [simple_obj_other.range_field, hash2]
         }
     ))
-    original_obj_map = {obj.dy_id: obj for obj in [simple_obj_other]}
+    original_obj_map = {obj.dyn_id: obj for obj in [simple_obj_other]}
     assert len(objs) == len(original_obj_map.values())
     for obj in objs:
-        obj.assert_with(original_obj_map[obj.dy_id])
+        obj.assert_with(original_obj_map[obj.dyn_id])
 
     # Single hash multiple range, but should only match two result.
     objs = list(model_cls.dyn_objs.get(
@@ -487,10 +487,10 @@ def test_getting_multiple_obj(simple_obj, simple_obj_second, simple_obj_def):
             "range_field": [simple_obj_other.range_field, obj1.range_field]
         }
     ))
-    original_obj_map = {obj.dy_id: obj for obj in [obj1, simple_obj_other]}
+    original_obj_map = {obj.dyn_id: obj for obj in [obj1, simple_obj_other]}
     assert len(objs) == len(original_obj_map.values())
     for obj in objs:
-        obj.assert_with(original_obj_map[obj.dy_id])
+        obj.assert_with(original_obj_map[obj.dyn_id])
 
     range_result = list(model_cls.dyn_objs.get({
         'hash_field': simple_obj_other.hash_field,
@@ -510,7 +510,7 @@ def test_getting_multiple_obj(simple_obj, simple_obj_second, simple_obj_def):
 def test_send_obj_with_related_child_and_sub_obj(simple_obj_values):
     o_with_range = ItemWithRangeKeyForStr(hash_field="my-hash3", range_field="my-range3", name="my-name3", hello=False)
 
-    o_with_range.dy_save()
+    o_with_range.dyn_save()
 
     o2 = ItemOnlyHash(hash_field_id="test-id3")
     o2.child_item = o_with_range
@@ -521,7 +521,7 @@ def test_send_obj_with_related_child_and_sub_obj(simple_obj_values):
     # ----> FYI: could also do it by passing json-dict via first argument:
     # SubObj({'sub_name': "my-sub-name", 'queue': True})
 
-    o2.dy_save()
+    o2.dyn_save()
     assert o2.sub_item.model_dump(mode='json') == {"sub_name": "my-sub-name", "queue": True}
 
     o_gotten = ItemOnlyHash.dyn_objs.get_first("test-id3")
@@ -550,7 +550,7 @@ def test_pagination(simple_obj_values):
     with _internal.DynBatch():
         for x in range(40):
             obj = model_cls(hash_field=lots_of_data, range_field=simple_obj_values.generate_range_value(x))
-            obj.dy_save()
+            obj.dyn_save()
 
     result = list(model_cls.dyn_objs.get())
     assert len(result) == 40
@@ -634,8 +634,8 @@ def test_see_if_read_consistency_used(test_input):
 
 
 def test_scan_fallback():
-    ItemWithRangeKeyForStr(hash_field='hash', range_field='range', name='first').dy_save()
-    ItemWithRangeKeyForStr(hash_field='other-h', range_field='other-r', name='second').dy_save()
+    ItemWithRangeKeyForStr(hash_field='hash', range_field='range', name='first').dyn_save()
+    ItemWithRangeKeyForStr(hash_field='other-h', range_field='other-r', name='second').dyn_save()
 
     items = ItemWithRangeKeyForStr.dyn_objs.get({'name': 'second'}, allow_scan=True)
     items = list(items)
@@ -646,18 +646,18 @@ def test_scan_fallback():
 
 
 def test_conditional_delete():
-    ItemWithRangeKeyForStr(hash_field='h1', range_field='r1', name='n1').dy_save()
+    ItemWithRangeKeyForStr(hash_field='h1', range_field='r1', name='n1').dyn_save()
     o = ItemWithRangeKeyForStr(hash_field='h2', range_field='r2', name='n2')
-    o.dy_save()
+    o.dyn_save()
     assert len(list(ItemWithRangeKeyForStr.dyn_objs.get())) == 2
 
     # try to delete with a condition that fails.
     with pytest.raises(DynamoConditionError, match=r"condition failed: \{'name': 'n1'\}",
                        check=lambda e: e.condition == {'name': 'n1'}):
-        o.dy_delete(condition={'name': 'n1'})
+        o.dyn_delete(condition={'name': 'n1'})
 
     assert len(list(ItemWithRangeKeyForStr.dyn_objs.get())) == 2
-    o.dy_delete(condition={'name': 'n2'})
+    o.dyn_delete(condition={'name': 'n2'})
     objs = list(ItemWithRangeKeyForStr.dyn_objs.get())
 
     assert len(objs) == 1
@@ -666,9 +666,9 @@ def test_conditional_delete():
 
 
 def test_conditional_put():
-    ItemWithRangeKeyForStr(hash_field='h1', range_field='r1', name='n1').dy_save()
+    ItemWithRangeKeyForStr(hash_field='h1', range_field='r1', name='n1').dyn_save()
     o = ItemWithRangeKeyForStr(hash_field='h2', range_field='r2', name='n2')
-    o.dy_save()
+    o.dyn_save()
     assert len(list(ItemWithRangeKeyForStr.dyn_objs.get())) == 2
 
     # modify (so there is a change to send), see if it won't update due to condition.
@@ -677,17 +677,17 @@ def test_conditional_put():
                        check=lambda e: e.condition == {'name': 'n1'}):
         o.dyn_objs.put(o, condition={'name': 'n1'})
 
-    assert ItemWithRangeKeyForStr.dyn_objs.get_first(o.dy_id).items is None
+    assert ItemWithRangeKeyForStr.dyn_objs.get_first(o.dyn_id).items is None
 
     o.items = [{'a': 3}]
-    o.dy_save(condition={'name': 'n2'})
+    o.dyn_save(condition={'name': 'n2'})
 
-    assert ItemWithRangeKeyForStr.dyn_objs.get_first(o.dy_id).items == [{'a': '3'}]
+    assert ItemWithRangeKeyForStr.dyn_objs.get_first(o.dyn_id).items == [{'a': '3'}]
 
 
 def test_reverse():
-    ItemWithRangeKeyForStr(hash_field='hash', range_field='range-a', name='first').dy_save()
-    ItemWithRangeKeyForStr(hash_field='hash', range_field='range-b', name='second').dy_save()
+    ItemWithRangeKeyForStr(hash_field='hash', range_field='range-a', name='first').dyn_save()
+    ItemWithRangeKeyForStr(hash_field='hash', range_field='range-b', name='second').dyn_save()
 
     items = ItemWithRangeKeyForStr.dyn_objs.get({'hash_field': 'hash'})
     items = list(items)
@@ -718,7 +718,7 @@ def test_multiple_hash_fields():
     o1_via_get = list(MultiHashFieldModel.dyn_objs.get())[0]
     assert o1.model_dump()
     assert o1_via_get.model_dump() == dict(hash_field1='h1', hash_field2='h2')
-    assert o1.dy_id == 'h1--h2'
+    assert o1.dyn_id == 'h1--h2'
 
 
 def test_multiple_hash_fields__w_sort():
@@ -733,7 +733,7 @@ def test_multiple_hash_fields__w_sort():
     o1_via_get = list(MultiHashFieldModel.dyn_objs.get())[0]
     assert o1.model_dump()
     assert o1_via_get.model_dump() == dict(hash_field1='h1', hash_field2='h2', sort_field1='s1')
-    assert o1.dy_id == 'h1--h2||s1'
+    assert o1.dyn_id == 'h1--h2||s1'
 
 
 def test_multiple_hash_and_sort_fields():
@@ -749,7 +749,7 @@ def test_multiple_hash_and_sort_fields():
     o1_via_get = list(MultiHashFieldModel.dyn_objs.get())[0]
     assert o1.model_dump()
     assert o1_via_get.model_dump() == dict(hash_field1='h1', hash_field2='h2', sort_field1='s1', sort_field2='s2')
-    assert o1.dy_id == 'h1--h2||s1--s2'
+    assert o1.dyn_id == 'h1--h2||s1--s2'
 
 
 def test_single_hash_and_multiple_sort_fields():
@@ -764,4 +764,4 @@ def test_single_hash_and_multiple_sort_fields():
     o1_via_get = list(MultiHashFieldModel.dyn_objs.get())[0]
     assert o1.model_dump()
     assert o1_via_get.model_dump() == dict(hash_field1='h1', sort_field1='s1', sort_field2='s2')
-    assert o1.dy_id == 'h1||s1--s2'
+    assert o1.dyn_id == 'h1||s1--s2'

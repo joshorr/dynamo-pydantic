@@ -233,7 +233,7 @@ class QueryCriteria(dict):
                 raise NotImplementedError("It's currently unsupported to use a basic Pydantic model as a lookup key.")
 
             # Get the key's "id" value (will be either `str` or `int`), and use that.
-            key = key.dy_id
+            key = key.dyn_id
 
         # TODO: 'str' should be the key(s), in a full-id/str-format.
         if isinstance(key, (str, DynKey)):

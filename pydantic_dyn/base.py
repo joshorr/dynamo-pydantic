@@ -13,14 +13,14 @@ from .types import DynField, DynFieldInfo, Query
 class DynamoModel(BaseModel):
     dyn_objs: ClassVar[DynObjManager[Self]]
 
-    def dy_save(self, *, condition: Query | None = None):
+    def dyn_save(self, *, condition: Query | None = None):
         self.dyn_objs.put(self, condition=condition)
 
-    def dy_delete(self, *, condition: Query | None = None):
+    def dyn_delete(self, *, condition: Query | None = None):
         self.dyn_objs.delete(self, condition=condition)
 
     @property
-    def dy_id(self):
+    def dyn_id(self):
         return self.dyn_objs.id_for(self)
 
     @classmethod
