@@ -58,7 +58,7 @@ class DynClientOptions(Dependency):
     """
 
 
-dyn_client_options = DynClientOptions.proxy()
+dy_client_options = DynClientOptions.proxy()
 """ Proxy to the current `DynClientOptions` currently used/injected at the current moment.
     Used this object use like you would use normal instance of DynClientOptions.
 """
@@ -810,7 +810,7 @@ class DynClient(Dependency, Generic[M]):
         if consistent_read is not Default:
             return consistent_read
 
-        injected_value = dyn_client_options.consistent_reads
+        injected_value = dy_client_options.consistent_reads
         if injected_value is not Default:
             return injected_value
 
