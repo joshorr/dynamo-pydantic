@@ -4,7 +4,7 @@ from typing import Type, Any, TYPE_CHECKING, TypeVar
 from .dynamic_subclass import create_generic_submodel
 
 if TYPE_CHECKING:
-    from pydantic_dyn.client import DynClient
+    from pydantic_dyn.client import DyObjManager
 
 
 T = TypeVar('T')
@@ -13,7 +13,7 @@ _directly_used__origin_to_use = {}
 _lock = threading.Lock()
 
 
-def get_client_for_model_type(origin: Type[DynClient], model_type: Type[T]) -> Type[DynClient[T]]:
+def get_client_for_model_type(origin: Type[DyObjManager], model_type: Type[T]) -> Type[DyObjManager[T]]:
     # We map the generict 'dict' version of the client to its self,
     # as there is only one subclass per-client/origin for it.
     mapping_key = model_type
@@ -24,8 +24,8 @@ def get_client_for_model_type(origin: Type[DynClient], model_type: Type[T]) -> T
 
 
 def get_or_create_client_for_model_type(
-        origin: Type[DynClient], model_type: Type[T], is_directly_used: bool = False
-) -> Type[DynClient[T]]:
+        origin: Type[DyObjManager], model_type: Type[T], is_directly_used: bool = False
+) -> Type[DyObjManager[T]]:
     """
     Args:
         origin:
@@ -86,6 +86,6 @@ def get_or_create_client_for_model_type(
         return client_type
 
 
-def set_client_for_model_type(model_type: Type[T], client_type: Type[DynClient[T]]):
+def set_client_for_model_type(model_type: Type[T], client_type: Type[DyObjManager[T]]):
     with _lock:
         _model_type__to_client[model_type] = client_type

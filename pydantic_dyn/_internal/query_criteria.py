@@ -16,12 +16,12 @@ from ..types import Key, Query, DynField, DynFieldInfo
 from .internal_types import operator_alias_map
 
 if TYPE_CHECKING:
-    from pydantic_dyn.client import DynClient
+    from pydantic_dyn.client import DyObjManager
 
 
 @dataclasses.dataclass(frozen=True, eq=True)
 class DynKey:
-    client: DynClient = dataclasses.field(compare=False)
+    client: DyObjManager = dataclasses.field(compare=False)
 
     # We only compare with `id`, this should represent our identity sufficiently.
     id: str = None
@@ -181,7 +181,7 @@ class QueryKey(BaseModel):
     dy_name: str
 
 
-def convert_to_key_type(client: DynClient, key_field: DynFieldInfo, value: str | int | float) -> str | int | float:
+def convert_to_key_type(client: DyObjManager, key_field: DynFieldInfo, value: str | int | float) -> str | int | float:
     match key_field.dy_type:
         case 'S':
             return str(value)
@@ -194,7 +194,7 @@ def convert_to_key_type(client: DynClient, key_field: DynFieldInfo, value: str |
 
 
 class QueryCriteria(dict):
-    client: DynClient
+    client: DyObjManager
     # key: Key | None = None
     condition: Query | None = None
 
@@ -206,12 +206,12 @@ class QueryCriteria(dict):
 
     @classmethod
     def from_client__for_query(
-            cls, client: DynClient, query: Query | QueryCriteria, *, condition: Query | None | DefaultType = Default
+            cls, client: DyObjManager, query: Query | QueryCriteria, *, condition: Query | None | DefaultType = Default
     ) -> QueryCriteria:
         return cls.from_client__for_key(client, query, condition=condition)  # noqa
 
     @classmethod
-    def from_client__for_key(cls, client: DynClient, key: Key | str, *, condition: Query | None | DefaultType = Default) -> QueryCriteria:
+    def from_client__for_key(cls, client: DyObjManager, key: Key | str, *, condition: Query | None | DefaultType = Default) -> QueryCriteria:
         if isinstance(key, QueryCriteria):
             assert key.client is client
             if condition is Default:

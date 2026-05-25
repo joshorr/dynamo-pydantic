@@ -32,7 +32,7 @@ __all__ = ["TableRepo"]
 _auto_create_table_only_in_environments = {'unittest', 'local'}
 
 if TYPE_CHECKING:
-    from .client import DynClient
+    from .client import DyObjManager
 
 
 class TableRepo(DependencyPerThread, attributes_to_skip_while_copying=["_table", "_verified", "_db"]):
@@ -50,7 +50,7 @@ class TableRepo(DependencyPerThread, attributes_to_skip_while_copying=["_table",
         self._tables = {}
         self._verified = {}
 
-    def table__for_client(self, client: DynClient, create_if_needed: bool = False) -> Table:
+    def table__for_client(self, client: DyObjManager, create_if_needed: bool = False) -> Table:
         if create_if_needed:
             return self._create_table_if_needed(client)
         return self.table(client.table_name)
@@ -96,7 +96,7 @@ class TableRepo(DependencyPerThread, attributes_to_skip_while_copying=["_table",
         self._verified.setdefault(full_name, False)
         return table
 
-    def _create_table_if_needed(self, client: DynClient) -> Table:
+    def _create_table_if_needed(self, client: DyObjManager) -> Table:
         """
         This is mainly here to create table when mocking aws for unit tests. If the table
         really does not exist in reality, this also can create it.
@@ -173,7 +173,7 @@ class TableRepo(DependencyPerThread, attributes_to_skip_while_copying=["_table",
         self._verified[name] = True
         return table
 
-    def _create_table(self, client: DynClient):
+    def _create_table(self, client: DyObjManager):
         if not client.hash_key_info.dy_name:
             raise DynamoError(
                 f"While creating table for ({client}), found no partition-key field name; dynamo tables"

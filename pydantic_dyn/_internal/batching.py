@@ -6,7 +6,7 @@ from xinject import DependencyPerThread
 from ..errors import DynamoError
 
 if TYPE_CHECKING:
-    from pydantic_dyn.client import DynClient
+    from pydantic_dyn.client import DyObjManager
 
 
 class _DynBatcher(object):
@@ -23,7 +23,7 @@ class _DynBatcher(object):
         self._dyn_batch_resources_added_to = set()
         self._table_to_boto_writer = dict()
 
-    def batch_writer(self, client: DynClient) -> BatchWriter:
+    def batch_writer(self, client: DyObjManager) -> BatchWriter:
         if self._enter_count <= 0:
             raise DynamoError("Must use DynBatch via `with` statement as a context manager.")
 
@@ -133,11 +133,11 @@ class DynBatch(_DynBatcher):
     Allows one to batch bulk updates/deletes (via dynamo put/delete-item) with a context manager.
     You can bulk-delete/update currently via:
 
-    - `DynClient.delete_items`
-    - `DynClient.update_objs`
+    - `DyObjManager.delete_items`
+    - `DyObjManager.update_objs`
 
     But if you want to combine a number of separate update/delete object calls
-    (including with other calls to `DynClient.delete_items` / `DynClient.update_objs`)
+    (including with other calls to `DyObjManager.delete_items` / `DyObjManager.update_objs`)
     into the same request(s), this class allows you to do that.
 
     For example code, see [Batch Updating Deleting](#batch-updating-deleting).
