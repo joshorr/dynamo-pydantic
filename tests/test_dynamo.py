@@ -3,7 +3,8 @@ from zoneinfo import ZoneInfo
 from pydantic import BaseModel, BeforeValidator
 from pydantic.fields import FieldInfo, Field
 
-from pydantic_dyn import DynObjManager, KeyType, SortKey, HashKey, DynField, DynamoModel as DynModel, DynOptions
+from pydantic_dyn import DynObjManager, KeyType, SortKey, HashKey, DynField, DynamoModel as DynModel
+from pydantic_dyn.settings import DynSettings
 from pydantic_dyn import _internal
 from typing import List, Dict, Union, Optional, Type, Any, Callable, Tuple, ClassVar, Annotated
 from typing import TypeVar
@@ -606,11 +607,11 @@ def test_see_if_read_consistency_used(test_input):
     list(client.get(test_input, consistent_read=True))
     assert client.unit_test_was_last_consistent
 
-    with DynOptions(consistent_reads=True):
+    with DynSettings(consistent_reads=True):
         list(client.get(test_input))
         assert client.unit_test_was_last_consistent
 
-    with DynOptions(consistent_reads=True):
+    with DynSettings(consistent_reads=True):
         list(client.get(test_input, consistent_read=False))
         assert not client.unit_test_was_last_consistent
 
@@ -628,7 +629,7 @@ def test_see_if_read_consistency_used(test_input):
     list(client.get(test_input, consistent_read=False))
     assert not client.unit_test_was_last_consistent
 
-    with DynOptions(consistent_reads=False):
+    with DynSettings(consistent_reads=False):
         list(client.get(test_input))
         assert not client.unit_test_was_last_consistent
 

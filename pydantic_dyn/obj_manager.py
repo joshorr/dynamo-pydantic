@@ -10,7 +10,7 @@ from mypy_boto3_dynamodb.service_resource import Table
 from pydantic import BaseModel
 from xbool import bool_value
 from xinject import Dependency
-from pydantic_dyn import settings
+from pydantic_dyn.settings import dyn_settings
 
 from logging import getLogger
 from xboto.resource import dynamodb
@@ -28,23 +28,6 @@ if TYPE_CHECKING:
 
 M = TypeVar('M', default=dict)
 log = getLogger(__name__)
-
-
-class DynOptions(Dependency):
-    def __init__(self, *, consistent_reads: bool | DefaultType = Default):
-        self.consistent_reads = consistent_reads
-
-    consistent_reads: bool | DefaultType = Default
-    """ Way to change what the default consistent read value should be,
-        If set it will be used over the default value for the model
-        (but won't override True/False passed directly to client as method paramter to get/scan/etc.
-    """
-
-
-dyn_options = DynOptions.proxy()
-""" Proxy to the current `DynOptions` currently used/injected at the current moment.
-    Used this object use like you would use normal instance of DynOptions.
-"""
 
 
 class DynObjManager(Dependency, Generic[M]):
@@ -73,7 +56,7 @@ class DynObjManager(Dependency, Generic[M]):
     
         You can get the full table name via `DynObjManager.table_name`
         
-        By default, this will consult with the `pydantic_dyn.settings.default_prefix_generator`
+        By default, this will consult with the `pydantic_dyn.dyn_settings.default_prefix_generator = lambda x: ...`
         for the prefix, whenever it's needed, if one is set there.
         
         Otherwise, if one is not set directly here, there is no prefix generator,
@@ -230,7 +213,7 @@ class DynObjManager(Dependency, Generic[M]):
         if not name:
             raise DynamoError(f'DynObjManager ({self}) must have a `name` assigned to generate table_name with.')
 
-        if v := settings.default_prefix_generator:
+        if v := dyn_settings.default_prefix_generator:
             prefix = v(self)
 
         if not prefix:
@@ -793,7 +776,7 @@ class DynObjManager(Dependency, Generic[M]):
         if consistent_read is not Default:
             return consistent_read
 
-        injected_value = dyn_options.consistent_reads
+        injected_value = dyn_settings.consistent_reads
         if injected_value is not Default:
             return injected_value
 
