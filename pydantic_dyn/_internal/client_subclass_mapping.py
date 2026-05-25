@@ -55,7 +55,7 @@ def get_or_create_client_for_model_type(
 
         other_parents = []
         if not is_directly_used:
-            from pydantic_dyn.base import DynamoModel
+            from pydantic_dyn.dynamo_model import DynamoModel
             for parent_type in model_type.mro():
                 if parent_type is model_type:
                     continue

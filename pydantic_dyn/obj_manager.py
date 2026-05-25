@@ -23,7 +23,7 @@ from .types import Key, Query, KeyType, DynFieldInfo, DynParams
 from . import _internal
 
 if TYPE_CHECKING:
-    from .base import DynamoModel
+    from .dynamo_model import DynamoModel
 
 
 M = TypeVar('M', default=dict)

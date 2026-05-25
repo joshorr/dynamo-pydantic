@@ -225,7 +225,7 @@ class QueryCriteria(dict):
             return obj
 
         if isinstance(key, BaseModel):
-            from pydantic_dyn.base import DynamoModel
+            from pydantic_dyn.dynamo_model import DynamoModel
             if not isinstance(key, DynamoModel):
                 # TODO: do a model-dump to get the keys post-conversion [instead of doing it lazily later without model]
                 #   OR we could save a link to model on self for future ref in lazy property???....
