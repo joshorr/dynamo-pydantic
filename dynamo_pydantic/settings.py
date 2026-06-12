@@ -5,7 +5,7 @@ from xsentinels import Default
 from xsentinels.default import DefaultType
 
 if TYPE_CHECKING:
-    from pydantic_dyn.obj_manager import DynObjManager
+    from dynamo_pydantic.obj_manager import DynObjManager
 
 
 class DynSettings(Dependency):

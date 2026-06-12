@@ -49,10 +49,10 @@ dev = [
 ]
 
 [tool.hatch.build.targets.sdist]
-include = ["pydantic_dyn"]
+include = ["dynamo_pydantic"]
 
 [tool.hatch.build.targets.wheel]
-include = ["pydantic_dyn"]
+include = ["dynamo_pydantic"]
 
 [build-system]
 requires = ["hatchling"]

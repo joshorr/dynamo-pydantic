@@ -6,9 +6,9 @@ from pydantic_core import CoreSchema, SchemaValidator, SchemaSerializer
 from xsentinels import Default
 
 if TYPE_CHECKING:
-    from pydantic_dyn.obj_manager import DynObjManager
-    from pydantic_dyn.types import DynFieldInfo
-    from pydantic_dyn.dynamo_model import DynamoModel
+    from dynamo_pydantic.obj_manager import DynObjManager
+    from dynamo_pydantic.types import DynFieldInfo
+    from dynamo_pydantic.dynamo_model import DynamoModel
 
 
 def find_field_schema(model: type[BaseModel], field_name: str) -> CoreSchema:

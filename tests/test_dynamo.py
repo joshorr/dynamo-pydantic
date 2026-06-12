@@ -3,9 +3,9 @@ from zoneinfo import ZoneInfo
 from pydantic import BaseModel, BeforeValidator
 from pydantic.fields import FieldInfo, Field
 
-from pydantic_dyn import DynObjManager, KeyType, SortKey, HashKey, DynField, DynamoModel as DynModel
-from pydantic_dyn.settings import DynSettings
-from pydantic_dyn import _internal
+from dynamo_pydantic import DynObjManager, KeyType, SortKey, HashKey, DynField, DynamoModel as DynModel
+from dynamo_pydantic.settings import DynSettings
+from dynamo_pydantic import _internal
 from typing import List, Dict, Union, Optional, Type, Any, Callable, Tuple, ClassVar, Annotated
 from typing import TypeVar
 import pytest
@@ -15,8 +15,8 @@ from xmodel.remote import XRemoteError
 import datetime as dt
 from dateutil.relativedelta import relativedelta
 
-from pydantic_dyn.errors import DynamoConditionError
-from pydantic_dyn.types import DynFieldInfo
+from dynamo_pydantic.errors import DynamoConditionError
+from dynamo_pydantic.types import DynFieldInfo
 
 T = TypeVar('T')
 M = TypeVar('M')

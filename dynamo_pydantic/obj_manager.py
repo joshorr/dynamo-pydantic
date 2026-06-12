@@ -10,7 +10,7 @@ from mypy_boto3_dynamodb.service_resource import Table
 from pydantic import BaseModel
 from xbool import bool_value
 from xinject import Dependency
-from pydantic_dyn.settings import dyn_settings
+from dynamo_pydantic.settings import dyn_settings
 
 from logging import getLogger
 from xboto.resource import dynamodb
@@ -56,7 +56,7 @@ class DynObjManager(Dependency, Generic[M]):
     
         You can get the full table name via `DynObjManager.table_name`
         
-        By default, this will consult with the `pydantic_dyn.dyn_settings.default_prefix_generator = lambda x: ...`
+        By default, this will consult with the `dynamo_pydantic.dyn_settings.default_prefix_generator = lambda x: ...`
         for the prefix, whenever it's needed, if one is set there.
         
         Otherwise, if one is not set directly here, there is no prefix generator,

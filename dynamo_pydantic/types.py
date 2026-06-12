@@ -65,7 +65,7 @@ class DynField:
         if dy_type is not None:
             self.dy_type = dy_type
         elif py_type is not Default:
-            from pydantic_dyn import _internal
+            from dynamo_pydantic import _internal
             is_key = self.key_type is not None
             self.dy_type = _internal.get_dynamo_type_from_python_type(py_type, is_key_type=is_key)
 
@@ -81,7 +81,7 @@ class DynField:
                 setattr(self, k, v)
 
         if other.py_type is not Default and self.py_type is not Default:
-            from pydantic_dyn import _internal
+            from dynamo_pydantic import _internal
             is_key = self.key_type is not None
             self.dy_type = _internal.get_dynamo_type_from_python_type(self.py_type, is_key_type=is_key)
 
@@ -151,7 +151,7 @@ class DynFieldInfo:
 
     @cached_property
     def dy_type(self) -> str:
-        from pydantic_dyn import _internal
+        from dynamo_pydantic import _internal
         return _internal.get_dynamo_type_from_python_type(self.py_type)
 
     @property
