@@ -112,6 +112,13 @@ or single-save them via `my_obj.dyn_save()` or `MyModel.dyn_objs.save(my_obj)`.
   - When querying for an item, provide a value for each hash field (and optionally any sort fields).
     - They will automatically be combined and used for the final hash/sort key for table query.
 
+- Use `dynamo_pydantic.UtcDateTime` type to force a datetime to always be and serialize into utc.
+  - You can use this with hash and/or sort keys with datetime in them, so they can reliably be queried for.
+  - Because we must use a string for a datetime, so if format and timezone are always the same it can be reliably sorted and queried for.
+  - Use `UtcDateTimeNow` to default value to now in utc.
+  - Example Field: `created_at: UtcDateTimeNow`
+
+
 # More Docs Soon To Come
 
 I'll have more, detailed documentation soon, along with examples.
@@ -119,7 +126,7 @@ I'll have more, detailed documentation soon, along with examples.
 I need to rewrite my old docs from the old library for the new way of doing things as I took this opportunity
 to simplify and rearranged things (compared to old library).
 
-For now I have a basic outline above, and some refrence documentation here:
+For now, I have a basic outline above, and some refrence documentation here:
 
 **[📄 Detailed Documentation](https://joshorr.github.io/dynamo-pydantic/latest/)**
 
