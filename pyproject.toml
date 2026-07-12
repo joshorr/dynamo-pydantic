@@ -1,6 +1,6 @@
 [project]
 name = "dynamo-pydantic"
-version = "0.6.0"
+version = "0.1.0"
 description = "Pydantic models that dynamically verify types when attributes are set."
 authors = [{ name = "Josh Orr", email = "josh@orr.blue" }]
 requires-python = ">=3.14,<4"
