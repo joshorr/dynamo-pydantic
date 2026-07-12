@@ -20,6 +20,10 @@ class DynSettings(Dependency):
 
     default_prefix_generator: Callable[[DynObjManager], str] | None = None
 
+    create_tables_if_needed: bool = False
+    """ If set to `True`, will create tables lazily if needed on first get/put/delete/save/etc.
+    """
+
 
 dyn_settings = DynSettings.proxy()
 """ Proxy to the current `DynSettings` currently used/injected at the current moment.

@@ -18,11 +18,11 @@ from typing import Any, Dict, Optional, TYPE_CHECKING
 
 from botocore.exceptions import ClientError
 from mypy_boto3_dynamodb.service_resource import Table
-from xcon import xcon_settings
 from xinject import DependencyPerThread
 
 from xboto.resource import dynamodb
 
+from .settings import dyn_settings
 from .errors import DynamoError
 
 log = logging.getLogger(__name__)
@@ -122,9 +122,11 @@ class TableRepo(DependencyPerThread, attributes_to_skip_while_copying=["_table",
         verified = self._verified.get(name, False)
 
         try:
-            from xcon import xcon_settings
+            # TODO: Make this more customizable (on when we want to create tables automatically)
+            #   Right now this does NOT happen by default unless someone sets the environment to 'unittest' or 'local'
+            #   manually/directly or if APP_ENV (env-variable) is set to one of these values.
             # We only verify/create-table-if-needed in specific environments.
-            if xcon_settings.environment not in _auto_create_table_only_in_environments:
+            if not dyn_settings.create_tables_if_needed:
                 verified = True
         except ImportError:
             # If `xcon` unavailable, just assume we don't want to auto-create tables
@@ -208,7 +210,8 @@ class TableRepo(DependencyPerThread, attributes_to_skip_while_copying=["_table",
             KeySchema=key_schemas,
             AttributeDefinitions=attribute_definitions,
             BillingMode='PAY_PER_REQUEST',
-            Tags=[{'Key': 'DDBTableGroupKey', 'Value': xcon_settings.service}]
+            # TODO: Provide better group-by key via settings.
+            # Tags=[{'Key': 'DDBTableGroupKey', 'Value': xcon_settings.service}]
         )
 
 

@@ -10,7 +10,6 @@ from typing import List, Dict, Union, Optional, Type, Any, Callable, Tuple, Clas
 from typing import TypeVar
 import pytest
 import dataclasses
-from xmodel.remote import XRemoteError
 import datetime as dt
 from dateutil.relativedelta import relativedelta
 

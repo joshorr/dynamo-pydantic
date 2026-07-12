@@ -10,19 +10,13 @@ classifiers = [
     "License :: OSI Approved :: The Unlicense (Unlicense)",
 ]
 dependencies = [
-    "typing-inspect>=0,<1",
     "xloop>=1.0.1,<2",
     "xinject>=1.4.0,<2",
     "xsentinels>=1.2.1,<2",
     "xurls>=1.2.1,<2",
-    "ciso8601>=2.3.0,<3",
     "xboto>=1.1.1,<2",
     "xbool>=1.1.0,<2",
     "pydantic>=2.9.2,<3",
-    "orjson>=3.10.9,<4",
-    "pydantic-partials>=4,<5",
-    "xcon>=1.1.1",
-    "xdynamo>=0.10.3",
 ]
 
 [project.urls]
@@ -48,6 +42,7 @@ dev = [
     "moto>=5.2.1",
 ]
 
+
 [tool.hatch.build.targets.sdist]
 include = ["dynamo_pydantic"]
 
@@ -62,7 +57,7 @@ build-backend = "hatchling.build"
 module-root = ""
 
 [tool.custom.xpublish]
-extra-module-docs = ['xsentinels', 'xloop', 'xinject', 'xurls']
+extra-module-docs = ['xsentinels', 'xloop', 'xinject', 'xurls', 'xboto']
 
 [tool.pytest.ini_options]
 minversion = "6.0"

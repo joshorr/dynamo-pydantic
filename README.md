@@ -8,7 +8,7 @@
 - [Overview](#overview)
     * [Quick high-level overview of features](#quick-high-level-overview-of-features)
 - [More Docs Soon To Come](#more-docs-soon-to-come)
-- 
+
 # Quick Start
 
 > [!WARNING]
@@ -118,6 +118,9 @@ or single-save them via `my_obj.dyn_save()` or `MyModel.dyn_objs.save(my_obj)`.
   - Use `UtcDateTimeNow` to default value to now in utc.
   - Example Field: `created_at: UtcDateTimeNow`
 
+- Can Auto-create tables lazy, on first use if desired.
+  - By default, this won't happen.
+  - If you set `dynamo_pydantic.dyn_settings.create_tables_if_needed = True`, it will create the tables lazily.
 
 # More Docs Soon To Come
 

@@ -6,7 +6,6 @@ from typing import TYPE_CHECKING, Any, Set, Iterable
 from moto import swf
 from pydantic import BaseModel, TypeAdapter
 # TODO: Remove this `xdynamo` dependency.
-from xdynamo.common_types import between_operators
 from xloop import xloop
 from xsentinels.default import DefaultType, Default
 
@@ -17,6 +16,9 @@ from .internal_types import operator_alias_map
 
 if TYPE_CHECKING:
     from dynamo_pydantic.obj_manager import DynObjManager
+
+
+_between_operators = {'range', 'between'}
 
 
 @dataclasses.dataclass(frozen=True, eq=True)
@@ -164,8 +166,6 @@ class DynKey:
                     f"({delimiter}) is either not present, or is in it more than once. "
                     f"'id' needs to contain exactly one hash and range key combined together "
                     f"with the delimiter, ie: 'hash-key-value{delimiter}range-key-value'. "
-                    f"See xdynamo.dyn_connections documentation for more details on how "
-                    f"this works."
                 )
 
             hash_key = convert_to_key_type(client, client.hash_key_info, split_id[0])
@@ -456,7 +456,7 @@ class QueryCriteria(dict):
                     if range_operator == 'is_in':
                         range_operator = 'eq'
 
-                    if range_operator in between_operators:
+                    if range_operator in _between_operators:
                         next_range = next(range_gen, None)
                         if next_range is None:
                             raise DynamoError(
@@ -465,7 +465,7 @@ class QueryCriteria(dict):
                                 f"({next_range[0]})."
                             )
 
-                        if next_range[0] not in between_operators:
+                        if next_range[0] not in _between_operators:
                             raise DynamoError(
                                 f"You must provide a second value for 'between' operator on range "
                                 f"key ({sort_info.dy_name}), next value ({next_range[1]} had operator "
