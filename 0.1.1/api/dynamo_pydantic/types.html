@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.6">
+<title>dynamo_pydantic.types API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>dynamo_pydantic.types</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-variables">Global variables</h2>
+<dl>
+<dt id="dynamo_pydantic.types.Key"><code class="name">var <span class="ident">Key</span></code></dt>
+<dd>
+<div class="desc"><p>A <code><a title="dynamo_pydantic.types.Key" href="#dynamo_pydantic.types.Key">Key</a></code> signifies that we are looking for key info, ie: the hash/partition key and/or the range/sort key.
+Keys themselves could potentially be made up of many fields themselves (that are combined together).</p>
+<p>It can be a query with the basic key info as dict keys that represent fields:</p>
+<pre><code class="language-python">{&quot;hash_field_name&quot;: &quot;hash-field-value&quot;, &quot;range_field_name&quot;: &quot;range-field-value&quot;}
+
+</code></pre></div>
+</dd>
+<dt id="dynamo_pydantic.types.Query"><code class="name">var <span class="ident">Query</span></code></dt>
+<dd>
+<div class="desc"><p>A <code><a title="dynamo_pydantic.types.Query" href="#dynamo_pydantic.types.Query">Query</a></code> signifies that any combinations of fields/keys can be included.</p></div>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="dynamo_pydantic.types.DynField"><code class="flex name class">
+<span>class <span class="ident">DynField</span></span>
+<span>(</span><span>*,<br>py_type: Type | <a title="xsentinels.default.DefaultType" href="../xsentinels/default.html#xsentinels.default.DefaultType">DefaultType</a> = Default,<br>dy_type: str | <a title="xsentinels.default.DefaultType" href="../xsentinels/default.html#xsentinels.default.DefaultType">DefaultType</a> | None = Default,<br>key_type: <a title="dynamo_pydantic.types.KeyType" href="#dynamo_pydantic.types.KeyType">KeyType</a> | <a title="xsentinels.default.DefaultType" href="../xsentinels/default.html#xsentinels.default.DefaultType">DefaultType</a> | None = Default)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class DynField:
+    &#34;&#34;&#34; Way to customize with dynamo-specific field options.
+        Any found for the same field will be merged together.
+        The final result will convert into a `DynFieldInfo` object.
+        If the parent class has any DynFieldInfo&#39;s, they will also be merged into the final result.
+    &#34;&#34;&#34;
+    def __init__(
+            self, *,
+            py_type: Type | DefaultType = Default,
+            dy_type: str | None | DefaultType = Default,
+            key_type: KeyType | None | DefaultType = Default
+    ):
+        self.key_type = key_type
+        self.py_type = py_type
+        if dy_type is not None:
+            self.dy_type = dy_type
+        elif py_type is not Default:
+            from dynamo_pydantic import _internal
+            is_key = self.key_type is not None
+            self.dy_type = _internal.get_dynamo_type_from_python_type(py_type, is_key_type=is_key)
+
+    def copy(self) -&gt; DynField:
+        return DynField(py_type=self.py_type, dy_type=self.dy_type, key_type=self.key_type)
+
+    def merge(self, other: DynField):
+        # We go though all of are attrs, and set the ones that have a value.
+        # Consider anything with the `Default` sentinal-value as not having any value.
+        for k in [&#39;key_type&#39;, &#39;py_type&#39;, &#39;dy_type&#39;]:
+            v = getattr(other, k)
+            if v is not Default:
+                setattr(self, k, v)
+
+        if other.py_type is not Default and self.py_type is not Default:
+            from dynamo_pydantic import _internal
+            is_key = self.key_type is not None
+            self.dy_type = _internal.get_dynamo_type_from_python_type(self.py_type, is_key_type=is_key)
+
+    # TODO: Additional setting/feature to allow function to generate default value for a field,
+    #  to query dynamo by when not provided in the original query provided by user.
+    #  This would be useful for a field that represented a tenet-id.
+    #  The function could inject the current tenet-id being used for the current request/process/etc.
+
+    key_type: KeyType | None | DefaultType = Default
+    py_type: Type | DefaultType = Default
+    dy_type: str | DefaultType = Default
+
+    def __str__(self):
+        return f&#39;&lt;DynField key_type={self.key_type} py_type={self.py_type} dy_type={self.dy_type}&gt;&#39;
+
+    def __repr__(self):
+        return str(self)</code></pre>
+</details>
+<div class="desc"><p>Way to customize with dynamo-specific field options.
+Any found for the same field will be merged together.
+The final result will convert into a <code><a title="dynamo_pydantic.types.DynFieldInfo" href="#dynamo_pydantic.types.DynFieldInfo">DynFieldInfo</a></code> object.
+If the parent class has any DynFieldInfo's, they will also be merged into the final result.</p></div>
+<h3>Class variables</h3>
+<dl>
+<dt id="dynamo_pydantic.types.DynField.dy_type"><code class="name">var <span class="ident">dy_type</span> : str | <a title="xsentinels.default.DefaultType" href="../xsentinels/default.html#xsentinels.default.DefaultType">DefaultType</a></code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="dynamo_pydantic.types.DynField.key_type"><code class="name">var <span class="ident">key_type</span> : <a title="dynamo_pydantic.types.KeyType" href="#dynamo_pydantic.types.KeyType">KeyType</a> | <a title="xsentinels.default.DefaultType" href="../xsentinels/default.html#xsentinels.default.DefaultType">DefaultType</a> | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="dynamo_pydantic.types.DynField.py_type"><code class="name">var <span class="ident">py_type</span> : Type | <a title="xsentinels.default.DefaultType" href="../xsentinels/default.html#xsentinels.default.DefaultType">DefaultType</a></code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="dynamo_pydantic.types.DynField.copy"><code class="name flex">
+<span>def <span class="ident">copy</span></span>(<span>self) ‑> <a title="dynamo_pydantic.types.DynField" href="#dynamo_pydantic.types.DynField">DynField</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def copy(self) -&gt; DynField:
+    return DynField(py_type=self.py_type, dy_type=self.dy_type, key_type=self.key_type)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="dynamo_pydantic.types.DynField.merge"><code class="name flex">
+<span>def <span class="ident">merge</span></span>(<span>self,<br>other: <a title="dynamo_pydantic.types.DynField" href="#dynamo_pydantic.types.DynField">DynField</a>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def merge(self, other: DynField):
+    # We go though all of are attrs, and set the ones that have a value.
+    # Consider anything with the `Default` sentinal-value as not having any value.
+    for k in [&#39;key_type&#39;, &#39;py_type&#39;, &#39;dy_type&#39;]:
+        v = getattr(other, k)
+        if v is not Default:
+            setattr(self, k, v)
+
+    if other.py_type is not Default and self.py_type is not Default:
+        from dynamo_pydantic import _internal
+        is_key = self.key_type is not None
+        self.dy_type = _internal.get_dynamo_type_from_python_type(self.py_type, is_key_type=is_key)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="dynamo_pydantic.types.DynFieldInfo"><code class="flex name class">
+<span>class <span class="ident">DynFieldInfo</span></span>
+<span>(</span><span>dy_name: str = Default,<br>name: str | None = None,<br>names: list[str] = None,<br>py_type: Type = builtins.str,<br>key_type: <a title="dynamo_pydantic.types.KeyType" href="#dynamo_pydantic.types.KeyType">KeyType</a> | None = None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclasses.dataclass
+class DynFieldInfo:
+    &#34;&#34;&#34; Final dynamo-specific field info, after merging any found `DynField` and pydantic field info.
+    &#34;&#34;&#34;
+    @classmethod
+    def from_field(cls, dyn_field: DynField, name: str) -&gt; DynFieldInfo:
+        return DynFieldInfo(
+            key_type=dyn_field.key_type or None,
+            py_type=dyn_field.py_type or None,
+            name=name,
+            dy_name=name,
+        )
+
+    def __post_init__(self):
+        if (v := self.dy_name) and not self.names and not self.name:
+            self.name = v
+            self.names = [v]
+
+        if not self.names:
+            if v := self.name:
+                self.names = [v]
+            elif v := self.dy_name:
+                self.names = [v]
+                self.name = v
+
+        if not self.dy_name:
+            if v := self.name:
+                self.dy_name = v
+            if (v := self.names) and len(v) == 1:
+                self.dy_name = v[0]
+
+        assert self.dy_name
+        assert self.names
+
+        if len(self.names) &gt; 1:
+            self.name = None
+
+    def copy(self) -&gt; DynFieldInfo:
+        return dataclasses.replace(self)
+
+    def merge_with_field(self, dyn_field: DynField):
+        # We go though all of are attrs, and set the ones that have a value.
+        # Consider anything with the `Default` sentinal-value as not having any value.
+        for k in [&#39;key_type&#39;, &#39;py_type&#39;, &#39;dy_type&#39;]:
+            v = getattr(dyn_field, k)
+            if v is not Default:
+                setattr(self, k, v)
+
+    dy_name: str = Default
+    &#34;&#34;&#34; Dynamo-attribute name.
+        Defaults to `self.name`, but could be different based on alias/more-than-one-field for a key; etc.
+    &#34;&#34;&#34;
+
+    @cached_property
+    def dy_type(self) -&gt; str:
+        from dynamo_pydantic import _internal
+        return _internal.get_dynamo_type_from_python_type(self.py_type)
+
+    @property
+    def from_multiple_fields(self) -&gt; bool:
+        return bool(len(self.names) &gt; 1)
+
+    name: str | None = None
+    &#34;&#34;&#34; If there is only one field, we set that here. If there is more that one this is `None`, see `self.names`.
+    &#34;&#34;&#34;
+
+    names: list[str] = None
+    &#34;&#34;&#34; Regardless if this came from one or more fields, we list them here,
+        So there will always be a list with at least one value in it.
+    &#34;&#34;&#34;
+
+    py_type: Type = str
+    key_type: KeyType | None = None</code></pre>
+</details>
+<div class="desc"><p>Final dynamo-specific field info, after merging any found <code><a title="dynamo_pydantic.types.DynField" href="#dynamo_pydantic.types.DynField">DynField</a></code> and pydantic field info.</p></div>
+<h3>Static methods</h3>
+<dl>
+<dt id="dynamo_pydantic.types.DynFieldInfo.from_field"><code class="name flex">
+<span>def <span class="ident">from_field</span></span>(<span>dyn_field: <a title="dynamo_pydantic.types.DynField" href="#dynamo_pydantic.types.DynField">DynField</a>,<br>name: str) ‑> <a title="dynamo_pydantic.types.DynFieldInfo" href="#dynamo_pydantic.types.DynFieldInfo">DynFieldInfo</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="dynamo_pydantic.types.DynFieldInfo.dy_name"><code class="name">var <span class="ident">dy_name</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Dynamo-attribute name.
+Defaults to <code>self.name</code>, but could be different based on alias/more-than-one-field for a key; etc.</p></div>
+</dd>
+<dt id="dynamo_pydantic.types.DynFieldInfo.dy_type"><code class="name">var <span class="ident">dy_type</span> : str</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@cached_property
+def dy_type(self) -&gt; str:
+    from dynamo_pydantic import _internal
+    return _internal.get_dynamo_type_from_python_type(self.py_type)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="dynamo_pydantic.types.DynFieldInfo.from_multiple_fields"><code class="name">prop <span class="ident">from_multiple_fields</span> : bool</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def from_multiple_fields(self) -&gt; bool:
+    return bool(len(self.names) &gt; 1)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="dynamo_pydantic.types.DynFieldInfo.key_type"><code class="name">var <span class="ident">key_type</span> : <a title="dynamo_pydantic.types.KeyType" href="#dynamo_pydantic.types.KeyType">KeyType</a> | None</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="dynamo_pydantic.types.DynFieldInfo.name"><code class="name">var <span class="ident">name</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>If there is only one field, we set that here. If there is more that one this is <code>None</code>, see <code>self.names</code>.</p></div>
+</dd>
+<dt id="dynamo_pydantic.types.DynFieldInfo.names"><code class="name">var <span class="ident">names</span> : list[str]</code></dt>
+<dd>
+<div class="desc"><p>Regardless if this came from one or more fields, we list them here,
+So there will always be a list with at least one value in it.</p></div>
+</dd>
+<dt id="dynamo_pydantic.types.DynFieldInfo.py_type"><code class="name">var <span class="ident">py_type</span> : Type</code></dt>
+<dd>
+<div class="desc"><p>str(object='') -&gt; str
+str(bytes_or_buffer[, encoding[, errors]]) -&gt; str</p>
+<p>Create a new string object from the given object. If encoding or
+errors is specified, then the object must expose a data buffer
+that will be decoded using the given encoding and error handler.
+Otherwise, returns the result of object.<strong>str</strong>() (if defined)
+or repr(object).
+encoding defaults to 'utf-8'.
+errors defaults to 'strict'.</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="dynamo_pydantic.types.DynFieldInfo.copy"><code class="name flex">
+<span>def <span class="ident">copy</span></span>(<span>self) ‑> <a title="dynamo_pydantic.types.DynFieldInfo" href="#dynamo_pydantic.types.DynFieldInfo">DynFieldInfo</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def copy(self) -&gt; DynFieldInfo:
+    return dataclasses.replace(self)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="dynamo_pydantic.types.DynFieldInfo.merge_with_field"><code class="name flex">
+<span>def <span class="ident">merge_with_field</span></span>(<span>self,<br>dyn_field: <a title="dynamo_pydantic.types.DynField" href="#dynamo_pydantic.types.DynField">DynField</a>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def merge_with_field(self, dyn_field: DynField):
+    # We go though all of are attrs, and set the ones that have a value.
+    # Consider anything with the `Default` sentinal-value as not having any value.
+    for k in [&#39;key_type&#39;, &#39;py_type&#39;, &#39;dy_type&#39;]:
+        v = getattr(dyn_field, k)
+        if v is not Default:
+            setattr(self, k, v)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="dynamo_pydantic.types.KeyType"><code class="flex name class">
+<span>class <span class="ident">KeyType</span></span>
+<span>(</span><span>*values)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class KeyType(StrEnum):
+    hash = auto()
+    sort = auto()</code></pre>
+</details>
+<div class="desc"><p>Enum where members are also (and must be) strings</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>enum.StrEnum</li>
+<li>builtins.str</li>
+<li>enum.ReprEnum</li>
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="dynamo_pydantic.types.KeyType.hash"><code class="name">var <span class="ident">hash</span></code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="dynamo_pydantic.types.KeyType.sort"><code class="name">var <span class="ident">sort</span></code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="dynamo_pydantic" href="index.html">dynamo_pydantic</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-variables">Global variables</a></h3>
+<ul class="">
+<li><code><a title="dynamo_pydantic.types.Key" href="#dynamo_pydantic.types.Key">Key</a></code></li>
+<li><code><a title="dynamo_pydantic.types.Query" href="#dynamo_pydantic.types.Query">Query</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="dynamo_pydantic.types.DynField" href="#dynamo_pydantic.types.DynField">DynField</a></code></h4>
+<ul class="">
+<li><code><a title="dynamo_pydantic.types.DynField.copy" href="#dynamo_pydantic.types.DynField.copy">copy</a></code></li>
+<li><code><a title="dynamo_pydantic.types.DynField.dy_type" href="#dynamo_pydantic.types.DynField.dy_type">dy_type</a></code></li>
+<li><code><a title="dynamo_pydantic.types.DynField.key_type" href="#dynamo_pydantic.types.DynField.key_type">key_type</a></code></li>
+<li><code><a title="dynamo_pydantic.types.DynField.merge" href="#dynamo_pydantic.types.DynField.merge">merge</a></code></li>
+<li><code><a title="dynamo_pydantic.types.DynField.py_type" href="#dynamo_pydantic.types.DynField.py_type">py_type</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="dynamo_pydantic.types.DynFieldInfo" href="#dynamo_pydantic.types.DynFieldInfo">DynFieldInfo</a></code></h4>
+<ul class="">
+<li><code><a title="dynamo_pydantic.types.DynFieldInfo.copy" href="#dynamo_pydantic.types.DynFieldInfo.copy">copy</a></code></li>
+<li><code><a title="dynamo_pydantic.types.DynFieldInfo.dy_name" href="#dynamo_pydantic.types.DynFieldInfo.dy_name">dy_name</a></code></li>
+<li><code><a title="dynamo_pydantic.types.DynFieldInfo.dy_type" href="#dynamo_pydantic.types.DynFieldInfo.dy_type">dy_type</a></code></li>
+<li><code><a title="dynamo_pydantic.types.DynFieldInfo.from_field" href="#dynamo_pydantic.types.DynFieldInfo.from_field">from_field</a></code></li>
+<li><code><a title="dynamo_pydantic.types.DynFieldInfo.from_multiple_fields" href="#dynamo_pydantic.types.DynFieldInfo.from_multiple_fields">from_multiple_fields</a></code></li>
+<li><code><a title="dynamo_pydantic.types.DynFieldInfo.key_type" href="#dynamo_pydantic.types.DynFieldInfo.key_type">key_type</a></code></li>
+<li><code><a title="dynamo_pydantic.types.DynFieldInfo.merge_with_field" href="#dynamo_pydantic.types.DynFieldInfo.merge_with_field">merge_with_field</a></code></li>
+<li><code><a title="dynamo_pydantic.types.DynFieldInfo.name" href="#dynamo_pydantic.types.DynFieldInfo.name">name</a></code></li>
+<li><code><a title="dynamo_pydantic.types.DynFieldInfo.names" href="#dynamo_pydantic.types.DynFieldInfo.names">names</a></code></li>
+<li><code><a title="dynamo_pydantic.types.DynFieldInfo.py_type" href="#dynamo_pydantic.types.DynFieldInfo.py_type">py_type</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="dynamo_pydantic.types.KeyType" href="#dynamo_pydantic.types.KeyType">KeyType</a></code></h4>
+<ul class="">
+<li><code><a title="dynamo_pydantic.types.KeyType.hash" href="#dynamo_pydantic.types.KeyType.hash">hash</a></code></li>
+<li><code><a title="dynamo_pydantic.types.KeyType.sort" href="#dynamo_pydantic.types.KeyType.sort">sort</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
+</footer>
+</body>
+</html>

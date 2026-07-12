@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.6">
+<title>dynamo_pydantic.table API documentation</title>
+<meta name="description" content="Used to keep track of a shared connection and Dynamo table resources …">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>dynamo_pydantic.table</code></h1>
+</header>
+<section id="section-intro">
+<p>Used to keep track of a shared connection and Dynamo table resources.</p>
+<p>If you want to easily send/get information from Dynamo via orm.</p>
+<p>Important Classes</p>
+<ul>
+<li>
+<p><code>DynamoDB</code>: A resource (see <code>xyn_resource</code> for more details) that keeps
+track of a shared boto3 dynamo session/connection. It also caches the fact if a table
+is created (ie: no need to check every time, just the first time we use a table).</p>
+</li>
+<li>
+<p><code>DynamoTableCreator</code>: Interface used by <code>DynamoDB</code> to have an easy way to initiate the creation
+of a Dynamo table if needed (if it does not exist).</p>
+</li>
+</ul>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="dynamo_pydantic.table.TableRepo"><code class="flex name class">
+<span>class <span class="ident">TableRepo</span></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TableRepo(DependencyPerThread, attributes_to_skip_while_copying=[&#34;_table&#34;, &#34;_verified&#34;, &#34;_db&#34;]):
+    &#34;&#34;&#34;
+    Resource that represents a DynamoDB connection.  This allows us to pool the dynamo
+    connection among everything that uses Dynamo, so that we can reuse existing connections.
+    This speeds up Dynamo by a fair amount.  Every time you open a connection with Dynamo,
+    it has to figure out how to get the encryption key, but subsequent requests using the same
+    connection don&#39;t have to.
+    &#34;&#34;&#34;
+    _tables: Dict[str, Table]
+    _verified: Dict[str, bool]
+
+    def __init__(self):
+        self._tables = {}
+        self._verified = {}
+
+    def table__for_client(self, client: &#39;DynObjManager&#39;, create_if_needed: bool = False) -&gt; Table:
+        if create_if_needed:
+            return self._create_table_if_needed(client)
+        return self.table(client.table_name)
+
+    def table(self, full_name: str) -&gt; Table:
+        &#34;&#34;&#34;
+        Returns existing table or creates + returns one if we don&#39;t have the resource
+        currently. When we create a new one, we will remember it in a weak-fashion in
+        case we get asked again. Once all other references to the table resource are
+        gone the python garbage-collector will clean up our reference automatically.
+        If that happens, and we get asked for that table, we will create and
+        return a new one [and remember if for future use].
+
+        The reason to provide a table_creator is so you can easily Mock DynamoDB, as it
+        will be created in the &#39;Mock&#39; framework automatically.
+
+        Also when devs run the code locally without deploying it, it will create the table
+        for them.
+
+        When you deploy code via serverless, it should be the thing the creates the table
+        for the deployed environment [ie: testing/prod/etc].  The table should already exist
+        that way when the app runs, and so it does **NOT** need table-creating AWS permissions.
+
+        Args:
+            full_name: Fully qualified name of the table to get a resource for.
+            table_creator (Union[DynamoTableCreator, None]): ...
+                If None: Won&#39;t verify table is created or ready.
+
+                If DynamoTableCreator:
+                    Verifies the table exists and is ready. If it does not exist we create
+                    the table by &#39;calling&#39; what&#39;s passed in here and wait for it to be ready.
+                    If the table is in a status that indicates it can&#39;t be used at the moment
+                    [example: If table is &#39;DELETING&#39;], we raise an XynLibError.
+        &#34;&#34;&#34;
+        table = self._tables.get(full_name)
+        if table is not None:
+            return table
+
+        table = dynamodb.Table(full_name)
+
+        # Don&#39;t verify table if we don&#39;t have a table creator, just return it.
+        self._tables[full_name] = table
+        self._verified.setdefault(full_name, False)
+        return table
+
+    def _create_table_if_needed(self, client: DynObjManager) -&gt; Table:
+        &#34;&#34;&#34;
+        This is mainly here to create table when mocking aws for unit tests. If the table
+        really does not exist in reality, this also can create it.
+
+        Time To Live Notes:
+
+        We can&#39;t enable TimeToLive during table creation, we have to wait until after it&#39;s
+        created. This is a minor issue, since the table will still function correctly,
+        the queries will still filter out expired items like normal.  The only difference
+        is we could get charged extra for storage we are not using. We need to still filter
+        items out of our queries because deletion does not happen immediately [could take up
+        to 48 hours].
+
+        At this point, it&#39;s expected that you&#39;ll have to go into the AWS dynamo console
+        to set up automatic TimeToLive item deletion for a table if you want this to create it for
+        you.
+
+        In reality, serverless framework is expected to setup the real tables for services that
+        are running directly in aws; and that&#39;s where you should setup the TTL stuff for real
+        tables.
+        &#34;&#34;&#34;
+        name = client.table_name
+        verified = self._verified.get(name, False)
+
+        try:
+            # TODO: Make this more customizable (on when we want to create tables automatically)
+            #   Right now this does NOT happen by default unless someone sets the environment to &#39;unittest&#39; or &#39;local&#39;
+            #   manually/directly or if APP_ENV (env-variable) is set to one of these values.
+            # We only verify/create-table-if-needed in specific environments.
+            if not dyn_settings.create_tables_if_needed:
+                verified = True
+        except ImportError:
+            # If `xcon` unavailable, just assume we don&#39;t want to auto-create tables
+            # todo: Put in a configurable setting that allows one to turn on/off
+            #       auto-table-creation.
+            #       (and some way to communicate billing mode???).
+            #
+            # todo: Log about why not creating tables, but log it only once.
+            verified = True
+
+        table = self._tables.get(name)
+        if table is not None and verified:
+            return table
+
+        if table is None:
+            table = dynamodb.Table(name)
+
+        if verified:
+            self._tables[name] = table
+            return table
+
+        try:
+            log.info(f&#34;Getting Table Status for ({name}).&#34;)
+            status = table.table_status
+            # It turns out, a table is still usable while &#34;UPDATING&#34;, so only worry about
+            # DELETING and CREATING.
+            if status == &#34;CREATING&#34;:
+                log.warning(
+                    f&#34;Dynamo status for table ({name}) is CREATING; based on past experience &#34;
+                    f&#34;we can still use the table [to at least read values] if the table is &#34;
+                    f&#34;being restored from backup while it&#39;s in the CREATING status. So I am not &#34;
+                    f&#34;going to wait for table to become ACTIVE, I&#39;ll try to use the table &#34;
+                    f&#34;immediately.&#34;
+                )
+                # This is how we could wait for the table, disabling for now, see log.warning ^^^
+                # table.wait_until_exists()
+            elif status == &#34;DELETING&#34;:
+                raise DynamoError(f&#34;Dynamo Table ({name}) status is &#39;DELETING&#39;???&#34;)
+        except ClientError:
+            # This means the table has not been created yet, we create and wait for it to exist.
+            log.warning(f&#34;Dynamo table ({name}) does not exist, creating...&#34;)
+            table = self._create_table(client)
+            table.wait_until_exists()
+
+        self._tables[name] = table
+        self._verified[name] = True
+        return table
+
+    def _create_table(self, client: DynObjManager):
+        if not client.hash_key_info.dy_name:
+            raise DynamoError(
+                f&#34;While creating table for ({client}), found no partition-key field name; dynamo tables&#34;
+                f&#34;need a hash-field.&#34;
+            )
+
+        hash_info = client.hash_key_info
+        key_schemas = [
+            # Partition Key
+            {&#39;AttributeName&#39;: hash_info.dy_name, &#39;KeyType&#39;: &#39;HASH&#39;}
+        ]
+        attribute_definitions = [
+            {
+                &#39;AttributeName&#39;: hash_info.dy_name,
+                &#39;AttributeType&#39;: hash_info.dy_type
+            }
+        ]
+
+        # If we have a sort-key, add that in.
+        if sort_info := client.sort_key_info:
+            key_schemas.append({
+                &#39;AttributeName&#39;: sort_info.dy_name,
+                &#39;KeyType&#39;: &#39;RANGE&#39;,
+            })
+            attribute_definitions.append({
+                &#39;AttributeName&#39;: sort_info.dy_name,
+                &#39;AttributeType&#39;: sort_info.dy_type,
+            })
+
+        return dynamodb.create_table(
+            TableName=client.table_name,
+            KeySchema=key_schemas,
+            AttributeDefinitions=attribute_definitions,
+            BillingMode=&#39;PAY_PER_REQUEST&#39;,
+            # TODO: Provide better group-by key via settings.
+            # Tags=[{&#39;Key&#39;: &#39;DDBTableGroupKey&#39;, &#39;Value&#39;: xcon_settings.service}]
+        )</code></pre>
+</details>
+<div class="desc"><p>Resource that represents a DynamoDB connection.
+This allows us to pool the dynamo
+connection among everything that uses Dynamo, so that we can reuse existing connections.
+This speeds up Dynamo by a fair amount.
+Every time you open a connection with Dynamo,
+it has to figure out how to get the encryption key, but subsequent requests using the same
+connection don't have to.</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="xinject.dependency.DependencyPerThread" href="../xinject/dependency.html#xinject.dependency.DependencyPerThread">DependencyPerThread</a></li>
+<li><a title="xinject.dependency.Dependency" href="../xinject/dependency.html#xinject.dependency.Dependency">Dependency</a></li>
+</ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="dynamo_pydantic.table.TableRepo.__init_subclass__"><code class="name flex">
+<span>def <span class="ident">__init_subclass__</span></span>(<span>thread_sharable: bool | <a title="xsentinels.default.DefaultType" href="../xsentinels/default.html#xsentinels.default.DefaultType">DefaultType</a> = Default,<br>remove_between_unittests: bool | <a title="xsentinels.default.DefaultType" href="../xsentinels/default.html#xsentinels.default.DefaultType">DefaultType</a> = Default,<br>attributes_to_skip_while_copying: Iterable[str] | None = Default,<br>**kwargs)</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="xinject.dependency.DependencyPerThread" href="../xinject/dependency.html#xinject.dependency.DependencyPerThread">DependencyPerThread</a></code>.<code><a title="xinject.dependency.DependencyPerThread.__init_subclass__" href="../xinject/dependency.html#xinject.dependency.DependencyPerThread.__init_subclass__">__init_subclass__</a></code>
+</p>
+<div class="desc inherited"><h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>remove_between_unittests</code></strong></dt>
+<dd>If <code>False</code> (default): Dependency will be removed from global context before/after
+as each individual …</dd>
+</dl></div>
+</dd>
+<dt id="dynamo_pydantic.table.TableRepo.grab"><code class="name flex">
+<span>def <span class="ident">grab</span></span>(<span>) ‑> ~T</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="xinject.dependency.DependencyPerThread" href="../xinject/dependency.html#xinject.dependency.DependencyPerThread">DependencyPerThread</a></code>.<code><a title="xinject.dependency.DependencyPerThread.grab" href="../xinject/dependency.html#xinject.dependency.DependencyPerThread.grab">grab</a></code>
+</p>
+<div class="desc inherited"><p>Gets a potentially shared dependency from the current <code>udpend.context.XContext</code> …</p></div>
+</dd>
+<dt id="dynamo_pydantic.table.TableRepo.proxy"><code class="name flex">
+<span>def <span class="ident">proxy</span></span>(<span>) ‑> ~R</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="xinject.dependency.DependencyPerThread" href="../xinject/dependency.html#xinject.dependency.DependencyPerThread">DependencyPerThread</a></code>.<code><a title="xinject.dependency.DependencyPerThread.proxy" href="../xinject/dependency.html#xinject.dependency.DependencyPerThread.proxy">proxy</a></code>
+</p>
+<div class="desc inherited"><p>Returns a proxy-object, that when and attribute is asked for, it will
+proxy it to the current object of <code>cls</code> …</p></div>
+</dd>
+<dt id="dynamo_pydantic.table.TableRepo.proxy_attribute"><code class="name flex">
+<span>def <span class="ident">proxy_attribute</span></span>(<span>attribute_name: str) ‑> Any</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="xinject.dependency.DependencyPerThread" href="../xinject/dependency.html#xinject.dependency.DependencyPerThread">DependencyPerThread</a></code>.<code><a title="xinject.dependency.DependencyPerThread.proxy_attribute" href="../xinject/dependency.html#xinject.dependency.DependencyPerThread.proxy_attribute">proxy_attribute</a></code>
+</p>
+<div class="desc inherited"><p>Returns a proxy-object, that when and attribute is asked for, it will
+proxy it to the current attribute value on the current object of <code>cls</code> …</p></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="dynamo_pydantic.table.TableRepo.obj"><code class="name">var <span class="ident">obj</span> : ClassVar[Self]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="xinject.dependency.DependencyPerThread" href="../xinject/dependency.html#xinject.dependency.DependencyPerThread">DependencyPerThread</a></code>.<code><a title="xinject.dependency.DependencyPerThread.obj" href="../xinject/dependency.html#xinject.dependency.DependencyPerThread.obj">obj</a></code>
+</p>
+<div class="desc inherited"><p>class property/attribute that will return the current dependency for the subclass
+it's asked on by calling <code>Dependency.grab</code>, passing no extra …</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="dynamo_pydantic.table.TableRepo.__call__"><code class="name flex">
+<span>def <span class="ident">__call__</span></span>(<span>self, func)</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="xinject.dependency.DependencyPerThread" href="../xinject/dependency.html#xinject.dependency.DependencyPerThread">DependencyPerThread</a></code>.<code><a title="xinject.dependency.DependencyPerThread.__call__" href="../xinject/dependency.html#xinject.dependency.DependencyPerThread.__call__">__call__</a></code>
+</p>
+<div class="desc inherited"><p>This makes Resource subclasses have an ability to be used as function decorators
+by default unless this method is overriden to provide some other …</p></div>
+</dd>
+<dt id="dynamo_pydantic.table.TableRepo.__copy__"><code class="name flex">
+<span>def <span class="ident">__copy__</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="xinject.dependency.DependencyPerThread" href="../xinject/dependency.html#xinject.dependency.DependencyPerThread">DependencyPerThread</a></code>.<code><a title="xinject.dependency.DependencyPerThread.__copy__" href="../xinject/dependency.html#xinject.dependency.DependencyPerThread.__copy__">__copy__</a></code>
+</p>
+<div class="desc inherited"><p>Basic shallow copy protection
+(I am wondering if I should just remove this default copy code) …</p></div>
+</dd>
+<dt id="dynamo_pydantic.table.TableRepo.table"><code class="name flex">
+<span>def <span class="ident">table</span></span>(<span>self, full_name: str) ‑> mypy_boto3_dynamodb.service_resource.Table</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def table(self, full_name: str) -&gt; Table:
+    &#34;&#34;&#34;
+    Returns existing table or creates + returns one if we don&#39;t have the resource
+    currently. When we create a new one, we will remember it in a weak-fashion in
+    case we get asked again. Once all other references to the table resource are
+    gone the python garbage-collector will clean up our reference automatically.
+    If that happens, and we get asked for that table, we will create and
+    return a new one [and remember if for future use].
+
+    The reason to provide a table_creator is so you can easily Mock DynamoDB, as it
+    will be created in the &#39;Mock&#39; framework automatically.
+
+    Also when devs run the code locally without deploying it, it will create the table
+    for them.
+
+    When you deploy code via serverless, it should be the thing the creates the table
+    for the deployed environment [ie: testing/prod/etc].  The table should already exist
+    that way when the app runs, and so it does **NOT** need table-creating AWS permissions.
+
+    Args:
+        full_name: Fully qualified name of the table to get a resource for.
+        table_creator (Union[DynamoTableCreator, None]): ...
+            If None: Won&#39;t verify table is created or ready.
+
+            If DynamoTableCreator:
+                Verifies the table exists and is ready. If it does not exist we create
+                the table by &#39;calling&#39; what&#39;s passed in here and wait for it to be ready.
+                If the table is in a status that indicates it can&#39;t be used at the moment
+                [example: If table is &#39;DELETING&#39;], we raise an XynLibError.
+    &#34;&#34;&#34;
+    table = self._tables.get(full_name)
+    if table is not None:
+        return table
+
+    table = dynamodb.Table(full_name)
+
+    # Don&#39;t verify table if we don&#39;t have a table creator, just return it.
+    self._tables[full_name] = table
+    self._verified.setdefault(full_name, False)
+    return table</code></pre>
+</details>
+<div class="desc"><p>Returns existing table or creates + returns one if we don't have the resource
+currently. When we create a new one, we will remember it in a weak-fashion in
+case we get asked again. Once all other references to the table resource are
+gone the python garbage-collector will clean up our reference automatically.
+If that happens, and we get asked for that table, we will create and
+return a new one [and remember if for future use].</p>
+<p>The reason to provide a table_creator is so you can easily Mock DynamoDB, as it
+will be created in the 'Mock' framework automatically.</p>
+<p>Also when devs run the code locally without deploying it, it will create the table
+for them.</p>
+<p>When you deploy code via serverless, it should be the thing the creates the table
+for the deployed environment [ie: testing/prod/etc].
+The table should already exist
+that way when the app runs, and so it does <strong>NOT</strong> need table-creating AWS permissions.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>full_name</code></strong></dt>
+<dd>Fully qualified name of the table to get a resource for.</dd>
+<dt><strong><code>table_creator</code></strong> :&ensp;<code>Union[DynamoTableCreator, None]</code></dt>
+<dd>
+<p>&hellip;
+If None: Won't verify table is created or ready.</p>
+<p>If DynamoTableCreator:
+Verifies the table exists and is ready. If it does not exist we create
+the table by 'calling' what's passed in here and wait for it to be ready.
+If the table is in a status that indicates it can't be used at the moment
+[example: If table is 'DELETING'], we raise an XynLibError.</p>
+</dd>
+</dl></div>
+</dd>
+<dt id="dynamo_pydantic.table.TableRepo.table__for_client"><code class="name flex">
+<span>def <span class="ident">table__for_client</span></span>(<span>self, client: DynObjManager, create_if_needed: bool = False) ‑> mypy_boto3_dynamodb.service_resource.Table</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def table__for_client(self, client: &#39;DynObjManager&#39;, create_if_needed: bool = False) -&gt; Table:
+    if create_if_needed:
+        return self._create_table_if_needed(client)
+    return self.table(client.table_name)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="dynamo_pydantic" href="index.html">dynamo_pydantic</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="dynamo_pydantic.table.TableRepo" href="#dynamo_pydantic.table.TableRepo">TableRepo</a></code></h4>
+<ul class="two-column">
+<li><code><a title="dynamo_pydantic.table.TableRepo.__call__" href="../xinject/dependency.html#dynamo_pydantic.table.TableRepo.__call__">__call__</a></code></li>
+<li><code><a title="dynamo_pydantic.table.TableRepo.__copy__" href="../xinject/dependency.html#dynamo_pydantic.table.TableRepo.__copy__">__copy__</a></code></li>
+<li><code><a title="dynamo_pydantic.table.TableRepo.__init_subclass__" href="../xinject/dependency.html#dynamo_pydantic.table.TableRepo.__init_subclass__">__init_subclass__</a></code></li>
+<li><code><a title="dynamo_pydantic.table.TableRepo.grab" href="../xinject/dependency.html#dynamo_pydantic.table.TableRepo.grab">grab</a></code></li>
+<li><code><a title="dynamo_pydantic.table.TableRepo.obj" href="../xinject/dependency.html#dynamo_pydantic.table.TableRepo.obj">obj</a></code></li>
+<li><code><a title="dynamo_pydantic.table.TableRepo.proxy" href="../xinject/dependency.html#dynamo_pydantic.table.TableRepo.proxy">proxy</a></code></li>
+<li><code><a title="dynamo_pydantic.table.TableRepo.proxy_attribute" href="../xinject/dependency.html#dynamo_pydantic.table.TableRepo.proxy_attribute">proxy_attribute</a></code></li>
+<li><code><a title="dynamo_pydantic.table.TableRepo.table" href="#dynamo_pydantic.table.TableRepo.table">table</a></code></li>
+<li><code><a title="dynamo_pydantic.table.TableRepo.table__for_client" href="#dynamo_pydantic.table.TableRepo.table__for_client">table__for_client</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
+</footer>
+</body>
+</html>

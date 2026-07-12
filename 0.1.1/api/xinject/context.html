@@ -1,0 +1,2638 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.6">
+<title>xinject.context API documentation</title>
+<meta name="description" content="Manage shared dependency and dependency injection …">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>xinject.context</code></h1>
+</header>
+<section id="section-intro">
+<p>Manage shared dependency and dependency injection.</p>
+<h1 id="to-do-first">To Do First:</h1>
+<p>If you have not already, to get a nice high-level overview of library see either:</p>
+<ul>
+<li>project README.md here:<ul>
+<li><a href="https://github.com/xyngular/py-xinject#documentation">https://github.com/xyngular/py-xinject#documentation</a></li>
+</ul>
+</li>
+<li>Or go to xinject module documentation at here:<ul>
+<li><a href="./#how-to-use">xinject, How To Use</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="quick-start">Quick Start</h1>
+<h2 id="please-read-first">Please Read First</h2>
+<p>If your looking for a simple example/use of singltone-like dependencies,
+go to <code><a title="xinject.dependency.Dependency" href="dependency.html#xinject.dependency.Dependency">Dependency</a></code>.</p>
+<p>The whole point of the <code><a title="xinject.context.XContext" href="#xinject.context.XContext">XContext</a></code> is to have a place to get shared dependencies.</p>
+<p>Normally, code will use some other convenience methods, as an example:</p>
+<p>Most of the time a dependency will inherit from <code><a title="xinject.dependency.Dependency" href="dependency.html#xinject.dependency.Dependency">Dependency</a></code> and that
+class provides a class method <code><a title="xinject.dependency.Dependency.grab" href="dependency.html#xinject.dependency.Dependency.grab">Dependency.grab()</a></code> to easily get a
+dependency of the inherited type from the current context as a convenience.</p>
+<p>So normally, code would do this to get the current object instance for a Resource:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; class SomeResource(Dependency):
+&gt;&gt;&gt;    my_attribute = &quot;default-value&quot;
+&gt;&gt;&gt;
+&gt;&gt;&gt; # Normally code would do this to interact with current Dependency subclass object:
+&gt;&gt;&gt; SomeResource.grab().my_attribute = &quot;change-value&quot;
+</code></pre>
+<p>Another convenient way to get the current dependency is via the
+<code><a title="xinject.proxy.CurrentDependencyProxy" href="proxy.html#xinject.proxy.CurrentDependencyProxy">CurrentDependencyProxy</a></code>. This class lets you create an object
+that always acts like the current/active object for some Resource.
+So you can define it at the top-level of some module, and code can import it
+and use it directly.</p>
+<p>I would start with <a href="#fundamentals">Fundamentals</a> if you know nothing of how
+<code><a title="xinject.context.XContext" href="#xinject.context.XContext">XContext</a></code> works and want to learn more about how it works.</p>
+<p>Most of the time, you interact with Context indrectly via
+<code><a title="xinject.dependency.Dependency" href="dependency.html#xinject.dependency.Dependency">Dependency</a></code>.
+So getting familiar with Context is more about
+utilize more advance use-cases. I get into some of these advanced use-cases below.</p>
+<div class="admonition important">
+<p class="admonition-title">Important:&ensp;The below is for advanced use-cases and understanding.</p>
+<p>Look at <code><a title="xinject.dependency.Dependency" href="dependency.html#xinject.dependency.Dependency">Dependency</a></code> or docs just above ^^^ for the normal use-case and
+examples / quick starts.</p>
+</div>
+<h1 id="context-overview">Context Overview</h1>
+<p>Context is used to keep track of a set of dependencies. The dependencies are keyed off the class
+type. IE: One dependency per-context per-dependency-type.</p>
+<p>Main Classes:</p>
+<ul>
+<li><code><a title="xinject.context.XContext" href="#xinject.context.XContext">XContext</a></code>: Container of dependencies, mapped by type.</li>
+<li>For Resource Subclasses:<ul>
+<li><code><a title="xinject.dependency.Dependency" href="dependency.html#xinject.dependency.Dependency">Dependency</a></code>: Nice interface to easily get the current dependency.
+Used to implment a something that should be shared and not generally duplicated,
+like a soft-singleton.</li>
+</ul>
+</li>
+</ul>
+<h1 id="fundamentals">Fundamentals</h1>
+<p><code><a title="xinject.context.XContext" href="#xinject.context.XContext">XContext</a></code> is like a container, used to store various objects we are calling
+dependencies.</p>
+<p>Used to store various dependencies of any type
+in general [ie: configs, auths, clients, etc].
+All of these dependencies together represent a sort of "context" from which various pieces of code
+can easily get them; that way they can 'share' the dependency when appropriate. This is a way
+to do dependcy injection in a easier and more reliable way since you don't have to worry
+about passing these dependencies around everywhere manually.</p>
+<p>The values are mapped by their type.
+When a dependency of a specific type is asked for,
+the Context will return it if it finds it. If not found it will create it, add it to its self
+and return it. Future calls will return this new dependency.</p>
+<p><code><a title="xinject.context.XContext" href="#xinject.context.XContext">XContext</a></code> can optionally have a parent. By default, a newly created/used Context
+will use the current context Normally, dependencies are still normally created even if a
+parent has a value, as long as the current context does not have one yet.</p>
+<p>This behavior can be customized by the dependency, see one of these for details:</p>
+<ul>
+<li><code><a title="xinject.dependency.Dependency" href="dependency.html#xinject.dependency.Dependency">Dependency</a></code><ul>
+<li>Useful for a shared/soft overridable shared object; where you can easily get the current
+version of it.</li>
+</ul>
+</li>
+</ul>
+<h2 id="dependencies">Dependencies</h2>
+<p>There are various ways to get dependencies from the current context. Let's say we have
+a dependency called <code>SomeResourceType</code>:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; next_identifier = 0
+&gt;&gt;&gt; class SomeResourceType(Dependency):
+...     def __init__(self):
+...         global next_identifier
+...         self.some_value = &quot;hello!&quot;
+...         self.ident = next_identifier
+...         next_identifier += 1
+</code></pre>
+<div class="admonition note">
+<p class="admonition-title">Note:&ensp;SomeResourceType's <code>ident</code> field gets incremented and set on each newly created object.</p>
+<p>So the first SomeResoureType's <code>ident</code> will equal <code>0</code>,
+the second one created will be <code>1</code> and so forth.</p>
+</div>
+<p>If what you want inherits from <code><a title="xinject.dependency.Dependency" href="dependency.html#xinject.dependency.Dependency">Dependency</a></code>, it has a nice class method that
+returns the current dependency.
+The easiest way to get the current dependency for the type in this case is
+to call <code><a title="xinject.dependency.Dependency.grab" href="dependency.html#xinject.dependency.Dependency.grab">Dependency.grab()</a></code> on it's type like so:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; SomeResourceType.grab().some_value
+'hello!'
+&gt;&gt;&gt; SomeResourceType.grab().ident
+0
+</code></pre>
+<p>When a Context does not have the dependency, by default it will create it for you, as you
+saw in the previous example.</p>
+<p><code><a title="xinject.context.XContext.current" href="#xinject.context.XContext.current">XContext.current()</a></code> will return the current Context if no params are passed in, or if a
+type is passed in, it will return the current Context's dependency for the passed in type.</p>
+<p>This means another way to grab dependencies is to get the current <code><a title="xinject.context.XContext.current" href="#xinject.context.XContext.current">XContext.current()</a></code>,
+and then ask it for the dependency like below. This works for any type, including
+types that don't inherit from <code><a title="xinject.dependency.Dependency" href="dependency.html#xinject.dependency.Dependency">Dependency</a></code>:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; XContext.grab().grab(SomeResourceType).some_value
+'hello!'
+</code></pre>
+<p>If you pass a type into <code><a title="xinject.context.XContext.current" href="#xinject.context.XContext.current">XContext.current()</a></code>, it will do the above ^ for you:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; XContext.current(SomeResourceType).some_value
+'hello!'
+&gt;&gt;&gt; XContext.current(SomeResourceType).ident
+0
+</code></pre>
+<p>As you can see, it still returns the same object [ie: <code>ident == 0</code>]</p>
+<h2 id="activating-new-resource">Activating New Resource</h2>
+<p>You can easily create a new dependency, configure it however you like and then 'activate' it,
+so it's the current version of that dependency. This allows you to 'override' and activate your
+own copy of a dependency.</p>
+<p>You can do it via one of the below listed methods/examples below.</p>
+<p>For these examples, say I have this dependency defined:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; from dataclasses import dataclass
+&gt;&gt;&gt; from xinject import Dependency
+&gt;&gt;&gt;
+&gt;&gt;&gt; @dataclass
+&gt;&gt;&gt; class MyResource(Dependency):
+&gt;&gt;&gt;     some_value = 'default-value'
+&gt;&gt;&gt;
+&gt;&gt;&gt; assert MyResource.grab().some_value == 'default-value'
+</code></pre>
+<ul>
+<li>Use desired <code><a title="xinject.dependency.Dependency" href="dependency.html#xinject.dependency.Dependency">Dependency</a></code> subclass as a method decorator:<pre><code>&gt;&gt;&gt; @MyResource(some_value='new-value')
+&gt;&gt;&gt; def my_method():
+&gt;&gt;&gt;     assert MyResource.grab().some_value == 'new-value'
+</code></pre>
+</li>
+</ul>
+<h2 id="activating-new-context">Activating New Context</h2>
+<p>When you create a new context, you can activate it to make it the current context in four ways
+(listed below).</p>
+<ol>
+<li>Via the <code>with</code> statement.</li>
+<li>As a method dectorator, ie: <code>@</code>.</li>
+<li>Using <code>with</code> or <code>@</code> for a <code><a title="xinject.dependency.Dependency" href="dependency.html#xinject.dependency.Dependency">Dependency</a></code>,
+that will create and activate a new <code>UContext</code> with the newley activated dependency in it.</li>
+<li>When running a unit-test where xinject is installed as a dependency,
+because the <code>xinject.ptest_plugin.xinject_test_context</code> fixture is auto-used in this case.
+This fixture creates a new <code>UContext with a </code>None` parent;
+that will isolate dependencies between each run of a unit test method.</li>
+</ol>
+<h3 id="examples">Examples</h3>
+<p>Here are examples of the four ways to create/activate a new context:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; with XContext():
+...     SomeResourceType.grab().ident
+1
+</code></pre>
+<p>This is stack-able as well; as in this can keep track of a stack of contexts, in a
+thread-safe way.</p>
+<p>When the context manager or decorated method is exited, it will pop-off the context,
+and it won't
+be the default one anymore. Whatever the default one was before you entered the <code>with</code> will
+be the default once more.</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; @XContext():
+&gt;&gt;&gt; def a_decorated_method():
+...     return SomeResourceType.grab().ident
+&gt;&gt;&gt; a_decorated_method()
+2
+&gt;&gt;&gt; a_decorated_method()
+3
+&gt;&gt;&gt; SomeResourceType.grab().ident
+0
+</code></pre>
+<p>As you can see, after the method exits the old context takes over, and it already had the
+older version of the dependency and so returns that one.</p>
+<p>By default, a context will create a dependency when it's asked for it, and it does not have it
+already. As you saw above, every time a blank Context was created, it also created a new
+SomeResourceType when it was asked for it because the new blank <code><a title="xinject.context.XContext" href="#xinject.context.XContext">XContext</a></code>
+did not already have the dependency.</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; with XContext():
+&gt;&gt;&gt;     SomeResourceType.grab().ident
+4
+</code></pre>
+<p>There is a pytest plugin with an auto-use fixture that will create brand-new app + thread root
+UContext's; so that each unit test function run will start with no dependecies from other tests.</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; def test_some_text(context):
+...    # This is guaranteed to be a newly created &lt;code&gt;SomeResourceType&lt;/code&gt;.
+...    SomeResourceType.grab()
+</code></pre>
+<p>There are ways to share dependency in a parent Context that a new blank context would beable
+to use. But that's more advanced usage. The above should be enough to get you started quickly.
+See below for more advanced usage patterns.</p>
+<h1 id="parents">Parents</h1>
+<p>A Context can have a parent (<code><a title="xinject.context.XContext.parent" href="#xinject.context.XContext.parent">XContext.parent</a></code>) or event a chain of them (<code><a title="xinject.context.XContext.ctx_chain" href="#xinject.context.XContext.ctx_chain">XContext.ctx_chain()</a></code>).
+The parent is figured out dynamically based on the current thread and a special internal <code>contextvars.ContextVar</code>.</p>
+<p>Because it's the safest thing to do by default for naive dependencies, Context's normally don't
+consult parents for basic dependencies, they will just create them if they don't already have them.</p>
+<p>You can customize this behavior. There are some default dependency base classes that will implment
+a few common patterns for you. You can see how they work to get ideas, and customize the process
+for your own dependency when needed. See <a href="#dependency-base-classes.">Resource Base Classes</a> below for
+more details on how to do that.</p>
+<p>You can make an isolated Context by doing:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; XContext(parent=None)
+</code></pre>
+<p>When creating a new context. This will tell the context NOT to use a parent. By default, a
+Context will use the current Context as the time the Context was created as it's parent.
+See <code><a title="xinject.context.XContext.parent" href="#xinject.context.XContext.parent">XContext.parent</a></code> for more details.</p>
+<p>This is also how the Context test fixture works (see <code>xinject.ptest_plugin.xinject_test_context</code>).
+It creates a new parent-less context and activates it while the fixture is used.</p>
+<h1 id="resource-base-classes">Resource Base Classes</h1>
+<h3 id="dependency"><code><a title="xinject.dependency.Dependency" href="dependency.html#xinject.dependency.Dependency">Dependency</a></code></h3>
+<p>You can implment the singleton-pattern easily by inherting from the
+<code><a title="xinject.dependency.Dependency" href="dependency.html#xinject.dependency.Dependency">Dependency</a></code> class.
+This will try it's best to ensure only one dependency is used amoung a chain/tree of parents.
+It does this by returning <code>self</code> when <code><a title="xinject.context.XContext" href="#xinject.context.XContext">XContext</a></code> asks it what it wants to do when
+a child-context asks for the dependency of a specific type.</p>
+<p>Since <code><a title="xinject.dependency.Dependency" href="dependency.html#xinject.dependency.Dependency">Dependency</a></code> can be shared amoung many diffrent child Context objects,
+and makes the same instance always 'look' like it's the current one;
+generally only one is every made or used.</p>
+<p>However, you can create a new Context, make it current and put a diffrent instance of the
+dependency in it to 'override' this behavior.
+See <a href="#activating-new-dependency">Activating New Resource</a> for more details.</p>
+<h4 id="example">Example</h4>
+<p>I create a new class that uses our previous <a href="#dependencies">SomeResourceType</a> but adds in a
+<code><a title="xinject.dependency.Dependency" href="dependency.html#xinject.dependency.Dependency">Dependency</a></code>.</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; class MySingleton(SomeResourceType, Dependency):
+...     pass
+&gt;&gt;&gt; MySingleton.grab().ident
+5
+</code></pre>
+<p>Now watch as I do this:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; with XContext():
+...     MySingleton.grab().ident
+5
+</code></pre>
+<p>The same dependency is kept when making a child-context. However, if you make a parent-less
+context:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; with XContext(parent=None):
+...     MySingleton.grab().ident
+6
+</code></pre>
+<p>The <code><a title="xinject.dependency.Dependency" href="dependency.html#xinject.dependency.Dependency">Dependency</a></code> will not see pased the parent-less context,
+and so won't see the old dependency.
+It will create a new one. The <code><a title="xinject.dependency.Dependency" href="dependency.html#xinject.dependency.Dependency">Dependency</a></code> will still create it in the
+furtherest parent it can&hellip; which in this case was the <code><a title="xinject.context.XContext" href="#xinject.context.XContext">XContext</a></code> activated by the
+with statement.</p>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-variables">Global variables</h2>
+<dl>
+<dt id="xinject.context.ResourceTypeVar"><code class="name">var <span class="ident">ResourceTypeVar</span></code></dt>
+<dd>
+<div class="desc"><p>Some sort of Dependency, I am usually emphasizing with this that you need to pass in the
+<code>Type</code> or <code>Class</code> of the Dependency you want.</p></div>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="xinject.context.copy_full_stack_state"><code class="name flex">
+<span>def <span class="ident">copy_full_stack_state</span></span>(<span>) ‑> Any</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def copy_full_stack_state() -&gt; Any:
+    return _XContextOrderedStore.storage()</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="xinject.context.reset_dependencies_in_current_thread_root"><code class="name flex">
+<span>def <span class="ident">reset_dependencies_in_current_thread_root</span></span>(<span>) ‑> None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def reset_dependencies_in_current_thread_root() -&gt; None:
+    &#34;&#34;&#34; Clears all dependencies in the current thread&#39;s root context.
+    &#34;&#34;&#34;
+    _thread_storage.root_ctx._reset_dependencies()</code></pre>
+</details>
+<div class="desc"><p>Clears all dependencies in the current thread's root context.</p></div>
+</dd>
+<dt id="xinject.context.restore_with_full_stack_state"><code class="name flex">
+<span>def <span class="ident">restore_with_full_stack_state</span></span>(<span>stack_state: Any)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def restore_with_full_stack_state(stack_state: Any):
+    stack_state.set_as_current_storage()</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="xinject.context.XContext"><code class="flex name class">
+<span>class <span class="ident">XContext</span></span>
+<span>(</span><span>*,<br>dependencies: Dict[Type, Any] | List[Any] | Any = None,<br>parent: <a title="xsentinels.default.DefaultType" href="../xsentinels/default.html#xsentinels.default.DefaultType">DefaultType</a> | xinject.context._TreatAsRootParentType | None = Default,<br>name: str = None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class XContext:
+    &#34;&#34;&#34;
+    See [Quick Start](#quick-start) in the `xinject.context` module if your new to the XContext
+    class.
+    &#34;&#34;&#34;
+
+    @classmethod
+    def grab(cls) -&gt; &#39;XContext&#39;:
+        &#34;&#34;&#34;
+        Gets the current `XContext` that should be used by default. It does this by calling
+        `XContext.current`.
+        &#34;&#34;&#34;
+        ctx = _XContextOrderedStore.current()
+
+        # If there is nothing in the stack, return thread-root.
+        if ctx is None:
+            return _thread_storage.root_ctx
+
+        if ctx._thread_unique_id != _thread_storage.thread_unique_id:
+            return _thread_storage.root_ctx
+
+        return ctx
+
+    @classmethod
+    def thread_root(cls) -&gt; Self:
+        return _thread_storage.root_ctx
+
+    @classmethod
+    def current(cls, for_type: Type[C]) -&gt; C:
+        &#34;&#34;&#34; Gets the current context that should be used by default, via the Python 3.7 ContextVar
+            feature. Please see XContext class doc [just above] for more details on how this works.
+        &#34;&#34;&#34;
+        context = cls.grab()
+
+        if for_type is XContext:
+            return context
+
+        return context.dependency(for_type=for_type)
+
+    @classmethod
+    def _current_without_creating_thread_root(cls):
+        return _current_context_contextvar.get()
+
+    @property
+    def parent(self) -&gt; Self | None:
+        &#34;&#34;&#34; Returns the next parent relative to us and the current thead.
+            See `XContext.chain` for details on algorithm.
+        &#34;&#34;&#34;
+        # Use `chain` to help us find our next parent.
+        return next(self.ctx_chain(yield_self=False), None)
+
+    @property
+    def name(self) -&gt; str:
+        &#34;&#34;&#34; Name of context (for debugging purposes only).
+            Right now this defaults to a unique number, that gets incremented each time a
+            `XContext` is created (in it&#39;s init method).
+
+            May allow customization in the future.
+        &#34;&#34;&#34;
+        return self._name
+
+    def __init__(
+            self, __func=None, *,
+            dependencies: Union[Dict[Type, Any], List[Any], Any] = None,
+            parent: Union[DefaultType, _TreatAsRootParentType, None] = Default,
+            name: str = None,
+            _thread_unique_id: int | None = None,
+    ):
+        &#34;&#34;&#34;
+        You can give an initial list of dependencies
+        (if desired, most of the time you just start with a blank context).
+
+        for `parent`, it can be set to `xsentinels.default.Default` (default value); or to `None.
+
+        If you don&#39;t pass anything to parent, then the default value of `Default` will cause us
+        to look up the current context and use that for the parent automatically when the
+        XContext is activated.
+        For more information on activating a context see
+        [Activating A XContext](#activating-a-context).
+
+        If you pass in None for parent, no parent will be used/consulted. Normally you&#39;ll only
+        want to do this for a root context. Also, useful for unit testing to isolate testing
+        method dependencies from other unit tests. Right now, the unit-test Dependency isolation
+        happens automatically via an auto-use fixture
+        (`xinject.ptest_plugin.xinject_test_context`).
+
+        A non-activated context will return `xsentinels.default.Default` as it&#39;s `XContext.parent`
+        if it was created with the default value;
+        otherwise we return `None` (if it was created that way).
+
+        Args:
+            dependencies (Union[Dict[Type, Any], List[Any], Any]): If you wish to have the
+                `XContext` your creating have an initial list of dependencies you can pass them
+                in here.
+
+                It can be a single Dependency, or a list of dependencies, or a mapping of
+                dependencies.
+
+                Mainly useful for unit-testing, but could be useful elsewhere too.
+
+                They will be added to use via `XContext.add` for you.
+
+                If you use a dict/mapping, we will use the following for `XContext.add`:
+
+                - Dict-key as the `for_type&#39; method parameter.
+                - Dict-value as the `Dependency` method parameter.
+
+                This allows you to map some standard Dependency type into a completely different
+                type (useful for unit-testing).
+
+                By default, no dependencies are initially added to a new XContext.
+
+            parent (Union[xsentinels.default.Default, _TreatAsRootParent, None]): Unused/Ignored,
+                only here for backwards compatibility only.
+
+            name (str): Optional name.
+                If left as None, by default, this will simply assign a unique sequential
+                number to the name.
+
+                If name is passed in, it will be appended to the unique sequential number.
+
+                When XContext is printed in a string, it will include
+                this as it&#39;s name to make debugging easier.
+
+        &#34;&#34;&#34;
+        if _thread_unique_id is not None:
+            self._thread_unique_id = _thread_unique_id
+        else:
+            self._thread_unique_id = _thread_storage.thread_unique_id
+
+        self._thread_name = threading.current_thread().name
+        self._reset_dependencies()
+
+        if not name:
+            name = &#39;Stack&#39;
+
+        # Unique sequential number.
+        self._name = f&#39;{name}[{threading.current_thread().name}]({_ctx_counter.new_value()})&#39;
+
+        # This means we were used directly as a function decorator, ie:
+        # &gt;&gt;&gt; @XContext
+        # &gt;&gt;&gt; def some_method():
+        # ...     pass
+        #
+        # Store the decorated function for later use
+        # (for when decorated method get&#39;s called).
+        if __func and not callable(__func):
+            raise XInjectError(
+                &#34;First position argument was NOT a callable function; &#34;
+                &#34;The first positional argument `__func` is reserved for a decorated function &#34;
+                &#34;when you do use XContext directly as a decorator, &#34;
+                &#34;ie: `@XContext` (notice no parens at end).&#34;
+            )
+        self._func = __func
+        if __func:
+            # Make our class appear to be &#39;__func&#39;, ie: we are wrapping __func
+            # due to using XContext like this:
+            #
+            # &gt;&gt;&gt; @XContext  # &lt;-- notice not parens at end &#34;()&#34;
+            # &gt;&gt;&gt; def some_method():
+            # ...     pass
+            functools.update_wrapper(self, __func)
+
+        # Add any requested initial dependencies.
+        if isinstance(dependencies, dict):
+            # We have a mapping, use that....
+            for for_type, resource in dependencies.items():
+                self.add(resource, for_type=for_type)
+        elif isinstance(dependencies, list):
+            # We have one or more Dependency values, add each one.
+            for resource in dependencies:
+                self.add(resource)
+        elif dependencies is not None:
+            # Otherwise, we have a single Dependency value.
+            self.add(dependencies)
+
+    # todo: Make it so if there is a parent context, and the current config has no property
+    # todo: it can ask the XContext for the parent config to see if it has what is needed.
+    def add(
+            self, dependency: Any, *, for_type: Type = None
+    ) -&gt; &#34;XContext&#34;:
+        &#34;&#34;&#34;
+        Lets you add a dependency to this context, you can only have one-dependency per-type.
+
+        Returns self so that you can keep calling more methods on it easily.... this allws you
+        to also add a dependency and then use it directly as decorator (only works on python 3.9),
+        ie:
+
+        &gt;&gt;&gt; # Only works on python 3.9+, it relaxes grammar restrictions
+        &gt;&gt;&gt; #    (https://www.python.org/dev/peps/pep-0614/)
+        &gt;&gt;&gt;
+        &gt;&gt;&gt; @XContext().add(2)
+        &gt;&gt;&gt; def some_method()
+        ...     print(f&#34;my int dependency: {XContext.dependency(int)}&#34;)
+        Output: &#34;my int dependency: 2&#34;
+
+        As as side-note, you can easily add resources to a new `xinject.context.XContext` via:
+
+        &gt;&gt;&gt; @XContext(dependencies=[2])
+        &gt;&gt;&gt; def some_method()
+        ...     print(f&#34;my int dependency: {XContext.dependency(int)}&#34;)
+        Output: &#34;my int dependency: 2&#34;
+
+        With the `XContext.add` method, you can subsitute dependency for other
+        dependency types, ie:
+
+        &gt;&gt;&gt; def some_method()
+        ...     context = XContext()
+        ...     context.add(3, for_type=str)
+        ...     print(f&#34;my str dependency: {XContext.dependency(str)}&#34;)
+        Output: &#34;my str dependency: 3&#34;
+
+        If you need to override a dependency, you can create a new context and set me as it&#39;s
+        parent. At that point you can add whatever resources you want before anyone else
+        uses the new `xinject.context.XContext`.
+
+        .. warning:: If you attempt to add a second dependency of the same type...
+            ...a `xinject.errors.XInjectError` will be
+            raised. This is because other objects have already gotten this dependency and are
+            relying on it now.  You need to configure any special resources you want to add
+            to this context early enough before anything else will need it.
+
+        .. todo:: Consider relaxing this ^ and not producing an error [or at least an option
+            to &#39;replace&#39; an existing dependency in an existing Context. I was cautious on this
+            at first because it was the safest thing to do and I could always relax it later
+            if I found that desirable. Careful consideration would have to be made.
+
+        Args:
+            dependency (Any): Object to add as a dependency, it&#39;s type will be mapped to it.
+
+            skip_if_present (bool): If False [default], we raise an exception if dependency
+                of that type is already in context/self.
+
+                If True, we don&#39;t do anything if dependency of that type is already in
+                context/self.
+
+            for_type: You can force a particular mapping by using this option.
+                By default, the `for_type` is set to the type of the passed in dependency
+                [via `type(dependency)`].
+
+                You can override this behavior by passing a type in the `for_type` param.
+                We will then map the dependency for `for_type` to the `dependency` object when
+                a dependency is requested for `for_type` in the future. Will still raise the
+                error if a dependency for `for_type` already exists in Context.
+        Returns:
+            Return `self`, so that you can keep calling more methods easily if needed
+            (ie: .add(), etc)
+        &#34;&#34;&#34;
+        if for_type is None:
+            for_type = type(dependency)
+
+        self._dependencies[for_type] = dependency
+        if self._sibling:
+            self._sibling.add(dependency, for_type=for_type)
+        return self
+
+    def dependency(
+            self, for_type: Type[ResourceTypeVar], *, create: bool = True
+    ) -&gt; ResourceTypeVar:
+        &#34;&#34;&#34;
+
+        ## Summary
+
+        The whole point of the `xinject.context.XContext` is to have a place to get shared
+        dependencies. This method is the primary way to get a shared resource from a XContext
+        directly.
+
+        Normally, code will use some other convenience methods, as an example:
+
+        Normally a resource will inherit from `xinject.dependency.Dependency` and that
+        class provides a class method `xinject.dependency.Dependency.grab` to easily get a
+        resource of the inherited type from the current context as a convenience.
+
+        So normally, code would do this to get a Resource:
+
+        &gt;&gt;&gt; class SomeResource(Dependency):
+        &gt;&gt;&gt;    pass
+        &gt;&gt;&gt; # Normally code would do this to get current Dependency object:
+        &gt;&gt;&gt; SomeResource.grab()
+
+        Another convenient way to get the current resource is via the
+        `xinject.proxy.CurrentDependencyProxy`. This class lets you create an object
+        that always acts like the current/active object for some Resource.
+        So you can define it at the top-level of some module, and code can import it
+        and use it directly.
+
+        I would start with [Quick Start](#quick-start) if you know nothing of how
+        `xinject.context.XContext` works and want to learn more about how it works.
+
+        Most of the time, you interact with Context indrectly via
+        `xinject.dependency.Dependency`.  So getting familure with Context is more about
+        utilize more advance use-cases. I get into some of these advanced use-cases below.
+
+        ## Advanced Usage for Unit Tests
+
+        You can allocate a new Context to inject or customize dependencies. When the context is
+        thrown away or otherwise is not the current context anymore, the idea is whatever
+        resource you made temporarily active is forgotten.
+
+        You can inject/replace dependencies as needed for unit-testing purposes as well by simply
+        adding the resource to a new/blank `xinject.context.XContext` as a diffrent type,
+        see example below.
+
+        In this example, we add a value of int(20) for the `str` resource type.
+        I used built-int types to simplify this, but you can image using your own
+        custom-resource-class and placing it in the Context for the normal-resource-type
+        the normal code asks for.
+
+        &gt;&gt;&gt; XContext().add(20, for_type=str)
+        &gt;&gt;&gt; XContext().dependency(str)
+        Output: 20
+
+        ## Specific Details
+
+        Given a type of `xinject.dependency.Dependency`, or any other type;
+        we will return an instance of it.
+
+        If we currently don&#39;t have one, we will create a new one of type passe in and return that.
+        We will continue to return the one created in the future for the type passed in.
+
+        You can customize this process a bit by having your custom resource inherit from
+        `xinject.dependency.Dependency`.
+
+        Otherwise, no other parameters will be sent to init method.
+
+        If you have an `for_type` class of any sort
+        that needs extra parameters, and you want to use it as a Resource, you can create it
+        yourself and add it to the Context via `add_resource`.  I would recommend in this case a
+        class-method on the `for_type` class that would accept these extra parameters and then
+        check the current Context and allocate or return the existing context resource as needed.
+
+        Args:
+            for_type (Type[ResourceTypeVar]): The type of resource you need, and instance of
+                this type will be returned.
+
+            create (bool): Whether to create resource if needed or not.
+                If `True` [default]: creates the resource if it does not exist in self.
+                If `False`: only returns an object if we have it already, otherwise None.
+        &#34;&#34;&#34;
+
+        # TODO: Decide if/when to bring back the cached dependencies.
+        #   I have thoughts on the cache-key being the StorageObject or some such and then
+        #   keeping track of all XContext instances weakly, etc;
+        #   but for now to keep things simple and don&#39;t do caching.
+        #
+        # # We next check our cached parent deps...
+        # obj = self._cached_parent_dependencies.get(for_type, None)
+        # if obj is not None:
+        #     return obj
+
+        # We must now query the parent-chain to find the dependency.
+        #
+        # If we are the root context for the entire app (ie: app-root between all threads)
+        # then we check to see if dependency is thread-sharable.
+        #
+        # If it is then we continue as normal.
+        # If NOT, then we always return None.
+        #
+        # This will indicate to the thread-specific XContext that is calling us to allocate
+        # the object in its self.
+        #
+        # If something else is asking us, we still return None because this Dependency does not
+        # belong in us, and so we should not accidentally auto-create it in us.
+        # ie: Whoever is calling it should handle the None case.
+        #
+        # In Reality, the only thing that should be calling the app-root context
+        # is a thread-root context.  Thread root-contexts should never return None when asked
+        # for a dependency.
+        #
+        # So, code using a Dependency in general should never have to worry about this None case.
+
+        from xinject.dependency import is_dependency_thread_sharable
+        is_thread_sharable = is_dependency_thread_sharable(for_type)
+
+        if self._is_app_root and not is_thread_sharable:
+            # We can&#39;t allocate a non-thread-sharable dependency in the app-root context,
+            # and there are no more parents; so we always return `None` in this case.
+            return None
+
+        last_ctx = None
+        for ctx in self.ctx_chain(yield_from_other_threads=is_thread_sharable):
+            last_ctx = ctx
+            obj = ctx._dependencies.get(for_type, None)
+            if obj is not None:
+                # TODO: I have another TODO in this file about caching these, check that for details.
+                # # Store in self (and all other ctx&#39;s up to this point) for future reuse?
+                # self._cached_parent_dependencies[for_type] = parent_value
+                return obj
+
+        # If we can&#39;t create the dependency, we simply return `None`; nothing more to do.
+        if not create:
+            return None
+
+        # We next create dependency if we don&#39;t have an existing one.
+        # Allocate a blank object if we have no parent-value to use.
+        # We add it to the ctx farthest down the stack, so it can be more visible to others
+        # (this reduces the number of redundant Dependency instances to the minimum).
+        # If `is_thread_sharable` is `False`, the last one is guaranteed to be the thread-root.
+        obj = for_type()
+        last_ctx._dependencies[for_type] = obj
+
+        # TODO: I have another TODO in this file about caching these, check that for details.
+        # # Store in self and all other ctx&#39;s on the stack for future reuse?
+        # self._cached_parent_dependencies[for_type] = parent_value
+
+        return obj
+
+    def resource_chain(
+            self, for_type: Type[ResourceTypeVar], create: bool = False
+    ) -&gt; Iterable[ResourceTypeVar]:
+        &#34;&#34;&#34; This is deprecated, renamed to `XContext.dependency_chain`; use `dependency_chain` instead.
+        &#34;&#34;&#34;
+        return self.dependency_chain(for_type=for_type, create=create)
+
+    def dependency_chain(
+            self, for_type: Type[ResourceTypeVar], create: bool = False
+    ) -&gt; Iterable[ResourceTypeVar]:
+        &#34;&#34;&#34;
+        Returns a python generator yielding dependencies in self and in each parent;
+        returns them in order.
+
+        This won&#39;t create a dependency if none exist unless you pass True into `create`, so it&#39;s
+        possible for no results to be yielded if it&#39;s never been created and `create` == False.
+
+        .. warning:: This is mostly used by `xinject.dependency.Dependency` subclasses
+            (internally).
+
+            Not normally used elsewhere. It can help the `xinject.dependency.Dependency`
+            subclasses to find their list of parent dependencies to consult for its
+            own purposes (ie: to inherit settings/configuration from parent objects).
+
+        Args:
+            for_type (Type[ResourceTypeVar]): The dependency type to look for.
+            create (bool): If we should create dependency at each context if it does not already
+                exist.
+        Yields:
+            Generator[ResourceTypeVar, None, None]: Resources that were found in the self/parent
+                hierarchy.
+        &#34;&#34;&#34;
+        objs_already_seen = set()
+        from xinject.dependency import is_dependency_thread_sharable
+        is_thread_sharable = is_dependency_thread_sharable(for_type)
+
+        for context in self.ctx_chain(yield_from_other_threads=is_thread_sharable):
+            obj = context.dependency(for_type=for_type, create=create)
+            if not obj:
+                continue
+
+            obj_id = id(obj)
+            if obj_id in objs_already_seen:
+                continue
+
+            objs_already_seen.add(obj_id)
+            yield obj
+
+    def __copy__(self):
+        &#34;&#34;&#34; Makes a shallow copy of self.
+
+            We copy `XContext` implicitly and make that copy the &#39;active&#39; context when it&#39;s made
+            current/activated via a:
+
+            - decorator `@`,
+            - `with` statement,
+            - Activating a `xinject.dependency.Dependency` via `@` or `with`.
+
+            Using one of the above with a XContext also makes it &#39;active&#39;
+            (see XContext.is_active for more internal details, if your interested ).
+
+            When a context is made current, it&#39;s sort of used as a &#39;template&#39;.
+            That way it can be used over and over again without accumulating
+            resourced between runs. It will be &#39;fresh&#39; each time with whatever
+            you added in the original &#39;template&#39;.
+        &#34;&#34;&#34;
+        return self.copy()
+
+    def __deepcopy__(self, memo):
+        &#34;&#34;&#34;
+        For right now, I am disabling making deep-copies of UContext.
+
+        This method currently raises a `NotImplementedError` error.
+
+        Will enable this in a future version of the library.
+
+        Args:
+            memo: Memo from `copy.deepcopy`, used to hook up already deep-copied objects
+                that have multiple ways/paths to get to in a graph.
+
+        Returns:
+            Raises a `NotImplementedError` error.
+        &#34;&#34;&#34;
+        raise NotImplementedError(
+            &#34;Deepcopy is currently disabled for xinject.context.XContext. &#34;
+            &#34;Will enable at some point in the future, disabled for now.&#34;
+        )
+
+        # # Copy current dependencies from self into new XContext;
+        # # This uses `self` as a template for the new XContext.
+        # new_resources = {}
+        # for k, v in self._dependencies.items():
+        #     v = copy(v)
+        #     new_resources[k] = v
+
+        # return self.__copy__(deepcopy_resources=True, deepcopy_memo=memo)
+
+    def copy(self, name: str | None = None):
+        &#34;&#34;&#34; Convenience method to easily shallow-copy a XContext, calls `return copy.copy(self)`.
+            Used when you activate a XContext via a decorator or `with` statement.
+
+            When a XContext is activated, it is copied and then the copy is set to active.
+        &#34;&#34;&#34;
+        # Blank context with the same parent configuration
+        if not name:
+            name = &#34;Copy&#34;
+        new_context = XContext(name=f&#34;{name}Of&lt;{self._name}&gt;&#34;)
+        new_context._dependencies = self._dependencies.copy()
+        return new_context
+
+    def __enter__(self):
+        &#34;&#34;&#34;
+        Used to make a Context usable as a ContextManager via `with` statement.
+
+        Otherwise, will activate self, and return self.
+        You MUST ensure that a context that is directly activated and with no
+        copy made is not currently active right now.
+
+            We will copy self and then activate the copy, returning the copy as the
+            output of the with statement.
+
+            &gt;&gt;&gt; # Some pre-existing XContext object.
+            &gt;&gt;&gt; some_context: XContext
+            &gt;&gt;&gt;
+            &gt;&gt;&gt; # Use it in `with` statement:
+            &gt;&gt;&gt; with some_context as copied_and_activated_context:
+            ...     assert XContext.grab() is copied_and_activated_context
+            ...     assert XContext.grab() is not some_context
+        &#34;&#34;&#34;
+        if self._is_app_root:
+            raise Exception(
+                f&#34;You can&#39;t use the an ({self}) that is the app-root as a context manager via the `with` statement.&#34;
+            )
+
+        if self._is_app_root:
+            raise Exception(
+                f&#34;You can&#39;t use the an ({self}) that is a thread-root as a context manager via the `with` statement.&#34;
+            )
+
+        if self.is_active:
+            # We are already &#39;activated&#39;, make shallow copy + sibling.
+            # This is due to the need to put ourselves into the storage/parent-chain a second time.
+            # To accomplish this, we make a copy of ourselves and set the copies sibling to ourselves.
+            # WHen a context has a sibling, dependencies added to them is also added to the sibling.
+            # This allows the &#39;appearance&#39; from the users perspective that the context is still the same,
+            # even though we are technically using a second context object.
+            new_ctx = self.copy(name=&#34;Sibling&#34;)
+            new_ctx._sibling = self
+            _XContextOrderedStore.push(new_ctx, self)
+            return new_ctx
+
+        _XContextOrderedStore.push(self)
+        return self
+
+    def __exit__(self, *args, **kwargs):
+        result = _XContextOrderedStore.pop(self)
+        if not result:
+            log.error(f&#34;A XContext ({self}) was exited, but it was not in stack.&#34;)
+
+    def __call__(self, *args, **kwargs):
+        &#34;&#34;&#34;
+        This allows us to support using `xinject.context.XContext` as a function decorator in a
+        few ways:
+
+        &gt;&gt;&gt; @XContext
+        &gt;&gt;&gt; def some_method():
+        ...     pass
+
+        OR
+
+        &gt;&gt;&gt; my_context = XContext()
+        &gt;&gt;&gt; my_context.add(Dependency())
+        &gt;&gt;&gt;
+        &gt;&gt;&gt; @my_context
+        &gt;&gt;&gt; def some_method():
+        ...     pass
+
+        In either case, we will create and activate NEW context each time `some_method` is called.
+        It will be thrown away after the method is finished executing.
+
+        This allows you to make whatever changes you wish to the Context while method is
+        is running and it will start fresh again next time it runs.
+
+        In the case of a pre-allocated context, such as `my_context` in the above example;
+        we will use that as the template/starting-point each time `some_method` is called;
+
+        What this means is that when `some_method` is called, and we create this new
+        `xinject.context.XContext` to use.
+        The next `xinject.context.XContext` will get the same dependencies that are/were assigned
+        to it; whatever it is at the time `some_method` is called.
+
+        This allows for more fine-control of what is in the `template` context, without
+        worrying about taking other changes into it that come later.
+        &#34;&#34;&#34;
+        _func = self._func
+
+        def wrapper(*args, **kwargs):
+            # If we already have `self._func`,
+            # it means we were used directly as a function decorator, ie:
+            #
+            # &gt;&gt;&gt; @XContext
+            # &gt;&gt;&gt; def some_method():
+            # ...     pass
+            #
+            # FYI: This will make a shallow copy IF `self` has already activated and then make the
+            #      two contexts siblings, when a younger sibling has resources added to it, it
+            #      will also add them to the older sibling.
+            #      (ie: we are activating same `XContext` object twice).
+            #      Example: Could happen if function we are decorating is called recursively.
+            with self:
+                # Use the out-scope `_func` var; which should have the original/decorated method
+                # that is being called.
+                return _func(*args, **kwargs)
+
+        if _func:
+            # If we have a `self._func`, that means we were used as a decorator without
+            # using parens, like so:
+            #
+            # @XContext
+            # def some_method():
+            #    pass
+            #
+            # In this case, we just use the stored method we already have.
+            # Currently, the decorated method is being called so we execute the call immediately.
+            return wrapper(*args, **kwargs)
+
+        # If we don&#39;t already have an assigned self._func;
+        # we have this situation:
+        #
+        # @XContext()
+        # def some_func():
+        #     pass
+        #
+        # OR
+        #
+        # some_context = XContext()
+        # @some_context
+        # def some_func():
+        #     pass
+        #
+        #
+        # In the above cases Python will call us to give us the originally decorated func
+        # which in the above cases would be `some_func`.
+        #
+        # Our objective is to wrap a decorated function; such that when decorated method is called
+        # we will activate a new context, keeping whatever objects are in `some_context`.
+        # After function is done, we will throwaway the new context because it may have
+        # objects while `some_func` was running. We don&#39;t want to bring any dependencies
+        # created while function was running into future runs of the function.
+        # We want to start fresh each time.
+
+        fail_reason = &#34;&#34;
+        if len(args) != 1:
+            fail_reason = &#34;zero arguments&#34;
+        elif not callable(args[0]):
+            fail_reason = &#34;one non-callable argument&#34;
+
+        if fail_reason:
+            raise XInjectError(
+                f&#34;Used directly as decorator `@XContext` (without ending parens) which is&#34;
+                f&#34;normally fine. This normally makes &#34;
+                f&#34;Python pass decorated function into `__init__` method and I don;t &#34;
+                f&#34;one of those. &#34;
+                f&#34;In this case Python should call us with exactly one callable argument; &#34;
+                f&#34;But instead we got called with {fail_reason}. &#34;
+                f&#34;This should not be possible; something very strange is afoot!&#34;
+            )
+
+        # Store the function for later use by the wrapper closure method we are returning.
+        # This should be the originally decorated method;
+        # ie: It should be `some_method` in the below small example:
+        #
+        # @XContext()
+        # def some_method():
+        #    pass
+
+        _func = args[0]
+        # This makes our `wrapper` method look like `_func` to the outside world.
+        functools.update_wrapper(wrapper, _func)
+        return wrapper
+
+    def ctx_chain(self, yield_self: bool = True, yield_from_other_threads: bool = True) -&gt; Iterator[Self]:
+        &#34;&#34;&#34; Returns a generator that will yield self, and then every parent relative to us, along
+            with the thread-root and app-root at the appropriate times.
+
+            The goal is to generally return self first, and then the next parent in the stack, etc.;
+            but along the way yielding the special thread-root and app-root at the correct points.
+
+            General Algorthm:
+            - Always yield self first, unless `include_self` is `False`.
+
+            - If self is not active, we return the top of the stack; unless top of stack is from a different thread,
+              we then return thread-root context in that case.
+
+            - Otherwise, we keep returning the next context after us in the stack, until we find context in a different
+              thread and current context is in current thread.  In that case, we return thread-root context.
+
+            - If self is a thread-root context, we scan stack and return the next context that is not in our
+              current thread; and if not found we return app-root context.
+
+            - Once we get to bottom of stack, we check if bottom-stack context is in our current thread.
+              If it is we return thread-root context; otherwise we return app-root context.
+            Args:
+                yield_self: If `True` (default): Include `self` as the first yielded item.
+                    Unless `self` is from a different thread and `yield_from_other_threads` is `False`.
+
+                yield_from_other_threads: If `True` (default): Include XContext&#39;s that were created in threads
+                    different from the current thread.  This overrides `yield_self` if `self` was created
+                    in a different thread.
+        &#34;&#34;&#34;
+        thread_unique_id = _thread_storage.thread_unique_id
+        thread_root_was_yielded = False
+        yielded_self = False
+        is_self_thread_root = self._is_thread_root
+
+        if yield_self:
+            if self._is_app_root and yield_from_other_threads:
+                yield self
+                return
+            elif self._thread_unique_id == thread_unique_id:
+                yielded_self = True
+                yield self
+            elif yield_from_other_threads:
+                yielded_self = True
+                yield self
+
+            if yielded_self and is_self_thread_root:
+                if not yield_from_other_threads:
+                    # If we are the thread-root and we already got yielded, nothing more to do.
+                    # The thread-root is always last if `yield_from_other_threads` is `False`.
+                    return
+                thread_root_was_yielded = True
+
+        if self._is_app_root:
+            return
+
+        if not yield_from_other_threads and is_self_thread_root:
+            return
+
+        storage = _XContextOrderedStore.storage()
+
+        # If we  are thread-root, we need to find the next parent after the thread-root,
+        # and then yield that and everything else, up until the app-root
+        if is_self_thread_root:
+            if thread_unique_id != self._thread_unique_id:
+                log.error(f&#39;Somehow asking for parent of a thread-root ({self}) &#39;
+                          f&#39;from a different thread ({threading.current_thread().name}/{thread_unique_id}); &#39;
+                          f&#39;skipping self.&#39;)
+
+            stack_iter = iter(storage.values_reversed)
+            for v in stack_iter:
+                if v._thread_unique_id == thread_unique_id:
+                    continue
+
+                # Found first ctx in storage stack (ie: reversed values) that is in a different thread:
+                if yield_from_other_threads and self is not v:
+                    yield v
+                break
+            else:
+                # Everything in storage is in our own thread,
+                # that means next one after thread-root is the app-root.
+                if yield_from_other_threads and self is not _app_root_context:
+                    yield _app_root_context
+                return
+
+            # Faster to simply continue the iter and finally yield the app root here, since we know exactly
+            # what we need to do and no other logic needs to be checked at this point.
+            for v in stack_iter:
+                if yield_from_other_threads or v._thread_unique_id == thread_unique_id:
+                    if self is not v:
+                        yield v
+
+            if yield_from_other_threads and self is not _app_root_context:
+                yield _app_root_context
+            return
+
+        # We want to use a local-copy of the stack, in case things change in our storage/contextvar while iterating
+        # (I don&#39;t really expect it to, but you never know).
+        stack = storage.values
+        start_index = storage.index_for_ctx(self)
+
+        # We are not &#39;active&#39; in storage, so we check the top of the stack;
+        # since the next parent needs to be in stack or thread-root.
+        if start_index is None:
+            if not stack:
+                # If nothing is in stack, yield thread-root and then app-root; we are done.
+                yield _thread_storage.root_ctx
+                if yield_from_other_threads:
+                    yield _app_root_context
+                # Finished!
+                return
+
+            # If we are not yielding from other threads, always do thread-root last, no mater what.
+            # If stack top is not in our thread, we yield the thread-root and then go though the rest of the stack.
+            if yield_from_other_threads and stack[-1]._thread_unique_id != thread_unique_id:
+                v = _thread_storage.root_ctx
+                if self is not v:
+                    thread_root_was_yielded = True
+                    yield _thread_storage.root_ctx
+
+            # Start next index (ie: index-1) to get the top of the stack.
+            start_index = len(stack)
+        elif start_index &lt;= 0:
+            # We are at bottom of the stack.
+            # Return thread-root IF the bottom of the stack is in the same thread as us.
+            # (if it&#39;s in a different thread, thread-root should have already
+            #  been yielded earlier at some point in the past).
+            if self._thread_unique_id == thread_unique_id:
+                yield _thread_storage.root_ctx
+
+            # #hen app-root; and then we are finished.
+            if yield_from_other_threads:
+                yield _app_root_context
+            # Finished!
+            return
+
+        # Otherwise, we get the next parent after us in the stack, and so on and so forth...
+        for i in range(start_index - 1, -1, -1):
+            ctx = stack[i]
+
+            if ctx._thread_unique_id == thread_unique_id and self is not ctx:
+                # Thread is the same as us, so always safe to yield it.
+                yield ctx
+                continue
+
+            # We are from the same thread as the current thread, but next parent is not and self was created in thread;
+            # return thread-root if we `yield_from_other_threads`, otherwise wait until the end.
+            # We always yield thread-root last if `yield_from_other_threads` is `False`.
+            if yield_from_other_threads and not thread_root_was_yielded and self._thread_unique_id == thread_unique_id:
+                v = _thread_storage.root_ctx
+                if self is not v:
+                    thread_root_was_yielded = True
+                    yield _thread_storage.root_ctx
+
+            # Yield current position in stack, then go to next one (via for loop).
+            # We already detected if ctx was in our thread or not at top of loop,
+            # so only yield this if `yield_from_other_threads` is `True`.
+            if yield_from_other_threads and self is not ctx:
+                yield ctx
+
+        # If we are not yielding from other threads, the thread-root is always the last one; we skip app-root.
+        if not yield_from_other_threads:
+            yield _thread_storage.root_ctx
+            return
+
+        # Make sure we yield thread-root if it has not already been.
+        if not thread_root_was_yielded:
+            yield _thread_storage.root_ctx
+
+        # And finally, yield the app-root as the last context.
+        if yield_from_other_threads:
+            yield _app_root_context
+
+    # todo: rename this to just &#39;chain&#39; ?? or context_chain? [it includes &#39;self&#39; is why].
+    def parent_chain(self, _include_self=True) -&gt; List[&#34;XContext&#34;]:
+        &#34;&#34;&#34; A list of self + all parents in priority order.
+
+            See `XContext._is_active` internal/private var for a bit more detail on what is
+            &#39;active&#39; but suffice to say that active means XContext is currently being used via a
+            decorator &#39;@&#39; or via `with` or activating a `xinject.dependency.Dependency` via `@`
+            or `with`; has not been exited yet, we are active.
+
+            The chain will start with `self` as the first item, and then proceed with the others
+            that are currently active (see `XContext.is_active`).
+        &#34;&#34;&#34;
+        return [v for v in self.ctx_chain() if v]
+
+    @property
+    def is_active(self) -&gt; bool:
+        &#34;&#34;&#34; This means at some point in the past we were &#39;activated&#39; via one of these methods:
+
+            `with` or `@` or activating a `xinject.dependency.Dependency` via `@` or `with`.
+
+            And we are still &#39;active&#39; (or even the &#39;XContext.current&#39;);
+
+            When we are active we can be consulted generically.
+            This means the `self` is part of the parent-chain.
+            See `XContext.ctx_chain`.
+        &#34;&#34;&#34;
+        if self._is_app_root or self._is_thread_root:
+            return True
+        return _XContextOrderedStore.storage().contains(self)
+
+    def __repr__(self, include_parent=False):
+        types_list = list(self._dependencies.keys())
+        if types_list and len(types_list) &lt; 3:
+            types_list = [t.__name__ for t in types_list]
+            types = &#39;;&#39;.join(types_list)
+            types = f&#39;dep_type={types}&#39;
+        else:
+            types = f&#39;dep_count={len(types_list)}&#39;
+
+        my_str = f&#34;XContext(name=&#39;{self.name}&#39;, {types}&#39;)&#34;
+        if not include_parent:
+            return my_str
+
+        str_list = [my_str]
+        for v in self.ctx_chain(yield_self=False):
+            str_list.append(v.__repr__(include_parent=False))
+        return f&#34;[{&#39;, &#39;.join(str_list)}]&#34;
+
+    def _reset_dependencies(self):
+        self._dependencies = {}
+
+    _cached_context_chain = None
+
+    # _cached_parent_dependencies: dict = None
+
+    _dependencies: Dict[Type[Any], Any] = None
+
+    _is_app_root = False
+    &#34;&#34;&#34; If `True`: Context is the root-context for entire app; and lives outside of
+            the `_current_context_contextvar` contextvars, in a special static, module/global.
+    &#34;&#34;&#34;
+
+    _is_thread_root: bool = False
+    &#34;&#34;&#34; If True, this XContext is the root-context for a thread
+        (or if only one thread, the only root context).
+        This is mostly here for debugging purposes.
+    &#34;&#34;&#34;
+
+    _sibling: Optional[&#39;XContext&#39;] = None
+    &#34;&#34;&#34;
+    If a `XContext` is activated a second time (perhaps when a function is called recursively, etc)
+    then it makes a shallow copy of self, and sets its self as the the XContext copy&#39;s sibling
+    by setting this var on the copied XContext.
+
+    If a XContext has a sibling, when a `xinject.dependency.Dependency` is directly added to
+    XContext via `XContext.add` it will also add that same dependency to the sibling XContext.
+
+    In this way, when you do something like this:
+
+    &gt;&gt;&gt; @XContext()
+    &gt;&gt;&gt; def some_method()
+    &gt;&gt;&gt;   XContext.grab().add(SomeDependency())
+
+    The `SomeDependency` instance will be added to all of the functions decorated XContext
+    objects like you would expect
+    (ie: it&#39;s treated as if one instance of XContext was created, even if `some_method` is
+         called recursively).
+
+    The shallow-copy must be made if method is called recursively so that the parent-chain
+    can be kept track of correctly along with any cached resources from the parent-chain.
+    &#34;&#34;&#34;
+
+    _func = None
+    &#34;&#34;&#34; Used if XContext is used as a function decorator directly, ie:
+
+        &gt;&gt;&gt; @XContext
+        &gt;&gt;&gt; def some_method():
+        ...     pass
+    &#34;&#34;&#34;
+
+    _thread_unique_id: int
+    &#34;&#34;&#34; Thread that we were originally created on.
+    &#34;&#34;&#34;
+
+    _thread_name: str
+    &#34;&#34;&#34; Name of thread we were orginally created on.
+    &#34;&#34;&#34;</code></pre>
+</details>
+<div class="desc"><p>See <a href="#quick-start">Quick Start</a> in the <code><a title="xinject.context" href="#xinject.context">xinject.context</a></code> module if your new to the XContext
+class.</p>
+<p>You can give an initial list of dependencies
+(if desired, most of the time you just start with a blank context).</p>
+<p>for <code>parent</code>, it can be set to <code><a title="xsentinels.default.Default" href="../xsentinels/default.html#xsentinels.default.Default">Default</a></code> (default value); or to `None.</p>
+<p>If you don't pass anything to parent, then the default value of <code>Default</code> will cause us
+to look up the current context and use that for the parent automatically when the
+XContext is activated.
+For more information on activating a context see
+<a href="#activating-a-context">Activating A XContext</a>.</p>
+<p>If you pass in None for parent, no parent will be used/consulted. Normally you'll only
+want to do this for a root context. Also, useful for unit testing to isolate testing
+method dependencies from other unit tests. Right now, the unit-test Dependency isolation
+happens automatically via an auto-use fixture
+(<code>xinject.ptest_plugin.xinject_test_context</code>).</p>
+<p>A non-activated context will return <code><a title="xsentinels.default.Default" href="../xsentinels/default.html#xsentinels.default.Default">Default</a></code> as it's <code><a title="xinject.context.XContext.parent" href="#xinject.context.XContext.parent">XContext.parent</a></code>
+if it was created with the default value;
+otherwise we return <code>None</code> (if it was created that way).</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>dependencies</code></strong> :&ensp;<code>Union[Dict[Type, Any], List[Any], Any]</code></dt>
+<dd>
+<p>If you wish to have the
+<code><a title="xinject.context.XContext" href="#xinject.context.XContext">XContext</a></code> your creating have an initial list of dependencies you can pass them
+in here.</p>
+<p>It can be a single Dependency, or a list of dependencies, or a mapping of
+dependencies.</p>
+<p>Mainly useful for unit-testing, but could be useful elsewhere too.</p>
+<p>They will be added to use via <code><a title="xinject.context.XContext.add" href="#xinject.context.XContext.add">XContext.add()</a></code> for you.</p>
+<p>If you use a dict/mapping, we will use the following for <code><a title="xinject.context.XContext.add" href="#xinject.context.XContext.add">XContext.add()</a></code>:</p>
+<ul>
+<li>Dict-key as the `for_type' method parameter.</li>
+<li>Dict-value as the <code>Dependency</code> method parameter.</li>
+</ul>
+<p>This allows you to map some standard Dependency type into a completely different
+type (useful for unit-testing).</p>
+<p>By default, no dependencies are initially added to a new XContext.</p>
+</dd>
+<dt><strong><code>parent</code></strong> :&ensp;<code>Union[<a title="xsentinels.default.Default" href="../xsentinels/default.html#xsentinels.default.Default">Default</a>, _TreatAsRootParent, None]</code></dt>
+<dd>Unused/Ignored,
+only here for backwards compatibility only.</dd>
+<dt><strong><code>name</code></strong> :&ensp;<code>str</code></dt>
+<dd>
+<p>Optional name.
+If left as None, by default, this will simply assign a unique sequential
+number to the name.</p>
+<p>If name is passed in, it will be appended to the unique sequential number.</p>
+<p>When XContext is printed in a string, it will include
+this as it's name to make debugging easier.</p>
+</dd>
+</dl></div>
+<h3>Static methods</h3>
+<dl>
+<dt id="xinject.context.XContext.current"><code class="name flex">
+<span>def <span class="ident">current</span></span>(<span>for_type: Type[~C]) ‑> ~C</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Gets the current context that should be used by default, via the Python 3.7 ContextVar
+feature. Please see XContext class doc [just above] for more details on how this works.</p></div>
+</dd>
+<dt id="xinject.context.XContext.grab"><code class="name flex">
+<span>def <span class="ident">grab</span></span>(<span>) ‑> <a title="xinject.context.XContext" href="#xinject.context.XContext">XContext</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Gets the current <code><a title="xinject.context.XContext" href="#xinject.context.XContext">XContext</a></code> that should be used by default. It does this by calling
+<code><a title="xinject.context.XContext.current" href="#xinject.context.XContext.current">XContext.current()</a></code>.</p></div>
+</dd>
+<dt id="xinject.context.XContext.thread_root"><code class="name flex">
+<span>def <span class="ident">thread_root</span></span>(<span>) ‑> Self</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="xinject.context.XContext.is_active"><code class="name">prop <span class="ident">is_active</span> : bool</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def is_active(self) -&gt; bool:
+    &#34;&#34;&#34; This means at some point in the past we were &#39;activated&#39; via one of these methods:
+
+        `with` or `@` or activating a `xinject.dependency.Dependency` via `@` or `with`.
+
+        And we are still &#39;active&#39; (or even the &#39;XContext.current&#39;);
+
+        When we are active we can be consulted generically.
+        This means the `self` is part of the parent-chain.
+        See `XContext.ctx_chain`.
+    &#34;&#34;&#34;
+    if self._is_app_root or self._is_thread_root:
+        return True
+    return _XContextOrderedStore.storage().contains(self)</code></pre>
+</details>
+<div class="desc"><p>This means at some point in the past we were 'activated' via one of these methods:</p>
+<p><code>with</code> or <code>@</code> or activating a <code><a title="xinject.dependency.Dependency" href="dependency.html#xinject.dependency.Dependency">Dependency</a></code> via <code>@</code> or <code>with</code>.</p>
+<p>And we are still 'active' (or even the 'XContext.current');</p>
+<p>When we are active we can be consulted generically.
+This means the <code>self</code> is part of the parent-chain.
+See <code><a title="xinject.context.XContext.ctx_chain" href="#xinject.context.XContext.ctx_chain">XContext.ctx_chain()</a></code>.</p></div>
+</dd>
+<dt id="xinject.context.XContext.name"><code class="name">prop <span class="ident">name</span> : str</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def name(self) -&gt; str:
+    &#34;&#34;&#34; Name of context (for debugging purposes only).
+        Right now this defaults to a unique number, that gets incremented each time a
+        `XContext` is created (in it&#39;s init method).
+
+        May allow customization in the future.
+    &#34;&#34;&#34;
+    return self._name</code></pre>
+</details>
+<div class="desc"><p>Name of context (for debugging purposes only).
+Right now this defaults to a unique number, that gets incremented each time a
+<code><a title="xinject.context.XContext" href="#xinject.context.XContext">XContext</a></code> is created (in it's init method).</p>
+<p>May allow customization in the future.</p></div>
+</dd>
+<dt id="xinject.context.XContext.parent"><code class="name">prop <span class="ident">parent</span> : Self | None</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def parent(self) -&gt; Self | None:
+    &#34;&#34;&#34; Returns the next parent relative to us and the current thead.
+        See `XContext.chain` for details on algorithm.
+    &#34;&#34;&#34;
+    # Use `chain` to help us find our next parent.
+    return next(self.ctx_chain(yield_self=False), None)</code></pre>
+</details>
+<div class="desc"><p>Returns the next parent relative to us and the current thead.
+See <code>XContext.chain</code> for details on algorithm.</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="xinject.context.XContext.__call__"><code class="name flex">
+<span>def <span class="ident">__call__</span></span>(<span>self, *args, **kwargs)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __call__(self, *args, **kwargs):
+    &#34;&#34;&#34;
+    This allows us to support using `xinject.context.XContext` as a function decorator in a
+    few ways:
+
+    &gt;&gt;&gt; @XContext
+    &gt;&gt;&gt; def some_method():
+    ...     pass
+
+    OR
+
+    &gt;&gt;&gt; my_context = XContext()
+    &gt;&gt;&gt; my_context.add(Dependency())
+    &gt;&gt;&gt;
+    &gt;&gt;&gt; @my_context
+    &gt;&gt;&gt; def some_method():
+    ...     pass
+
+    In either case, we will create and activate NEW context each time `some_method` is called.
+    It will be thrown away after the method is finished executing.
+
+    This allows you to make whatever changes you wish to the Context while method is
+    is running and it will start fresh again next time it runs.
+
+    In the case of a pre-allocated context, such as `my_context` in the above example;
+    we will use that as the template/starting-point each time `some_method` is called;
+
+    What this means is that when `some_method` is called, and we create this new
+    `xinject.context.XContext` to use.
+    The next `xinject.context.XContext` will get the same dependencies that are/were assigned
+    to it; whatever it is at the time `some_method` is called.
+
+    This allows for more fine-control of what is in the `template` context, without
+    worrying about taking other changes into it that come later.
+    &#34;&#34;&#34;
+    _func = self._func
+
+    def wrapper(*args, **kwargs):
+        # If we already have `self._func`,
+        # it means we were used directly as a function decorator, ie:
+        #
+        # &gt;&gt;&gt; @XContext
+        # &gt;&gt;&gt; def some_method():
+        # ...     pass
+        #
+        # FYI: This will make a shallow copy IF `self` has already activated and then make the
+        #      two contexts siblings, when a younger sibling has resources added to it, it
+        #      will also add them to the older sibling.
+        #      (ie: we are activating same `XContext` object twice).
+        #      Example: Could happen if function we are decorating is called recursively.
+        with self:
+            # Use the out-scope `_func` var; which should have the original/decorated method
+            # that is being called.
+            return _func(*args, **kwargs)
+
+    if _func:
+        # If we have a `self._func`, that means we were used as a decorator without
+        # using parens, like so:
+        #
+        # @XContext
+        # def some_method():
+        #    pass
+        #
+        # In this case, we just use the stored method we already have.
+        # Currently, the decorated method is being called so we execute the call immediately.
+        return wrapper(*args, **kwargs)
+
+    # If we don&#39;t already have an assigned self._func;
+    # we have this situation:
+    #
+    # @XContext()
+    # def some_func():
+    #     pass
+    #
+    # OR
+    #
+    # some_context = XContext()
+    # @some_context
+    # def some_func():
+    #     pass
+    #
+    #
+    # In the above cases Python will call us to give us the originally decorated func
+    # which in the above cases would be `some_func`.
+    #
+    # Our objective is to wrap a decorated function; such that when decorated method is called
+    # we will activate a new context, keeping whatever objects are in `some_context`.
+    # After function is done, we will throwaway the new context because it may have
+    # objects while `some_func` was running. We don&#39;t want to bring any dependencies
+    # created while function was running into future runs of the function.
+    # We want to start fresh each time.
+
+    fail_reason = &#34;&#34;
+    if len(args) != 1:
+        fail_reason = &#34;zero arguments&#34;
+    elif not callable(args[0]):
+        fail_reason = &#34;one non-callable argument&#34;
+
+    if fail_reason:
+        raise XInjectError(
+            f&#34;Used directly as decorator `@XContext` (without ending parens) which is&#34;
+            f&#34;normally fine. This normally makes &#34;
+            f&#34;Python pass decorated function into `__init__` method and I don;t &#34;
+            f&#34;one of those. &#34;
+            f&#34;In this case Python should call us with exactly one callable argument; &#34;
+            f&#34;But instead we got called with {fail_reason}. &#34;
+            f&#34;This should not be possible; something very strange is afoot!&#34;
+        )
+
+    # Store the function for later use by the wrapper closure method we are returning.
+    # This should be the originally decorated method;
+    # ie: It should be `some_method` in the below small example:
+    #
+    # @XContext()
+    # def some_method():
+    #    pass
+
+    _func = args[0]
+    # This makes our `wrapper` method look like `_func` to the outside world.
+    functools.update_wrapper(wrapper, _func)
+    return wrapper</code></pre>
+</details>
+<div class="desc"><p>This allows us to support using <code><a title="xinject.context.XContext" href="#xinject.context.XContext">XContext</a></code> as a function decorator in a
+few ways:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; @XContext
+&gt;&gt;&gt; def some_method():
+...     pass
+</code></pre>
+<p>OR</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; my_context = XContext()
+&gt;&gt;&gt; my_context.add(Dependency())
+&gt;&gt;&gt;
+&gt;&gt;&gt; @my_context
+&gt;&gt;&gt; def some_method():
+...     pass
+</code></pre>
+<p>In either case, we will create and activate NEW context each time <code>some_method</code> is called.
+It will be thrown away after the method is finished executing.</p>
+<p>This allows you to make whatever changes you wish to the Context while method is
+is running and it will start fresh again next time it runs.</p>
+<p>In the case of a pre-allocated context, such as <code>my_context</code> in the above example;
+we will use that as the template/starting-point each time <code>some_method</code> is called;</p>
+<p>What this means is that when <code>some_method</code> is called, and we create this new
+<code><a title="xinject.context.XContext" href="#xinject.context.XContext">XContext</a></code> to use.
+The next <code><a title="xinject.context.XContext" href="#xinject.context.XContext">XContext</a></code> will get the same dependencies that are/were assigned
+to it; whatever it is at the time <code>some_method</code> is called.</p>
+<p>This allows for more fine-control of what is in the <code>template</code> context, without
+worrying about taking other changes into it that come later.</p></div>
+</dd>
+<dt id="xinject.context.XContext.__copy__"><code class="name flex">
+<span>def <span class="ident">__copy__</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __copy__(self):
+    &#34;&#34;&#34; Makes a shallow copy of self.
+
+        We copy `XContext` implicitly and make that copy the &#39;active&#39; context when it&#39;s made
+        current/activated via a:
+
+        - decorator `@`,
+        - `with` statement,
+        - Activating a `xinject.dependency.Dependency` via `@` or `with`.
+
+        Using one of the above with a XContext also makes it &#39;active&#39;
+        (see XContext.is_active for more internal details, if your interested ).
+
+        When a context is made current, it&#39;s sort of used as a &#39;template&#39;.
+        That way it can be used over and over again without accumulating
+        resourced between runs. It will be &#39;fresh&#39; each time with whatever
+        you added in the original &#39;template&#39;.
+    &#34;&#34;&#34;
+    return self.copy()</code></pre>
+</details>
+<div class="desc"><p>Makes a shallow copy of self.</p>
+<p>We copy <code><a title="xinject.context.XContext" href="#xinject.context.XContext">XContext</a></code> implicitly and make that copy the 'active' context when it's made
+current/activated via a:</p>
+<ul>
+<li>decorator <code>@</code>,</li>
+<li><code>with</code> statement,</li>
+<li>Activating a <code><a title="xinject.dependency.Dependency" href="dependency.html#xinject.dependency.Dependency">Dependency</a></code> via <code>@</code> or <code>with</code>.</li>
+</ul>
+<p>Using one of the above with a XContext also makes it 'active'
+(see XContext.is_active for more internal details, if your interested ).</p>
+<p>When a context is made current, it's sort of used as a 'template'.
+That way it can be used over and over again without accumulating
+resourced between runs. It will be 'fresh' each time with whatever
+you added in the original 'template'.</p></div>
+</dd>
+<dt id="xinject.context.XContext.__deepcopy__"><code class="name flex">
+<span>def <span class="ident">__deepcopy__</span></span>(<span>self, memo)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __deepcopy__(self, memo):
+    &#34;&#34;&#34;
+    For right now, I am disabling making deep-copies of UContext.
+
+    This method currently raises a `NotImplementedError` error.
+
+    Will enable this in a future version of the library.
+
+    Args:
+        memo: Memo from `copy.deepcopy`, used to hook up already deep-copied objects
+            that have multiple ways/paths to get to in a graph.
+
+    Returns:
+        Raises a `NotImplementedError` error.
+    &#34;&#34;&#34;
+    raise NotImplementedError(
+        &#34;Deepcopy is currently disabled for xinject.context.XContext. &#34;
+        &#34;Will enable at some point in the future, disabled for now.&#34;
+    )
+
+    # # Copy current dependencies from self into new XContext;
+    # # This uses `self` as a template for the new XContext.
+    # new_resources = {}
+    # for k, v in self._dependencies.items():
+    #     v = copy(v)
+    #     new_resources[k] = v
+
+    # return self.__copy__(deepcopy_resources=True, deepcopy_memo=memo)</code></pre>
+</details>
+<div class="desc"><p>For right now, I am disabling making deep-copies of UContext.</p>
+<p>This method currently raises a <code>NotImplementedError</code> error.</p>
+<p>Will enable this in a future version of the library.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>memo</code></strong></dt>
+<dd>Memo from <code>copy.deepcopy</code>, used to hook up already deep-copied objects
+that have multiple ways/paths to get to in a graph.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Raises a <code>NotImplementedError</code> error.</p></div>
+</dd>
+<dt id="xinject.context.XContext.__enter__"><code class="name flex">
+<span>def <span class="ident">__enter__</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __enter__(self):
+    &#34;&#34;&#34;
+    Used to make a Context usable as a ContextManager via `with` statement.
+
+    Otherwise, will activate self, and return self.
+    You MUST ensure that a context that is directly activated and with no
+    copy made is not currently active right now.
+
+        We will copy self and then activate the copy, returning the copy as the
+        output of the with statement.
+
+        &gt;&gt;&gt; # Some pre-existing XContext object.
+        &gt;&gt;&gt; some_context: XContext
+        &gt;&gt;&gt;
+        &gt;&gt;&gt; # Use it in `with` statement:
+        &gt;&gt;&gt; with some_context as copied_and_activated_context:
+        ...     assert XContext.grab() is copied_and_activated_context
+        ...     assert XContext.grab() is not some_context
+    &#34;&#34;&#34;
+    if self._is_app_root:
+        raise Exception(
+            f&#34;You can&#39;t use the an ({self}) that is the app-root as a context manager via the `with` statement.&#34;
+        )
+
+    if self._is_app_root:
+        raise Exception(
+            f&#34;You can&#39;t use the an ({self}) that is a thread-root as a context manager via the `with` statement.&#34;
+        )
+
+    if self.is_active:
+        # We are already &#39;activated&#39;, make shallow copy + sibling.
+        # This is due to the need to put ourselves into the storage/parent-chain a second time.
+        # To accomplish this, we make a copy of ourselves and set the copies sibling to ourselves.
+        # WHen a context has a sibling, dependencies added to them is also added to the sibling.
+        # This allows the &#39;appearance&#39; from the users perspective that the context is still the same,
+        # even though we are technically using a second context object.
+        new_ctx = self.copy(name=&#34;Sibling&#34;)
+        new_ctx._sibling = self
+        _XContextOrderedStore.push(new_ctx, self)
+        return new_ctx
+
+    _XContextOrderedStore.push(self)
+    return self</code></pre>
+</details>
+<div class="desc"><p>Used to make a Context usable as a ContextManager via <code>with</code> statement.</p>
+<p>Otherwise, will activate self, and return self.
+You MUST ensure that a context that is directly activated and with no
+copy made is not currently active right now.</p>
+<pre><code>We will copy self and then activate the copy, returning the copy as the
+output of the with statement.
+
+&gt;&gt;&gt; # Some pre-existing XContext object.
+&gt;&gt;&gt; some_context: XContext
+&gt;&gt;&gt;
+&gt;&gt;&gt; # Use it in &lt;code&gt;with&lt;/code&gt; statement:
+&gt;&gt;&gt; with some_context as copied_and_activated_context:
+...     assert XContext.grab() is copied_and_activated_context
+...     assert XContext.grab() is not some_context
+</code></pre></div>
+</dd>
+<dt id="xinject.context.XContext.__exit__"><code class="name flex">
+<span>def <span class="ident">__exit__</span></span>(<span>self, *args, **kwargs)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __exit__(self, *args, **kwargs):
+    result = _XContextOrderedStore.pop(self)
+    if not result:
+        log.error(f&#34;A XContext ({self}) was exited, but it was not in stack.&#34;)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="xinject.context.XContext.add"><code class="name flex">
+<span>def <span class="ident">add</span></span>(<span>self, dependency: Any, *, for_type: Type = None) ‑> <a title="xinject.context.XContext" href="#xinject.context.XContext">XContext</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add(
+        self, dependency: Any, *, for_type: Type = None
+) -&gt; &#34;XContext&#34;:
+    &#34;&#34;&#34;
+    Lets you add a dependency to this context, you can only have one-dependency per-type.
+
+    Returns self so that you can keep calling more methods on it easily.... this allws you
+    to also add a dependency and then use it directly as decorator (only works on python 3.9),
+    ie:
+
+    &gt;&gt;&gt; # Only works on python 3.9+, it relaxes grammar restrictions
+    &gt;&gt;&gt; #    (https://www.python.org/dev/peps/pep-0614/)
+    &gt;&gt;&gt;
+    &gt;&gt;&gt; @XContext().add(2)
+    &gt;&gt;&gt; def some_method()
+    ...     print(f&#34;my int dependency: {XContext.dependency(int)}&#34;)
+    Output: &#34;my int dependency: 2&#34;
+
+    As as side-note, you can easily add resources to a new `xinject.context.XContext` via:
+
+    &gt;&gt;&gt; @XContext(dependencies=[2])
+    &gt;&gt;&gt; def some_method()
+    ...     print(f&#34;my int dependency: {XContext.dependency(int)}&#34;)
+    Output: &#34;my int dependency: 2&#34;
+
+    With the `XContext.add` method, you can subsitute dependency for other
+    dependency types, ie:
+
+    &gt;&gt;&gt; def some_method()
+    ...     context = XContext()
+    ...     context.add(3, for_type=str)
+    ...     print(f&#34;my str dependency: {XContext.dependency(str)}&#34;)
+    Output: &#34;my str dependency: 3&#34;
+
+    If you need to override a dependency, you can create a new context and set me as it&#39;s
+    parent. At that point you can add whatever resources you want before anyone else
+    uses the new `xinject.context.XContext`.
+
+    .. warning:: If you attempt to add a second dependency of the same type...
+        ...a `xinject.errors.XInjectError` will be
+        raised. This is because other objects have already gotten this dependency and are
+        relying on it now.  You need to configure any special resources you want to add
+        to this context early enough before anything else will need it.
+
+    .. todo:: Consider relaxing this ^ and not producing an error [or at least an option
+        to &#39;replace&#39; an existing dependency in an existing Context. I was cautious on this
+        at first because it was the safest thing to do and I could always relax it later
+        if I found that desirable. Careful consideration would have to be made.
+
+    Args:
+        dependency (Any): Object to add as a dependency, it&#39;s type will be mapped to it.
+
+        skip_if_present (bool): If False [default], we raise an exception if dependency
+            of that type is already in context/self.
+
+            If True, we don&#39;t do anything if dependency of that type is already in
+            context/self.
+
+        for_type: You can force a particular mapping by using this option.
+            By default, the `for_type` is set to the type of the passed in dependency
+            [via `type(dependency)`].
+
+            You can override this behavior by passing a type in the `for_type` param.
+            We will then map the dependency for `for_type` to the `dependency` object when
+            a dependency is requested for `for_type` in the future. Will still raise the
+            error if a dependency for `for_type` already exists in Context.
+    Returns:
+        Return `self`, so that you can keep calling more methods easily if needed
+        (ie: .add(), etc)
+    &#34;&#34;&#34;
+    if for_type is None:
+        for_type = type(dependency)
+
+    self._dependencies[for_type] = dependency
+    if self._sibling:
+        self._sibling.add(dependency, for_type=for_type)
+    return self</code></pre>
+</details>
+<div class="desc"><p>Lets you add a dependency to this context, you can only have one-dependency per-type.</p>
+<p>Returns self so that you can keep calling more methods on it easily.... this allws you
+to also add a dependency and then use it directly as decorator (only works on python 3.9),
+ie:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; # Only works on python 3.9+, it relaxes grammar restrictions
+&gt;&gt;&gt; #    (&lt;https://www.python.org/dev/peps/pep-0614/&gt;)
+&gt;&gt;&gt;
+&gt;&gt;&gt; @XContext().add(2)
+&gt;&gt;&gt; def some_method()
+...     print(f&quot;my int dependency: {XContext.dependency(int)}&quot;)
+Output: &quot;my int dependency: 2&quot;
+</code></pre>
+<p>As as side-note, you can easily add resources to a new <code><a title="xinject.context.XContext" href="#xinject.context.XContext">XContext</a></code> via:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; @XContext(dependencies=[2])
+&gt;&gt;&gt; def some_method()
+...     print(f&quot;my int dependency: {XContext.dependency(int)}&quot;)
+Output: &quot;my int dependency: 2&quot;
+</code></pre>
+<p>With the <code><a title="xinject.context.XContext.add" href="#xinject.context.XContext.add">XContext.add()</a></code> method, you can subsitute dependency for other
+dependency types, ie:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; def some_method()
+...     context = XContext()
+...     context.add(3, for_type=str)
+...     print(f&quot;my str dependency: {XContext.dependency(str)}&quot;)
+Output: &quot;my str dependency: 3&quot;
+</code></pre>
+<p>If you need to override a dependency, you can create a new context and set me as it's
+parent. At that point you can add whatever resources you want before anyone else
+uses the new <code><a title="xinject.context.XContext" href="#xinject.context.XContext">XContext</a></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning:&ensp;If you attempt to add a second dependency of the same type&hellip;</p>
+<p>&hellip;a <code><a title="xinject.errors.XInjectError" href="errors.html#xinject.errors.XInjectError">XInjectError</a></code> will be
+raised. This is because other objects have already gotten this dependency and are
+relying on it now.
+You need to configure any special resources you want to add
+to this context early enough before anything else will need it.</p>
+</div>
+<div class="admonition todo">
+<p class="admonition-title">TODO</p>
+<p>Consider relaxing this ^ and not producing an error [or at least an option
+to 'replace' an existing dependency in an existing Context. I was cautious on this
+at first because it was the safest thing to do and I could always relax it later
+if I found that desirable. Careful consideration would have to be made.</p>
+</div>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>dependency</code></strong> :&ensp;<code>Any</code></dt>
+<dd>Object to add as a dependency, it's type will be mapped to it.</dd>
+<dt><strong><code>skip_if_present</code></strong> :&ensp;<code>bool</code></dt>
+<dd>
+<p>If False [default], we raise an exception if dependency
+of that type is already in context/self.</p>
+<p>If True, we don't do anything if dependency of that type is already in
+context/self.</p>
+</dd>
+<dt><strong><code>for_type</code></strong></dt>
+<dd>
+<p>You can force a particular mapping by using this option.
+By default, the <code>for_type</code> is set to the type of the passed in dependency
+[via <code>type(dependency)</code>].</p>
+<p>You can override this behavior by passing a type in the <code>for_type</code> param.
+We will then map the dependency for <code>for_type</code> to the <code>dependency</code> object when
+a dependency is requested for <code>for_type</code> in the future. Will still raise the
+error if a dependency for <code>for_type</code> already exists in Context.</p>
+</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Return <code>self</code>, so that you can keep calling more methods easily if needed
+(ie: .add(), etc)</p></div>
+</dd>
+<dt id="xinject.context.XContext.copy"><code class="name flex">
+<span>def <span class="ident">copy</span></span>(<span>self, name: str | None = None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def copy(self, name: str | None = None):
+    &#34;&#34;&#34; Convenience method to easily shallow-copy a XContext, calls `return copy.copy(self)`.
+        Used when you activate a XContext via a decorator or `with` statement.
+
+        When a XContext is activated, it is copied and then the copy is set to active.
+    &#34;&#34;&#34;
+    # Blank context with the same parent configuration
+    if not name:
+        name = &#34;Copy&#34;
+    new_context = XContext(name=f&#34;{name}Of&lt;{self._name}&gt;&#34;)
+    new_context._dependencies = self._dependencies.copy()
+    return new_context</code></pre>
+</details>
+<div class="desc"><p>Convenience method to easily shallow-copy a XContext, calls <code>return copy.copy(self)</code>.
+Used when you activate a XContext via a decorator or <code>with</code> statement.</p>
+<p>When a XContext is activated, it is copied and then the copy is set to active.</p></div>
+</dd>
+<dt id="xinject.context.XContext.ctx_chain"><code class="name flex">
+<span>def <span class="ident">ctx_chain</span></span>(<span>self, yield_self: bool = True, yield_from_other_threads: bool = True) ‑> Iterator[Self]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def ctx_chain(self, yield_self: bool = True, yield_from_other_threads: bool = True) -&gt; Iterator[Self]:
+    &#34;&#34;&#34; Returns a generator that will yield self, and then every parent relative to us, along
+        with the thread-root and app-root at the appropriate times.
+
+        The goal is to generally return self first, and then the next parent in the stack, etc.;
+        but along the way yielding the special thread-root and app-root at the correct points.
+
+        General Algorthm:
+        - Always yield self first, unless `include_self` is `False`.
+
+        - If self is not active, we return the top of the stack; unless top of stack is from a different thread,
+          we then return thread-root context in that case.
+
+        - Otherwise, we keep returning the next context after us in the stack, until we find context in a different
+          thread and current context is in current thread.  In that case, we return thread-root context.
+
+        - If self is a thread-root context, we scan stack and return the next context that is not in our
+          current thread; and if not found we return app-root context.
+
+        - Once we get to bottom of stack, we check if bottom-stack context is in our current thread.
+          If it is we return thread-root context; otherwise we return app-root context.
+        Args:
+            yield_self: If `True` (default): Include `self` as the first yielded item.
+                Unless `self` is from a different thread and `yield_from_other_threads` is `False`.
+
+            yield_from_other_threads: If `True` (default): Include XContext&#39;s that were created in threads
+                different from the current thread.  This overrides `yield_self` if `self` was created
+                in a different thread.
+    &#34;&#34;&#34;
+    thread_unique_id = _thread_storage.thread_unique_id
+    thread_root_was_yielded = False
+    yielded_self = False
+    is_self_thread_root = self._is_thread_root
+
+    if yield_self:
+        if self._is_app_root and yield_from_other_threads:
+            yield self
+            return
+        elif self._thread_unique_id == thread_unique_id:
+            yielded_self = True
+            yield self
+        elif yield_from_other_threads:
+            yielded_self = True
+            yield self
+
+        if yielded_self and is_self_thread_root:
+            if not yield_from_other_threads:
+                # If we are the thread-root and we already got yielded, nothing more to do.
+                # The thread-root is always last if `yield_from_other_threads` is `False`.
+                return
+            thread_root_was_yielded = True
+
+    if self._is_app_root:
+        return
+
+    if not yield_from_other_threads and is_self_thread_root:
+        return
+
+    storage = _XContextOrderedStore.storage()
+
+    # If we  are thread-root, we need to find the next parent after the thread-root,
+    # and then yield that and everything else, up until the app-root
+    if is_self_thread_root:
+        if thread_unique_id != self._thread_unique_id:
+            log.error(f&#39;Somehow asking for parent of a thread-root ({self}) &#39;
+                      f&#39;from a different thread ({threading.current_thread().name}/{thread_unique_id}); &#39;
+                      f&#39;skipping self.&#39;)
+
+        stack_iter = iter(storage.values_reversed)
+        for v in stack_iter:
+            if v._thread_unique_id == thread_unique_id:
+                continue
+
+            # Found first ctx in storage stack (ie: reversed values) that is in a different thread:
+            if yield_from_other_threads and self is not v:
+                yield v
+            break
+        else:
+            # Everything in storage is in our own thread,
+            # that means next one after thread-root is the app-root.
+            if yield_from_other_threads and self is not _app_root_context:
+                yield _app_root_context
+            return
+
+        # Faster to simply continue the iter and finally yield the app root here, since we know exactly
+        # what we need to do and no other logic needs to be checked at this point.
+        for v in stack_iter:
+            if yield_from_other_threads or v._thread_unique_id == thread_unique_id:
+                if self is not v:
+                    yield v
+
+        if yield_from_other_threads and self is not _app_root_context:
+            yield _app_root_context
+        return
+
+    # We want to use a local-copy of the stack, in case things change in our storage/contextvar while iterating
+    # (I don&#39;t really expect it to, but you never know).
+    stack = storage.values
+    start_index = storage.index_for_ctx(self)
+
+    # We are not &#39;active&#39; in storage, so we check the top of the stack;
+    # since the next parent needs to be in stack or thread-root.
+    if start_index is None:
+        if not stack:
+            # If nothing is in stack, yield thread-root and then app-root; we are done.
+            yield _thread_storage.root_ctx
+            if yield_from_other_threads:
+                yield _app_root_context
+            # Finished!
+            return
+
+        # If we are not yielding from other threads, always do thread-root last, no mater what.
+        # If stack top is not in our thread, we yield the thread-root and then go though the rest of the stack.
+        if yield_from_other_threads and stack[-1]._thread_unique_id != thread_unique_id:
+            v = _thread_storage.root_ctx
+            if self is not v:
+                thread_root_was_yielded = True
+                yield _thread_storage.root_ctx
+
+        # Start next index (ie: index-1) to get the top of the stack.
+        start_index = len(stack)
+    elif start_index &lt;= 0:
+        # We are at bottom of the stack.
+        # Return thread-root IF the bottom of the stack is in the same thread as us.
+        # (if it&#39;s in a different thread, thread-root should have already
+        #  been yielded earlier at some point in the past).
+        if self._thread_unique_id == thread_unique_id:
+            yield _thread_storage.root_ctx
+
+        # #hen app-root; and then we are finished.
+        if yield_from_other_threads:
+            yield _app_root_context
+        # Finished!
+        return
+
+    # Otherwise, we get the next parent after us in the stack, and so on and so forth...
+    for i in range(start_index - 1, -1, -1):
+        ctx = stack[i]
+
+        if ctx._thread_unique_id == thread_unique_id and self is not ctx:
+            # Thread is the same as us, so always safe to yield it.
+            yield ctx
+            continue
+
+        # We are from the same thread as the current thread, but next parent is not and self was created in thread;
+        # return thread-root if we `yield_from_other_threads`, otherwise wait until the end.
+        # We always yield thread-root last if `yield_from_other_threads` is `False`.
+        if yield_from_other_threads and not thread_root_was_yielded and self._thread_unique_id == thread_unique_id:
+            v = _thread_storage.root_ctx
+            if self is not v:
+                thread_root_was_yielded = True
+                yield _thread_storage.root_ctx
+
+        # Yield current position in stack, then go to next one (via for loop).
+        # We already detected if ctx was in our thread or not at top of loop,
+        # so only yield this if `yield_from_other_threads` is `True`.
+        if yield_from_other_threads and self is not ctx:
+            yield ctx
+
+    # If we are not yielding from other threads, the thread-root is always the last one; we skip app-root.
+    if not yield_from_other_threads:
+        yield _thread_storage.root_ctx
+        return
+
+    # Make sure we yield thread-root if it has not already been.
+    if not thread_root_was_yielded:
+        yield _thread_storage.root_ctx
+
+    # And finally, yield the app-root as the last context.
+    if yield_from_other_threads:
+        yield _app_root_context</code></pre>
+</details>
+<div class="desc"><p>Returns a generator that will yield self, and then every parent relative to us, along
+with the thread-root and app-root at the appropriate times.</p>
+<p>The goal is to generally return self first, and then the next parent in the stack, etc.;
+but along the way yielding the special thread-root and app-root at the correct points.</p>
+<p>General Algorthm:
+- Always yield self first, unless <code>include_self</code> is <code>False</code>.</p>
+<ul>
+<li>
+<p>If self is not active, we return the top of the stack; unless top of stack is from a different thread,
+we then return thread-root context in that case.</p>
+</li>
+<li>
+<p>Otherwise, we keep returning the next context after us in the stack, until we find context in a different
+thread and current context is in current thread.
+In that case, we return thread-root context.</p>
+</li>
+<li>
+<p>If self is a thread-root context, we scan stack and return the next context that is not in our
+current thread; and if not found we return app-root context.</p>
+</li>
+<li>
+<p>Once we get to bottom of stack, we check if bottom-stack context is in our current thread.
+If it is we return thread-root context; otherwise we return app-root context.</p>
+</li>
+</ul>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>yield_self</code></strong></dt>
+<dd>If <code>True</code> (default): Include <code>self</code> as the first yielded item.
+Unless <code>self</code> is from a different thread and <code>yield_from_other_threads</code> is <code>False</code>.</dd>
+<dt><strong><code>yield_from_other_threads</code></strong></dt>
+<dd>If <code>True</code> (default): Include XContext's that were created in threads
+different from the current thread.
+This overrides <code>yield_self</code> if <code>self</code> was created
+in a different thread.</dd>
+</dl></div>
+</dd>
+<dt id="xinject.context.XContext.dependency"><code class="name flex">
+<span>def <span class="ident">dependency</span></span>(<span>self,<br>for_type: Type[~<a title="xinject.context.ResourceTypeVar" href="#xinject.context.ResourceTypeVar">ResourceTypeVar</a>],<br>*,<br>create: bool = True) ‑> ~<a title="xinject.context.ResourceTypeVar" href="#xinject.context.ResourceTypeVar">ResourceTypeVar</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def dependency(
+        self, for_type: Type[ResourceTypeVar], *, create: bool = True
+) -&gt; ResourceTypeVar:
+    &#34;&#34;&#34;
+
+    ## Summary
+
+    The whole point of the `xinject.context.XContext` is to have a place to get shared
+    dependencies. This method is the primary way to get a shared resource from a XContext
+    directly.
+
+    Normally, code will use some other convenience methods, as an example:
+
+    Normally a resource will inherit from `xinject.dependency.Dependency` and that
+    class provides a class method `xinject.dependency.Dependency.grab` to easily get a
+    resource of the inherited type from the current context as a convenience.
+
+    So normally, code would do this to get a Resource:
+
+    &gt;&gt;&gt; class SomeResource(Dependency):
+    &gt;&gt;&gt;    pass
+    &gt;&gt;&gt; # Normally code would do this to get current Dependency object:
+    &gt;&gt;&gt; SomeResource.grab()
+
+    Another convenient way to get the current resource is via the
+    `xinject.proxy.CurrentDependencyProxy`. This class lets you create an object
+    that always acts like the current/active object for some Resource.
+    So you can define it at the top-level of some module, and code can import it
+    and use it directly.
+
+    I would start with [Quick Start](#quick-start) if you know nothing of how
+    `xinject.context.XContext` works and want to learn more about how it works.
+
+    Most of the time, you interact with Context indrectly via
+    `xinject.dependency.Dependency`.  So getting familure with Context is more about
+    utilize more advance use-cases. I get into some of these advanced use-cases below.
+
+    ## Advanced Usage for Unit Tests
+
+    You can allocate a new Context to inject or customize dependencies. When the context is
+    thrown away or otherwise is not the current context anymore, the idea is whatever
+    resource you made temporarily active is forgotten.
+
+    You can inject/replace dependencies as needed for unit-testing purposes as well by simply
+    adding the resource to a new/blank `xinject.context.XContext` as a diffrent type,
+    see example below.
+
+    In this example, we add a value of int(20) for the `str` resource type.
+    I used built-int types to simplify this, but you can image using your own
+    custom-resource-class and placing it in the Context for the normal-resource-type
+    the normal code asks for.
+
+    &gt;&gt;&gt; XContext().add(20, for_type=str)
+    &gt;&gt;&gt; XContext().dependency(str)
+    Output: 20
+
+    ## Specific Details
+
+    Given a type of `xinject.dependency.Dependency`, or any other type;
+    we will return an instance of it.
+
+    If we currently don&#39;t have one, we will create a new one of type passe in and return that.
+    We will continue to return the one created in the future for the type passed in.
+
+    You can customize this process a bit by having your custom resource inherit from
+    `xinject.dependency.Dependency`.
+
+    Otherwise, no other parameters will be sent to init method.
+
+    If you have an `for_type` class of any sort
+    that needs extra parameters, and you want to use it as a Resource, you can create it
+    yourself and add it to the Context via `add_resource`.  I would recommend in this case a
+    class-method on the `for_type` class that would accept these extra parameters and then
+    check the current Context and allocate or return the existing context resource as needed.
+
+    Args:
+        for_type (Type[ResourceTypeVar]): The type of resource you need, and instance of
+            this type will be returned.
+
+        create (bool): Whether to create resource if needed or not.
+            If `True` [default]: creates the resource if it does not exist in self.
+            If `False`: only returns an object if we have it already, otherwise None.
+    &#34;&#34;&#34;
+
+    # TODO: Decide if/when to bring back the cached dependencies.
+    #   I have thoughts on the cache-key being the StorageObject or some such and then
+    #   keeping track of all XContext instances weakly, etc;
+    #   but for now to keep things simple and don&#39;t do caching.
+    #
+    # # We next check our cached parent deps...
+    # obj = self._cached_parent_dependencies.get(for_type, None)
+    # if obj is not None:
+    #     return obj
+
+    # We must now query the parent-chain to find the dependency.
+    #
+    # If we are the root context for the entire app (ie: app-root between all threads)
+    # then we check to see if dependency is thread-sharable.
+    #
+    # If it is then we continue as normal.
+    # If NOT, then we always return None.
+    #
+    # This will indicate to the thread-specific XContext that is calling us to allocate
+    # the object in its self.
+    #
+    # If something else is asking us, we still return None because this Dependency does not
+    # belong in us, and so we should not accidentally auto-create it in us.
+    # ie: Whoever is calling it should handle the None case.
+    #
+    # In Reality, the only thing that should be calling the app-root context
+    # is a thread-root context.  Thread root-contexts should never return None when asked
+    # for a dependency.
+    #
+    # So, code using a Dependency in general should never have to worry about this None case.
+
+    from xinject.dependency import is_dependency_thread_sharable
+    is_thread_sharable = is_dependency_thread_sharable(for_type)
+
+    if self._is_app_root and not is_thread_sharable:
+        # We can&#39;t allocate a non-thread-sharable dependency in the app-root context,
+        # and there are no more parents; so we always return `None` in this case.
+        return None
+
+    last_ctx = None
+    for ctx in self.ctx_chain(yield_from_other_threads=is_thread_sharable):
+        last_ctx = ctx
+        obj = ctx._dependencies.get(for_type, None)
+        if obj is not None:
+            # TODO: I have another TODO in this file about caching these, check that for details.
+            # # Store in self (and all other ctx&#39;s up to this point) for future reuse?
+            # self._cached_parent_dependencies[for_type] = parent_value
+            return obj
+
+    # If we can&#39;t create the dependency, we simply return `None`; nothing more to do.
+    if not create:
+        return None
+
+    # We next create dependency if we don&#39;t have an existing one.
+    # Allocate a blank object if we have no parent-value to use.
+    # We add it to the ctx farthest down the stack, so it can be more visible to others
+    # (this reduces the number of redundant Dependency instances to the minimum).
+    # If `is_thread_sharable` is `False`, the last one is guaranteed to be the thread-root.
+    obj = for_type()
+    last_ctx._dependencies[for_type] = obj
+
+    # TODO: I have another TODO in this file about caching these, check that for details.
+    # # Store in self and all other ctx&#39;s on the stack for future reuse?
+    # self._cached_parent_dependencies[for_type] = parent_value
+
+    return obj</code></pre>
+</details>
+<div class="desc"><h2 id="summary">Summary</h2>
+<p>The whole point of the <code><a title="xinject.context.XContext" href="#xinject.context.XContext">XContext</a></code> is to have a place to get shared
+dependencies. This method is the primary way to get a shared resource from a XContext
+directly.</p>
+<p>Normally, code will use some other convenience methods, as an example:</p>
+<p>Normally a resource will inherit from <code><a title="xinject.dependency.Dependency" href="dependency.html#xinject.dependency.Dependency">Dependency</a></code> and that
+class provides a class method <code><a title="xinject.dependency.Dependency.grab" href="dependency.html#xinject.dependency.Dependency.grab">Dependency.grab()</a></code> to easily get a
+resource of the inherited type from the current context as a convenience.</p>
+<p>So normally, code would do this to get a Resource:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; class SomeResource(Dependency):
+&gt;&gt;&gt;    pass
+&gt;&gt;&gt; # Normally code would do this to get current Dependency object:
+&gt;&gt;&gt; SomeResource.grab()
+</code></pre>
+<p>Another convenient way to get the current resource is via the
+<code><a title="xinject.proxy.CurrentDependencyProxy" href="proxy.html#xinject.proxy.CurrentDependencyProxy">CurrentDependencyProxy</a></code>. This class lets you create an object
+that always acts like the current/active object for some Resource.
+So you can define it at the top-level of some module, and code can import it
+and use it directly.</p>
+<p>I would start with <a href="#quick-start">Quick Start</a> if you know nothing of how
+<code><a title="xinject.context.XContext" href="#xinject.context.XContext">XContext</a></code> works and want to learn more about how it works.</p>
+<p>Most of the time, you interact with Context indrectly via
+<code><a title="xinject.dependency.Dependency" href="dependency.html#xinject.dependency.Dependency">Dependency</a></code>.
+So getting familure with Context is more about
+utilize more advance use-cases. I get into some of these advanced use-cases below.</p>
+<h2 id="advanced-usage-for-unit-tests">Advanced Usage for Unit Tests</h2>
+<p>You can allocate a new Context to inject or customize dependencies. When the context is
+thrown away or otherwise is not the current context anymore, the idea is whatever
+resource you made temporarily active is forgotten.</p>
+<p>You can inject/replace dependencies as needed for unit-testing purposes as well by simply
+adding the resource to a new/blank <code><a title="xinject.context.XContext" href="#xinject.context.XContext">XContext</a></code> as a diffrent type,
+see example below.</p>
+<p>In this example, we add a value of int(20) for the <code>str</code> resource type.
+I used built-int types to simplify this, but you can image using your own
+custom-resource-class and placing it in the Context for the normal-resource-type
+the normal code asks for.</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; XContext().add(20, for_type=str)
+&gt;&gt;&gt; XContext().dependency(str)
+Output: 20
+</code></pre>
+<h2 id="specific-details">Specific Details</h2>
+<p>Given a type of <code><a title="xinject.dependency.Dependency" href="dependency.html#xinject.dependency.Dependency">Dependency</a></code>, or any other type;
+we will return an instance of it.</p>
+<p>If we currently don't have one, we will create a new one of type passe in and return that.
+We will continue to return the one created in the future for the type passed in.</p>
+<p>You can customize this process a bit by having your custom resource inherit from
+<code><a title="xinject.dependency.Dependency" href="dependency.html#xinject.dependency.Dependency">Dependency</a></code>.</p>
+<p>Otherwise, no other parameters will be sent to init method.</p>
+<p>If you have an <code>for_type</code> class of any sort
+that needs extra parameters, and you want to use it as a Resource, you can create it
+yourself and add it to the Context via <code>add_resource</code>.
+I would recommend in this case a
+class-method on the <code>for_type</code> class that would accept these extra parameters and then
+check the current Context and allocate or return the existing context resource as needed.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>for_type</code></strong> :&ensp;<code>Type[<a title="xinject.context.ResourceTypeVar" href="#xinject.context.ResourceTypeVar">ResourceTypeVar</a>]</code></dt>
+<dd>The type of resource you need, and instance of
+this type will be returned.</dd>
+<dt><strong><code>create</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Whether to create resource if needed or not.
+If <code>True</code> [default]: creates the resource if it does not exist in self.
+If <code>False</code>: only returns an object if we have it already, otherwise None.</dd>
+</dl></div>
+</dd>
+<dt id="xinject.context.XContext.dependency_chain"><code class="name flex">
+<span>def <span class="ident">dependency_chain</span></span>(<span>self,<br>for_type: Type[~<a title="xinject.context.ResourceTypeVar" href="#xinject.context.ResourceTypeVar">ResourceTypeVar</a>],<br>create: bool = False) ‑> Iterable[~<a title="xinject.context.ResourceTypeVar" href="#xinject.context.ResourceTypeVar">ResourceTypeVar</a>]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def dependency_chain(
+        self, for_type: Type[ResourceTypeVar], create: bool = False
+) -&gt; Iterable[ResourceTypeVar]:
+    &#34;&#34;&#34;
+    Returns a python generator yielding dependencies in self and in each parent;
+    returns them in order.
+
+    This won&#39;t create a dependency if none exist unless you pass True into `create`, so it&#39;s
+    possible for no results to be yielded if it&#39;s never been created and `create` == False.
+
+    .. warning:: This is mostly used by `xinject.dependency.Dependency` subclasses
+        (internally).
+
+        Not normally used elsewhere. It can help the `xinject.dependency.Dependency`
+        subclasses to find their list of parent dependencies to consult for its
+        own purposes (ie: to inherit settings/configuration from parent objects).
+
+    Args:
+        for_type (Type[ResourceTypeVar]): The dependency type to look for.
+        create (bool): If we should create dependency at each context if it does not already
+            exist.
+    Yields:
+        Generator[ResourceTypeVar, None, None]: Resources that were found in the self/parent
+            hierarchy.
+    &#34;&#34;&#34;
+    objs_already_seen = set()
+    from xinject.dependency import is_dependency_thread_sharable
+    is_thread_sharable = is_dependency_thread_sharable(for_type)
+
+    for context in self.ctx_chain(yield_from_other_threads=is_thread_sharable):
+        obj = context.dependency(for_type=for_type, create=create)
+        if not obj:
+            continue
+
+        obj_id = id(obj)
+        if obj_id in objs_already_seen:
+            continue
+
+        objs_already_seen.add(obj_id)
+        yield obj</code></pre>
+</details>
+<div class="desc"><p>Returns a python generator yielding dependencies in self and in each parent;
+returns them in order.</p>
+<p>This won't create a dependency if none exist unless you pass True into <code>create</code>, so it's
+possible for no results to be yielded if it's never been created and <code>create</code> == False.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning:&ensp;This is mostly used by <code><a title="xinject.dependency.Dependency" href="dependency.html#xinject.dependency.Dependency">Dependency</a></code> subclasses</p>
+<p>(internally).</p>
+<p>Not normally used elsewhere. It can help the <code><a title="xinject.dependency.Dependency" href="dependency.html#xinject.dependency.Dependency">Dependency</a></code>
+subclasses to find their list of parent dependencies to consult for its
+own purposes (ie: to inherit settings/configuration from parent objects).</p>
+</div>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>for_type</code></strong> :&ensp;<code>Type[<a title="xinject.context.ResourceTypeVar" href="#xinject.context.ResourceTypeVar">ResourceTypeVar</a>]</code></dt>
+<dd>The dependency type to look for.</dd>
+<dt><strong><code>create</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If we should create dependency at each context if it does not already
+exist.</dd>
+</dl>
+<h2 id="yields">Yields</h2>
+<dl>
+<dt><code>Generator[<a title="xinject.context.ResourceTypeVar" href="#xinject.context.ResourceTypeVar">ResourceTypeVar</a>, None, None]</code></dt>
+<dd>Resources that were found in the self/parent
+hierarchy.</dd>
+</dl></div>
+</dd>
+<dt id="xinject.context.XContext.parent_chain"><code class="name flex">
+<span>def <span class="ident">parent_chain</span></span>(<span>self) ‑> List[<a title="xinject.context.XContext" href="#xinject.context.XContext">XContext</a>]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def parent_chain(self, _include_self=True) -&gt; List[&#34;XContext&#34;]:
+    &#34;&#34;&#34; A list of self + all parents in priority order.
+
+        See `XContext._is_active` internal/private var for a bit more detail on what is
+        &#39;active&#39; but suffice to say that active means XContext is currently being used via a
+        decorator &#39;@&#39; or via `with` or activating a `xinject.dependency.Dependency` via `@`
+        or `with`; has not been exited yet, we are active.
+
+        The chain will start with `self` as the first item, and then proceed with the others
+        that are currently active (see `XContext.is_active`).
+    &#34;&#34;&#34;
+    return [v for v in self.ctx_chain() if v]</code></pre>
+</details>
+<div class="desc"><p>A list of self + all parents in priority order.</p>
+<p>See <code>XContext._is_active</code> internal/private var for a bit more detail on what is
+'active' but suffice to say that active means XContext is currently being used via a
+decorator '@' or via <code>with</code> or activating a <code><a title="xinject.dependency.Dependency" href="dependency.html#xinject.dependency.Dependency">Dependency</a></code> via <code>@</code>
+or <code>with</code>; has not been exited yet, we are active.</p>
+<p>The chain will start with <code>self</code> as the first item, and then proceed with the others
+that are currently active (see <code><a title="xinject.context.XContext.is_active" href="#xinject.context.XContext.is_active">XContext.is_active</a></code>).</p></div>
+</dd>
+<dt id="xinject.context.XContext.resource_chain"><code class="name flex">
+<span>def <span class="ident">resource_chain</span></span>(<span>self,<br>for_type: Type[~<a title="xinject.context.ResourceTypeVar" href="#xinject.context.ResourceTypeVar">ResourceTypeVar</a>],<br>create: bool = False) ‑> Iterable[~<a title="xinject.context.ResourceTypeVar" href="#xinject.context.ResourceTypeVar">ResourceTypeVar</a>]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def resource_chain(
+        self, for_type: Type[ResourceTypeVar], create: bool = False
+) -&gt; Iterable[ResourceTypeVar]:
+    &#34;&#34;&#34; This is deprecated, renamed to `XContext.dependency_chain`; use `dependency_chain` instead.
+    &#34;&#34;&#34;
+    return self.dependency_chain(for_type=for_type, create=create)</code></pre>
+</details>
+<div class="desc"><p>This is deprecated, renamed to <code><a title="xinject.context.XContext.dependency_chain" href="#xinject.context.XContext.dependency_chain">XContext.dependency_chain()</a></code>; use <code>dependency_chain</code> instead.</p></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul>
+<li><a href="#to-do-first">To Do First:</a></li>
+<li><a href="#quick-start">Quick Start</a><ul>
+<li><a href="#please-read-first">Please Read First</a></li>
+</ul>
+</li>
+<li><a href="#context-overview">Context Overview</a></li>
+<li><a href="#fundamentals">Fundamentals</a><ul>
+<li><a href="#dependencies">Dependencies</a></li>
+<li><a href="#activating-new-resource">Activating New Resource</a></li>
+<li><a href="#activating-new-context">Activating New Context</a><ul>
+<li><a href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#parents">Parents</a></li>
+<li><a href="#resource-base-classes">Resource Base Classes</a><ul>
+<li><a href="#xinjectdependencydependency">xinject.dependency.Dependency</a><ul>
+<li><a href="#example">Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="xinject" href="index.html">xinject</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-variables">Global variables</a></h3>
+<ul class="">
+<li><code><a title="xinject.context.ResourceTypeVar" href="#xinject.context.ResourceTypeVar">ResourceTypeVar</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="xinject.context.copy_full_stack_state" href="#xinject.context.copy_full_stack_state">copy_full_stack_state</a></code></li>
+<li><code><a title="xinject.context.reset_dependencies_in_current_thread_root" href="#xinject.context.reset_dependencies_in_current_thread_root">reset_dependencies_in_current_thread_root</a></code></li>
+<li><code><a title="xinject.context.restore_with_full_stack_state" href="#xinject.context.restore_with_full_stack_state">restore_with_full_stack_state</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="xinject.context.XContext" href="#xinject.context.XContext">XContext</a></code></h4>
+<ul class="two-column">
+<li><code><a title="xinject.context.XContext.__call__" href="#xinject.context.XContext.__call__">__call__</a></code></li>
+<li><code><a title="xinject.context.XContext.__copy__" href="#xinject.context.XContext.__copy__">__copy__</a></code></li>
+<li><code><a title="xinject.context.XContext.__deepcopy__" href="#xinject.context.XContext.__deepcopy__">__deepcopy__</a></code></li>
+<li><code><a title="xinject.context.XContext.__enter__" href="#xinject.context.XContext.__enter__">__enter__</a></code></li>
+<li><code><a title="xinject.context.XContext.__exit__" href="#xinject.context.XContext.__exit__">__exit__</a></code></li>
+<li><code><a title="xinject.context.XContext.add" href="#xinject.context.XContext.add">add</a></code></li>
+<li><code><a title="xinject.context.XContext.copy" href="#xinject.context.XContext.copy">copy</a></code></li>
+<li><code><a title="xinject.context.XContext.ctx_chain" href="#xinject.context.XContext.ctx_chain">ctx_chain</a></code></li>
+<li><code><a title="xinject.context.XContext.current" href="#xinject.context.XContext.current">current</a></code></li>
+<li><code><a title="xinject.context.XContext.dependency" href="#xinject.context.XContext.dependency">dependency</a></code></li>
+<li><code><a title="xinject.context.XContext.dependency_chain" href="#xinject.context.XContext.dependency_chain">dependency_chain</a></code></li>
+<li><code><a title="xinject.context.XContext.grab" href="#xinject.context.XContext.grab">grab</a></code></li>
+<li><code><a title="xinject.context.XContext.is_active" href="#xinject.context.XContext.is_active">is_active</a></code></li>
+<li><code><a title="xinject.context.XContext.name" href="#xinject.context.XContext.name">name</a></code></li>
+<li><code><a title="xinject.context.XContext.parent" href="#xinject.context.XContext.parent">parent</a></code></li>
+<li><code><a title="xinject.context.XContext.parent_chain" href="#xinject.context.XContext.parent_chain">parent_chain</a></code></li>
+<li><code><a title="xinject.context.XContext.resource_chain" href="#xinject.context.XContext.resource_chain">resource_chain</a></code></li>
+<li><code><a title="xinject.context.XContext.thread_root" href="#xinject.context.XContext.thread_root">thread_root</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
+</footer>
+</body>
+</html>

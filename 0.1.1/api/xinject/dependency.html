@@ -1,0 +1,1466 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.6">
+<title>xinject.dependency API documentation</title>
+<meta name="description" content="Easily create singleton-like classes in a sharable/injectable/decoupled way …">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>xinject.dependency</code></h1>
+</header>
+<section id="section-intro">
+<p>Easily create singleton-like classes in a sharable/injectable/decoupled way.</p>
+<p>Uses <code><a title="xinject.context.XContext" href="context.html#xinject.context.XContext">XContext</a></code> to find the current dependency for any particular subclass
+of Dependency.</p>
+<p>You can think of this as making a <code><a title="xinject.dependency.Dependency" href="#xinject.dependency.Dependency">Dependency</a></code> act like a singleton by default,
+as only one instance (at the root-context) would ever 'normally' be created.</p>
+<p>It's still possible to get a second instance of the dependency, however:</p>
+<ul>
+<li>
+<p>If someone created a new dependency themselves manually and adds it to a new Context
+and then activates the context,
+that dependency they created and added themselves could be a second instance.
+(for more details, see <a href="#activating-new-dependency">Activating New Dependency</a>)</p>
+<p>THis is because the Dependency that was manually created was not given an opportunity
+to reuse the parent value.</p>
+<p>However, this is usually desirable as whatever manually created the object probably
+wants to override the dependency with its own configured object.</p>
+</li>
+<li>
+<p>If a new <code><a title="xinject.context.XContext" href="context.html#xinject.context.XContext">XContext</a></code> was created at some point later via <code>Context(parent=None)</code>
+and then activated. When a dependency is next asked for, it must create a new one as
+any previous <code><a title="xinject.context.XContext" href="context.html#xinject.context.XContext">XContext</a></code> would be unreachable until the context was deactivated.
+(for more details, see <a href="#activating-new-context">Activating New Context</a>)</p>
+</li>
+</ul>
+<h2 id="to-do-first">To Do First</h2>
+<p>If you have not already, to get a nice high-level overview of library see either:</p>
+<ul>
+<li>project README.md here:<ul>
+<li><a href="https://github.com/xyngular/py-xinject#documentation">https://github.com/xyngular/py-xinject#documentation</a></li>
+</ul>
+</li>
+<li>Or go to xinject module documentation at here:<ul>
+<li><a href="./#how-to-use">xinject, How To Use</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="dependency-refrence-summary">Dependency Refrence Summary</h2>
+<p>Allows you to create subclasses that act as sharable dependencies.
+Things that should stick around and should be created lazily.</p>
+<p>Also allows code to temporarily create, customize and activate a dependency if you don't want
+the customization to stick around permanently.
+You can do it without your or other code needing to be aware of each other.</p>
+<p>This helps promote code decoupling, since it's so easy to make a Resource activate it
+as the 'current' version to use.</p>
+<p>The only coupling that takes place is to the Resource sub-class it's self.</p>
+<p>Each separate piece of code can be completely unaware of each other,
+and yet each one can take advantage of the shared dependency.</p>
+<p>This means that Resource can also help with simple dependency injection use-case scenarios.</p>
+<h2 id="dependencies">Dependencies</h2>
+<h3 id="get-current">Get Current</h3>
+<p>There are various ways to get current dependency.
+Let's say we have a dependency called <code>SomeResourceType</code>:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; next_identifier = 0
+&gt;&gt;&gt; class SomeResourceType(Dependency):
+...     def __init__(self):
+...         global next_identifier
+...         self.some_value = &quot;hello!&quot;
+...         self.ident = next_identifier
+...         next_identifier += 1
+</code></pre>
+<div class="admonition note">
+<p class="admonition-title">Note:&ensp;SomeResourceType's <code>ident</code> field get's incremented and set on each newly created object.</p>
+<p>So the first SomeResoureType's <code>ident</code> will equal <code>0</code>,
+the second one created will be <code>1</code> and so forth.</p>
+</div>
+<p>If what you want inherits from <code>Resource</code>, it has a nice class method that
+returns the current dependency.
+An easy way to get the current dependency for the type in this case is
+to call the class method <code>Resource.dependency</code> on its type like so:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; SomeResourceType.grab().some_value
+'hello!'
+&gt;&gt;&gt; SomeResourceType.grab().ident
+0
+</code></pre>
+<h3 id="activating-new-resource">Activating New Resource</h3>
+<p>You can easily create a new dependency, configure it however you like and then 'activate' it.
+That will make it the current version of that dependency.
+This allows you to tempoary 'override' and activate your own custimized version of a dependency.</p>
+<p>You can do it via one of the below listed methods/examples below.</p>
+<p>For these examples, say I have this dependency defined:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; from dataclasses import dataclass
+&gt;&gt;&gt; from xinject import Dependency
+&gt;&gt;&gt;
+&gt;&gt;&gt; @dataclass
+&gt;&gt;&gt; class MyResource(Dependency):
+&gt;&gt;&gt;     some_value = 'default-value'
+&gt;&gt;&gt;
+&gt;&gt;&gt; assert MyResource.grab().some_value == 'default-value'
+</code></pre>
+<ul>
+<li>Use desired <code><a title="xinject.dependency.Dependency" href="#xinject.dependency.Dependency">Dependency</a></code> subclass as a method decorator:<pre><code>&gt;&gt;&gt; @MyResource(some_value='new-value')
+&gt;&gt;&gt; def my_method():
+&gt;&gt;&gt;     assert MyResource.grab().some_value == 'new-value'
+</code></pre>
+</li>
+</ul>
+<h2 id="active-resource-proxy">Active Resource Proxy</h2>
+<p>You can use <code><a title="xinject.proxy.CurrentDependencyProxy" href="proxy.html#xinject.proxy.CurrentDependencyProxy">CurrentDependencyProxy</a></code> to create an object that will act
+like the current dependency.
+All non-dunder attributes will be grabbed/set on the current object instead of the proxy.</p>
+<p>This means you can call all non-special methods and access normal attributes,
+as if the object was really the currently active dependency instance.</p>
+<p>For more info/details see:</p>
+<ul>
+<li><a href="./#active-dependency-proxy">Active Resource Proxy - pydoc</a></li>
+<li>[Active Resource Proxy - github]
+(<a href="https://github.com/xyngular/py-xinject#documentation">https://github.com/xyngular/py-xinject#documentation</a>)</li>
+</ul>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="xinject.dependency.attributes_to_skip_while_copying"><code class="name flex">
+<span>def <span class="ident">attributes_to_skip_while_copying</span></span>(<span>dependency: Type[<a title="xinject.dependency.Dependency" href="#xinject.dependency.Dependency">Dependency</a>] | <a title="xinject.dependency.Dependency" href="#xinject.dependency.Dependency">Dependency</a>) ‑> Set[str]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def attributes_to_skip_while_copying(dependency: &#39;Type[Dependency] | Dependency&#39;) -&gt; Set[str]:
+    return getattr(dependency, &#39;_dependency__meta&#39;, {}).get(&#39;attributes_to_skip_while_copying&#39;, set())</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="xinject.dependency.is_dependency_removed_between_unittests"><code class="name flex">
+<span>def <span class="ident">is_dependency_removed_between_unittests</span></span>(<span>dependency: Type[<a title="xinject.dependency.Dependency" href="#xinject.dependency.Dependency">Dependency</a>] | <a title="xinject.dependency.Dependency" href="#xinject.dependency.Dependency">Dependency</a>) ‑> bool</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def is_dependency_removed_between_unittests(dependency: &#39;Type[Dependency] | Dependency&#39;) -&gt; bool:
+    return getattr(dependency, &#39;_dependency__meta&#39;, {}).get(&#39;remove_between_unittests&#39;, False)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="xinject.dependency.is_dependency_thread_sharable"><code class="name flex">
+<span>def <span class="ident">is_dependency_thread_sharable</span></span>(<span>dependency: Type[<a title="xinject.dependency.Dependency" href="#xinject.dependency.Dependency">Dependency</a>] | <a title="xinject.dependency.Dependency" href="#xinject.dependency.Dependency">Dependency</a>) ‑> bool</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def is_dependency_thread_sharable(dependency: &#39;Type[Dependency] | Dependency&#39;) -&gt; bool:
+    return getattr(dependency, &#39;_dependency__meta&#39;, {}).get(&#39;thread_sharable&#39;, True)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="xinject.dependency.Dependency"><code class="flex name class">
+<span>class <span class="ident">Dependency</span></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Dependency:
+    &#34;&#34;&#34;
+    If you have not already done so, you should also read the xinject project&#39;s
+    [README.md](https://github.com/xyngular/py-xinject#documentation) for an overview
+    of the library before diving into the below text, that&#39;s more of like reference material.
+
+    ## Summary
+
+    Allows you to create subclasses that act as sharable dependencies.
+    Things that should stick around and should be created lazily.
+
+    Also allows code to temporarily create, customize and activate a dependency if you don&#39;t want
+    the customization to stick around permanently.
+    You can do it without your or other code needing to be aware of each other.
+
+    This helps promote code decoupling, since it&#39;s so easy to make a Resource activate it
+    as the &#39;current&#39; version to use.
+
+    The only coupling that takes place is to the Resource sub-class it&#39;s self.
+
+    You can also easily have each thread lazily create seperate instance of your Resource,
+    by inheriting from `DependencyPerThread`.
+
+    Each separate piece of code that uses a particular Resource subclass can be completely
+    unaware of each other, and yet each one can take advantage of the shared dependency.
+
+    This means that Resource can help cover dependency-injection use-cases.
+
+    ## Overview
+
+    A `Resource` represents an object in a `xinject.context.XContext`.
+    Generally, dependencies that are added/created inside a `XContext` inherit from this abstract
+    base `Resource` class, but are not required too. `Resource` just adds some class-level
+    conveince methods and configuratino options. Inheriting from Resource also helps
+    self-document that it&#39;s a Resource.
+
+    See [Resources](#dependencies) at top of this module for a general overview of how dependencies
+    and `XContext`&#39;s work. You should also read the xinject project&#39;s
+    [README.md](https://github.com/xyngular/py-xinject#documentation) for a high-level
+    overview.  The text below is more like plain refrence matrial.
+
+
+    Get the current dependency via `Resource.dependency`, you can call it on sub-class/concreate
+    dependency type, like so:
+
+    &gt;&gt;&gt; from xinject import Dependency
+    &gt;&gt;&gt; class MyConfig(Dependency):
+    ...     some_setting: str = &#34;default-setting-string&#34;
+    &gt;&gt;&gt;
+    &gt;&gt;&gt; MyConfig.grab().some_setting
+
+    By default, Resource&#39;s act like a singletons; in that child contexs will simply get the same
+    instance of the dependency that the parent context has.
+
+    If you inherit from this class, when you have `Resource.dependency` called on you,
+    we will do our best to ensure that the same object instance is returned every time
+    (there are two exceptions, keep reading).
+
+    These dependencies are stored in the current `XContext`&#39;s parent.  What happens is:
+
+    If the current `XContext` and none of their parents have this object and it&#39;s asked for
+    (like what happens when `Resource.dependency` is called on it),
+    it will be created in the deepest/oldest parent XContext.
+
+    This is the first parent `xinject.context.XContext` who&#39;s `XContext.parent` is None.
+    That way it should be visible to everyone on the current thread since it will normally be
+    created in the app-root `xinject.context.XContext`.
+
+    If the Dependency can&#39;t be shared between multiple threads, creation would normally happen
+    at the thread-root XContext instead of the app-root one.
+
+    If we don&#39;t already exist in any parent, then we must be created the first time we are asked
+    for. Normally it will simply be a direct call the dependency-type being requested,
+    this is the normal way to create objects in python:
+
+    &gt;&gt;&gt; class MyResource(Dependency):
+    &gt;&gt;&gt;     pass
+    &gt;&gt;&gt;
+    &gt;&gt;&gt; MyResource.grab()
+
+    When that last line is executed, and the current or any parent context has a `MyResource`
+    dependency; `XContext` will simply create one via calling the dependency type:
+
+    &gt;&gt;&gt; MyResource()
+
+    You can allocate the dependency yourself with custom options and add it to the XContext your
+    self.
+
+    Here are the various ways to do that, via:
+
+
+    - `XContext.add`
+        Adds dependency to a specific XContext that already exists
+        (or replaces if one has already been directly added in the past to that specific Context).
+        When/While XContext is active, these added dependencies will be the `current` ones.
+
+    - Decorator, ie: `@MyResource()`
+
+            &gt;&gt;&gt; from xny_config import Config, config
+            &gt;&gt;&gt;
+            &gt;&gt;&gt; @DependencySubclass(service=&#34;override-service-name&#34;)
+            &gt;&gt;&gt; def my_method():
+            &gt;&gt;&gt;    assert config.service == &#34;override-service-name&#34;
+
+    - via a with statement.
+
+            &gt;&gt;&gt; def my_method():
+            &gt;&gt;&gt;    with @DependencySubclass(service=&#34;override-service-name&#34;)
+            &gt;&gt;&gt;         assert config.service == &#34;override-service-name&#34;
+
+    - multiple in single statement by making your own XContext directly:
+
+            &gt;&gt;&gt; def my_method():
+            &gt;&gt;&gt;     with @XContext([
+            &gt;&gt;&gt;         DependencySubclass(service=&#34;override-service-name&#34;),
+            &gt;&gt;&gt;         SomeOtherDep(name=&#39;new-name&#39;)
+            &gt;&gt;&gt;     ]):
+            &gt;&gt;&gt;         assert config.service == &#34;override-service-name&#34;
+
+    ## Background on Unit Testing
+
+    By default, unit tests always create a new blank `XContext` with `parent=None`.
+    THis is done by an autouse fixture (`xinject.pytest_plugin.xinject_test_context`)
+    THis forces every unit test run to create new dependencies when they are asked for (lazily).
+
+    This fixture is used automatically for each unit test, it clears the app-root XContext,
+    removes all current thread-root XContext&#39;s and their children from being `active`.
+    just beofre each run of a unit test.
+
+    That way it will recreate any shared dependency each time and a unit test can&#39;t leak
+    dependencies it added or changed into the next run.
+
+    One example of why this is good is for `moto` when mocking dynamodb in boto3 client.
+    Can use dependency to ensure that we get a new dynamodb shared dependency for `boto` each time
+    a unit test executes
+    (which helps with `moto`, it needs to be active when a dependency is allocated/used).
+
+    This is exactly what we want for each unit test run, to have a blank-slate for all the
+    vairous dependencies.
+
+    If a particulre set of unit-tests need to have specific dependcies, you can use fixtures to
+    modify/add various dependcies as needed for each indivirual unit-test function run.
+
+    When the application runs for real though, we do generally want to use the dependencies in a
+    shared fashion.  So normally we only allocate a new blank-root `@XContext(parent=None)`
+    either at the start of a normal application run, or during a unit-test.
+    &#34;&#34;&#34;
+
+    def __init_subclass__(
+            cls,
+            thread_sharable: bool | DefaultType = Default,
+            remove_between_unittests: bool | DefaultType = Default,
+            attributes_to_skip_while_copying: Iterable[str] | None = Default,
+            **kwargs
+    ):
+        &#34;&#34;&#34;
+
+        Args:
+            remove_between_unittests: If `False` (default): Dependency will be removed from global context before/after
+                as each individual unit-test is run.  When `thread_sharable` is `False` this already happens because
+                all non-global contexts are forgotten before/after each unit-test run.
+                This param controls what happens if the Dependency is in a global-context.  The global-context is
+                not cleared between each unit test run. This `remove_between_unittests` option allows you to opt-intl
+                this behavior if desired on a per-Dependency basis.
+
+            thread_sharable: If `False`: While a dependency is lazily auto-created, we will
+                ensure we do it per-thread, and not make it visible to other threads.
+                This is accomplished by only auto-creating the dependency in the thread-root
+                `xinject.context.XContext`.
+
+                If `True` (default): Lazily auto-creating the `Dependency` subclass will happen
+                in app-root `xinject.context.XContext`, and will therefore be visible and shared
+                among all threads.
+
+                If True, we can be put in the app-root context, and can be potentially used in
+                multiple threads.  If False, we will only be lazily allocated in the
+                pre-thread, thread-root XContext and always be used in a single-thread.
+
+                If another thread needs us and this is False, a new Dependency instance will be
+                lazily created for that thread.
+
+                ## Details on Mechanism
+
+                It accomplishes this by the lazy-creation mechanism.
+                When something asks for a Dependency that does not currently exist,
+                the parent-XContext is asked for the dependency, and then the parent&#39;s parent
+                will be asked and so on.
+
+                Eventually the app-root context will be asked for the Dependency.
+
+                If the app-root already has the Dependency, it will return it.
+
+                When app-root does not have the dependency, it potentially needs to lazily create
+                the dependency depending on if Dependency is thread-safe.
+
+                So at this point, if you call `is_dependency_thread_sharable` on type/cls,
+                and if returned value is:
+
+                - `False`: The app-root context will return `None` instead of lazily creating the
+                    Dependency. It&#39;s expected a thread-root XContext is the thing that asked the
+                    app-root context and the thread-root context when getting back a None should
+                    just go and lazily create it.
+                    This results in a new Dependency being lazily allocated for each thread that
+                    needs it.
+                - `True`: If it does not have one it will lazily create a new Dependency store it
+                    in self and return it. Other thread-roots that ask for this Dependency in the
+                    future will get the one from the app-root, and therefore the Dependency will
+                    be shared between threads and needs to be thread-safe.
+
+                Each context then stores this value in its self as it goes up the chain.
+                Finally, the code that originally asked for the Dependency will have it returned
+                to it, and they can then use it.
+
+                We store it in each XContext that Dependency passes though so in the future it can
+                just directly answer the question and return the Dependency quickly.
+
+            attributes_to_skip_while_copying: If subclass sets this to a list/set of attribute
+                names, we will skip copying them for you
+                (via `Dependency.__copy__` and `Dependency.__deepcopy__`).
+
+                See `Dependency.__copy__` for details.
+
+                We ourselves need to skip copying a specific internal property,
+                and there are other dependencies that need to do the same thing.
+
+                This is an easy way to accomplish that goal.
+
+                As a side note, we will always skip copying `_context_manager_stack` in addition to
+                what&#39;s set on `Dependency.__init_subclass__` attributes_to_skip_while_copying
+                class argument.
+
+                This can be dynamic if needed, by default it&#39;s consulted on the object each time
+                it&#39;s copied.
+
+                To see where it&#39;s used, look at:
+                - `Dependency.__copy__`
+                - `Dependency.__deepcopy__`
+            **kwargs:
+
+        Returns:
+
+        &#34;&#34;&#34;
+        super().__init_subclass__(**kwargs)
+        parent_meta_dict = cls._dependency__meta
+
+        if parent_meta_dict is None:
+            meta_dict = {&#39;attributes_to_skip_while_copying&#39;: set()}
+        else:
+            # We inherit the options from parent, so make a copy of the parent meta options.
+            meta_dict = deepcopy(parent_meta_dict)
+
+        cls._dependency__meta = meta_dict
+
+        if thread_sharable is not Default:
+            meta_dict[&#39;thread_sharable&#39;] = thread_sharable
+
+        if remove_between_unittests is not Default:
+            meta_dict[&#39;remove_between_unittests&#39;] = remove_between_unittests
+
+        if attributes_to_skip_while_copying is not Default:
+            attr_set: set = meta_dict[&#39;attributes_to_skip_while_copying&#39;]
+            attr_set.update(attributes_to_skip_while_copying)
+
+    _dependency__meta = None
+
+    obj: ClassVar[Self]
+    &#34;&#34;&#34;
+    class property/attribute that will return the current dependency for the subclass
+    it&#39;s asked on by calling `Dependency.grab`, passing no extra arguments and returning the
+    result.
+
+    &gt;&gt;&gt; class MyDependency(Dependency):
+    &gt;&gt;&gt;     my_attribute: str = &#34;default-value&#34;
+    &gt;&gt;&gt;
+    &gt;&gt;&gt; # `.obj` calls `.grab()` and returns it&#39;s result, so they are equivalent;
+    &gt;&gt;&gt; # but type-hinting for `.obj` will only work property on the newest IDE&#39;s
+    &gt;&gt;&gt; # (it&#39;s a new feature in Python 3.11):
+    &gt;&gt;&gt;
+    &gt;&gt;&gt; assert MyDependency.obj.my_attribute == &#34;default-value&#34;
+    &gt;&gt;&gt; assert MyDependency.grab().my_attribute == &#34;default-value&#34;
+
+    Background Details (only if interested in implementation details):
+
+    This is implemented via a `setattr` later on in the module that sets a
+    `_private.classproperty.classproperty` on it. This is a private class and should not be
+    used outside. I use a `setattr` to try and hide from IDE that a classproperty is being used,
+    which can add confusing details to the resulting type-hint the IDE comes up with for `.obj`.
+
+    This way, we hide that detail and the type-hint is cleaner, while at the same time not having
+    to implement a `__getattribute__` (which would slow down attribute access to the class).
+    &#34;&#34;&#34;
+
+    @classmethod
+    def grab(cls: Type[T]) -&gt; T:
+        &#34;&#34;&#34;
+        Gets a potentially shared dependency from the current `udpend.context.XContext`.
+
+        Dependency subclass may add override to have additional args/kwargs when overriding this
+        method if needed [rare] to customize things or return alternate dependency based on
+        some passed-in value(s).
+
+        (example: like passing in a hash-key of some sort).
+
+        As an alterative to overriding `grab` with addtional arguments,
+        you could use a type of Manager for this sort of thing, example:
+
+        &gt;&gt;&gt; class SomeDependencyManager(Dependency):
+        ...     def get_resource_via(self, some_key_or_value: str) -&gt; SomeResourceType:
+        ...         # Lookup and return some sort of related dependency.
+        ...         pass
+        &gt;&gt;&gt; SomeResourceManager.obj.get_resource_via(&#34;some-key-or-value&#34;)
+        &#34;&#34;&#34;
+        return XContext.grab().dependency(for_type=cls)
+
+    @classmethod
+    def proxy(cls: Type[R], ) -&gt; R:
+        &#34;&#34;&#34;
+        Returns a proxy-object, that when and attribute is asked for, it will
+        proxy it to the current object of `cls`.
+
+        ie: the equivalent of this code will run:
+        &gt;&gt;&gt; # `requested_attribute` is the original attribute being requested
+        &gt;&gt;&gt; # on returned proxy object.
+        &gt;&gt;&gt; return getattr(cls.grab(), requested_attribute)
+        &#34;&#34;&#34;
+        from .proxy import CurrentDependencyProxy
+        return CurrentDependencyProxy.wrap(cls)
+
+    @classmethod
+    def proxy_attribute(cls, attribute_name: str) -&gt; Any:
+        &#34;&#34;&#34;
+        Returns a proxy-object, that when and attribute is asked for, it will
+        proxy it to the current attribute value on the current object of `cls`.
+
+        ie: the equivalent of this code will run:
+        &gt;&gt;&gt; # `requested_attribute` is the original attribute being requested
+        &gt;&gt;&gt; # on returned proxy object.
+        &gt;&gt;&gt; return getattr(getattr(cls.grab(), attribute_name), requested_attribute)
+        &#34;&#34;&#34;
+        from .proxy import CurrentDependencyProxy
+        return CurrentDependencyProxy(
+            dependency_type=cls,
+            grabber=lambda x: getattr(x, attribute_name),
+            repr_info=f&#39;attr:{attribute_name}&#39;
+        )
+
+    def __copy__(self):
+        &#34;&#34;&#34;
+        Basic shallow copy protection
+        (I am wondering if I should just remove this default copy code).
+
+        `Dependency` overrides the default copy operation to shallow copy everything,
+        except it will make a shallow copy for any normal dict/list types.
+        (so old a new dependencies don&#39;t share the same list/dict instance).
+
+        It will also look skip copying any attributes that are named in the
+        `attributes_to_skip_while_copying` class parameter (if anything),
+        if a super-class of the `Dependency` has specified any `attributes_to_skip_while_copying`
+        subclasses will inherit any items in that parents list of attributes to skip while copying.
+
+        If you want different behavior, then override `Dependency.__copy__`.
+
+        A dependency could also use `deepcopy` instead when making a copy, if desirable.
+
+        Copying a dependency may be useful if you want to activate a new dependency but have its
+        configuration similar to a current dependency (with some tweaks/modifications).
+        &#34;&#34;&#34;
+        clone = type(self)()
+        dict_copy = self.__dict__.copy()
+
+        # Pop out of the dict-copy any attributes we should skip.
+        attrs_to_skip = attributes_to_skip_while_copying(self) or []
+        for attr_to_skip in [&#39;_context_manager_stack&#39;, *attrs_to_skip]:
+            dict_copy.pop(attr_to_skip, None)
+
+        for k, v in dict_copy.items():
+            if isinstance(v, (list, dict)):
+                dict_copy[k] = copy(v)
+        clone.__dict__.update(dict_copy)
+        return clone
+
+    def __deepcopy__(self, memo=None):
+        # Collect a list of things to skip....
+        # We always need to have `_context_manager_stack`, subclasses can set
+        # `attributes_to_skip_while_copying` if they have additional ones they want to skip.
+        skip_attributes = {
+            x for x in [&#39;_context_manager_stack&#39;, *(attributes_to_skip_while_copying(self) or [])]
+        }
+
+        # If we get called without a memo, allocate a blank dict.
+        if memo is None:
+            memo = {}
+
+        # Check to see if we are already in the memo, if we are then use that instead of
+        # making a copy of self again.
+        already_copied = memo.get(id(self))
+        if already_copied:
+            return already_copied
+
+        # Make new object, put it in memo so if we encounter `self` in the future we will reuse it.
+        copy = type(self)()
+        memo[id(self)] = copy
+
+        # Deepcopy everything except the ones user wants to ignore.
+        for k, v in self.__dict__.items():
+            try:
+                if k in skip_attributes:
+                    continue
+                copy.__dict__[k] = deepcopy(v, memo)
+            except TypeError:
+                continue  # Ignore type errors
+
+        return copy
+
+    _context_manager_stack: List[XContext] = None
+    &#34;&#34;&#34; Keeps track of context&#39;s we created when self (ie: `Dependency`) is used in a `with`
+        statement.  This MUST be reset when doing a copy of the dependency.
+    &#34;&#34;&#34;
+
+    def __enter__(self: R) -&gt; R:
+        if self._context_manager_stack is None:
+            self._context_manager_stack = []
+
+        # We make a new XContext object, and delegate context-management duties to it.
+        context = XContext(dependencies=self, name=f&#34;with:{self.__class__.__name__}&#34;)
+        self._context_manager_stack.append(context)
+        context.__enter__()
+        return self
+
+    def __exit__(self, *args, **kwargs):
+        stack = self._context_manager_stack
+        if not stack:
+            raise XInjectError(
+                f&#34;While using ({self}) as a context manager via a `with` statement,&#34;
+                f&#34;somehow we did not have an internal context from the initial entering &#34;
+                f&#34;(see `xinject.dependency.Dependency.__enter__`). &#34;
+                f&#34;Indicates a very strange bug.&#34;
+            )
+
+        context = stack.pop()
+        context.__exit__(*args, **kwargs)
+
+    def __call__(self, func):
+        &#34;&#34;&#34;
+        This makes Resource subclasses have an ability to be used as function decorators
+        by default unless this method is overriden to provide some other funcionality.
+
+        If subclasses do need to override this, I would recemend checking the first positional
+        argument for a callable (and no other arguments are passed in) to maintain their ability
+        to be function decorators.
+        Something like this:
+
+        &gt;&gt;&gt; class MyResource(Dependency):
+        ...     some_param = None
+        ...     def __init__(self, some_param = None):
+        ...         self.some_param = some_param
+        ...
+        ...     def __call__(self, *args, **kwargs):
+        ...         if len(args) == 1 and not kwargs and callable(args[0]):
+        ...             return super().__call__(args[0])
+
+        This method will check for a callable being passed in as first argument.
+        I will raise an error with a descriptive error message if we don&#39;t get a callable.
+
+        We should get a callable if Resource subclass is used like in the example below.
+        (Config being a dependency subclass).
+
+        In this example, a new Config dependency is being created and we tell it to only use
+        the `EnvironmentalProvider` and we use it as a function decorator.
+        This means while the `some_method` function is executing,
+        that Config object is made the current one.
+
+        `some_method` and any other method called from within `some_method` will
+        only be using the `EnvironmentalProvider` for looking up configuration by default.
+
+        &gt;&gt;&gt; my_resource = MyResource.proxy()
+        &gt;&gt;&gt; assert my_resource.some_param is None
+        &gt;&gt;&gt;
+        &gt;&gt;&gt; @MyResource(some_param=&#34;alternate-value&#34;)
+        &gt;&gt;&gt; def some_method():
+        ...     # Only searches: overrides, environ-vars, defaults
+        ...     assert my_resource.some_param == &#39;alternate-value&#39;
+
+        Args:
+            func (Callable): decorated function passed in via python decorator syntax.
+
+                &gt;&gt;&gt; @MyResource()
+                &gt;&gt;&gt; def some_method():
+                ...     pass
+
+        Returns: We execute decorated method and return whatever it returns.
+        &#34;&#34;&#34;
+        if not callable(func):
+            raise XInjectError(
+                f&#34;Attempt to calling a Dependency of type ({self}) as a callable function. &#34;
+                f&#34;By default (unless dependency subclass does/says otherwise) you need to use &#34;
+                f&#34;it as a decorator when calling it. &#34;
+                f&#34;When using a Dependency subclass as a decorator, Python will call the &#34;
+                f&#34;Dependency and pass in a callable function. The dependency will then make self &#34;
+                f&#34;the current dependency via `with self` and call the passed in function inside &#34;
+                f&#34;that with statement, returning the result of calling the passed in function.&#34;
+            )
+
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            with self:
+                return func(*args, **kwargs)
+        return wrapper</code></pre>
+</details>
+<div class="desc"><p>If you have not already done so, you should also read the xinject project's
+<a href="https://github.com/xyngular/py-xinject#documentation">README.md</a> for an overview
+of the library before diving into the below text, that's more of like reference material.</p>
+<h2 id="summary">Summary</h2>
+<p>Allows you to create subclasses that act as sharable dependencies.
+Things that should stick around and should be created lazily.</p>
+<p>Also allows code to temporarily create, customize and activate a dependency if you don't want
+the customization to stick around permanently.
+You can do it without your or other code needing to be aware of each other.</p>
+<p>This helps promote code decoupling, since it's so easy to make a Resource activate it
+as the 'current' version to use.</p>
+<p>The only coupling that takes place is to the Resource sub-class it's self.</p>
+<p>You can also easily have each thread lazily create seperate instance of your Resource,
+by inheriting from <code><a title="xinject.dependency.DependencyPerThread" href="#xinject.dependency.DependencyPerThread">DependencyPerThread</a></code>.</p>
+<p>Each separate piece of code that uses a particular Resource subclass can be completely
+unaware of each other, and yet each one can take advantage of the shared dependency.</p>
+<p>This means that Resource can help cover dependency-injection use-cases.</p>
+<h2 id="overview">Overview</h2>
+<p>A <code>Resource</code> represents an object in a <code><a title="xinject.context.XContext" href="context.html#xinject.context.XContext">XContext</a></code>.
+Generally, dependencies that are added/created inside a <code>XContext</code> inherit from this abstract
+base <code>Resource</code> class, but are not required too. <code>Resource</code> just adds some class-level
+conveince methods and configuratino options. Inheriting from Resource also helps
+self-document that it's a Resource.</p>
+<p>See <a href="#dependencies">Resources</a> at top of this module for a general overview of how dependencies
+and <code>XContext</code>'s work. You should also read the xinject project's
+<a href="https://github.com/xyngular/py-xinject#documentation">README.md</a> for a high-level
+overview.
+The text below is more like plain refrence matrial.</p>
+<p>Get the current dependency via <code>Resource.dependency</code>, you can call it on sub-class/concreate
+dependency type, like so:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; from xinject import Dependency
+&gt;&gt;&gt; class MyConfig(Dependency):
+...     some_setting: str = &quot;default-setting-string&quot;
+&gt;&gt;&gt;
+&gt;&gt;&gt; MyConfig.grab().some_setting
+</code></pre>
+<p>By default, Resource's act like a singletons; in that child contexs will simply get the same
+instance of the dependency that the parent context has.</p>
+<p>If you inherit from this class, when you have <code>Resource.dependency</code> called on you,
+we will do our best to ensure that the same object instance is returned every time
+(there are two exceptions, keep reading).</p>
+<p>These dependencies are stored in the current <code>XContext</code>'s parent.
+What happens is:</p>
+<p>If the current <code>XContext</code> and none of their parents have this object and it's asked for
+(like what happens when <code>Resource.dependency</code> is called on it),
+it will be created in the deepest/oldest parent XContext.</p>
+<p>This is the first parent <code><a title="xinject.context.XContext" href="context.html#xinject.context.XContext">XContext</a></code> who's <code>XContext.parent</code> is None.
+That way it should be visible to everyone on the current thread since it will normally be
+created in the app-root <code><a title="xinject.context.XContext" href="context.html#xinject.context.XContext">XContext</a></code>.</p>
+<p>If the Dependency can't be shared between multiple threads, creation would normally happen
+at the thread-root XContext instead of the app-root one.</p>
+<p>If we don't already exist in any parent, then we must be created the first time we are asked
+for. Normally it will simply be a direct call the dependency-type being requested,
+this is the normal way to create objects in python:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; class MyResource(Dependency):
+&gt;&gt;&gt;     pass
+&gt;&gt;&gt;
+&gt;&gt;&gt; MyResource.grab()
+</code></pre>
+<p>When that last line is executed, and the current or any parent context has a <code>MyResource</code>
+dependency; <code>XContext</code> will simply create one via calling the dependency type:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; MyResource()
+</code></pre>
+<p>You can allocate the dependency yourself with custom options and add it to the XContext your
+self.</p>
+<p>Here are the various ways to do that, via:</p>
+<ul>
+<li>
+<p><code>XContext.add</code>
+Adds dependency to a specific XContext that already exists
+(or replaces if one has already been directly added in the past to that specific Context).
+When/While XContext is active, these added dependencies will be the <code>current</code> ones.</p>
+</li>
+<li>
+<p>Decorator, ie: <code>@MyResource()</code></p>
+<pre><code>&gt;&gt;&gt; from xny_config import Config, config
+&gt;&gt;&gt;
+&gt;&gt;&gt; @DependencySubclass(service="override-service-name")
+&gt;&gt;&gt; def my_method():
+&gt;&gt;&gt;    assert config.service == "override-service-name"
+</code></pre>
+</li>
+<li>
+<p>via a with statement.</p>
+<pre><code>&gt;&gt;&gt; def my_method():
+&gt;&gt;&gt;    with @DependencySubclass(service="override-service-name")
+&gt;&gt;&gt;         assert config.service == "override-service-name"
+</code></pre>
+</li>
+<li>
+<p>multiple in single statement by making your own XContext directly:</p>
+<pre><code>&gt;&gt;&gt; def my_method():
+&gt;&gt;&gt;     with @XContext([
+&gt;&gt;&gt;         DependencySubclass(service="override-service-name"),
+&gt;&gt;&gt;         SomeOtherDep(name='new-name')
+&gt;&gt;&gt;     ]):
+&gt;&gt;&gt;         assert config.service == "override-service-name"
+</code></pre>
+</li>
+</ul>
+<h2 id="background-on-unit-testing">Background on Unit Testing</h2>
+<p>By default, unit tests always create a new blank <code>XContext</code> with <code>parent=None</code>.
+THis is done by an autouse fixture (<code><a title="xinject.pytest_plugin.xinject_test_context" href="pytest_plugin.html#xinject.pytest_plugin.xinject_test_context">xinject_test_context()</a></code>)
+THis forces every unit test run to create new dependencies when they are asked for (lazily).</p>
+<p>This fixture is used automatically for each unit test, it clears the app-root XContext,
+removes all current thread-root XContext's and their children from being <code>active</code>.
+just beofre each run of a unit test.</p>
+<p>That way it will recreate any shared dependency each time and a unit test can't leak
+dependencies it added or changed into the next run.</p>
+<p>One example of why this is good is for <code>moto</code> when mocking dynamodb in boto3 client.
+Can use dependency to ensure that we get a new dynamodb shared dependency for <code>boto</code> each time
+a unit test executes
+(which helps with <code>moto</code>, it needs to be active when a dependency is allocated/used).</p>
+<p>This is exactly what we want for each unit test run, to have a blank-slate for all the
+vairous dependencies.</p>
+<p>If a particulre set of unit-tests need to have specific dependcies, you can use fixtures to
+modify/add various dependcies as needed for each indivirual unit-test function run.</p>
+<p>When the application runs for real though, we do generally want to use the dependencies in a
+shared fashion.
+So normally we only allocate a new blank-root <code>@XContext(parent=None)</code>
+either at the start of a normal application run, or during a unit-test.</p></div>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="dynamo_pydantic.obj_manager.DynObjManager" href="../dynamo_pydantic/obj_manager.html#dynamo_pydantic.obj_manager.DynObjManager">DynObjManager</a></li>
+<li><a title="dynamo_pydantic.settings.DynSettings" href="../dynamo_pydantic/settings.html#dynamo_pydantic.settings.DynSettings">DynSettings</a></li>
+<li><a title="xboto.dependencies.BotoSession" href="../xboto/dependencies.html#xboto.dependencies.BotoSession">BotoSession</a></li>
+<li>xboto.dependencies._BaseBotoClientOrResource</li>
+<li>xboto.dependencies._Loader</li>
+<li><a title="xinject.dependency.DependencyPerThread" href="#xinject.dependency.DependencyPerThread">DependencyPerThread</a></li>
+</ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="xinject.dependency.Dependency.__init_subclass__"><code class="name flex">
+<span>def <span class="ident">__init_subclass__</span></span>(<span>thread_sharable: bool | <a title="xsentinels.default.DefaultType" href="../xsentinels/default.html#xsentinels.default.DefaultType">DefaultType</a> = Default,<br>remove_between_unittests: bool | <a title="xsentinels.default.DefaultType" href="../xsentinels/default.html#xsentinels.default.DefaultType">DefaultType</a> = Default,<br>attributes_to_skip_while_copying: Iterable[str] | None = Default,<br>**kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>remove_between_unittests</code></strong></dt>
+<dd>If <code>False</code> (default): Dependency will be removed from global context before/after
+as each individual unit-test is run.
+When <code>thread_sharable</code> is <code>False</code> this already happens because
+all non-global contexts are forgotten before/after each unit-test run.
+This param controls what happens if the Dependency is in a global-context.
+The global-context is
+not cleared between each unit test run. This <code>remove_between_unittests</code> option allows you to opt-intl
+this behavior if desired on a per-Dependency basis.</dd>
+<dt><strong><code>thread_sharable</code></strong></dt>
+<dd>
+<p>If <code>False</code>: While a dependency is lazily auto-created, we will
+ensure we do it per-thread, and not make it visible to other threads.
+This is accomplished by only auto-creating the dependency in the thread-root
+<code><a title="xinject.context.XContext" href="context.html#xinject.context.XContext">XContext</a></code>.</p>
+<p>If <code>True</code> (default): Lazily auto-creating the <code><a title="xinject.dependency.Dependency" href="#xinject.dependency.Dependency">Dependency</a></code> subclass will happen
+in app-root <code><a title="xinject.context.XContext" href="context.html#xinject.context.XContext">XContext</a></code>, and will therefore be visible and shared
+among all threads.</p>
+<p>If True, we can be put in the app-root context, and can be potentially used in
+multiple threads.
+If False, we will only be lazily allocated in the
+pre-thread, thread-root XContext and always be used in a single-thread.</p>
+<p>If another thread needs us and this is False, a new Dependency instance will be
+lazily created for that thread.</p>
+<h2 id="details-on-mechanism">Details on Mechanism</h2>
+<p>It accomplishes this by the lazy-creation mechanism.
+When something asks for a Dependency that does not currently exist,
+the parent-XContext is asked for the dependency, and then the parent's parent
+will be asked and so on.</p>
+<p>Eventually the app-root context will be asked for the Dependency.</p>
+<p>If the app-root already has the Dependency, it will return it.</p>
+<p>When app-root does not have the dependency, it potentially needs to lazily create
+the dependency depending on if Dependency is thread-safe.</p>
+<p>So at this point, if you call <code><a title="xinject.dependency.is_dependency_thread_sharable" href="#xinject.dependency.is_dependency_thread_sharable">is_dependency_thread_sharable()</a></code> on type/cls,
+and if returned value is:</p>
+<ul>
+<li><code>False</code>: The app-root context will return <code>None</code> instead of lazily creating the
+Dependency. It's expected a thread-root XContext is the thing that asked the
+app-root context and the thread-root context when getting back a None should
+just go and lazily create it.
+This results in a new Dependency being lazily allocated for each thread that
+needs it.</li>
+<li><code>True</code>: If it does not have one it will lazily create a new Dependency store it
+in self and return it. Other thread-roots that ask for this Dependency in the
+future will get the one from the app-root, and therefore the Dependency will
+be shared between threads and needs to be thread-safe.</li>
+</ul>
+<p>Each context then stores this value in its self as it goes up the chain.
+Finally, the code that originally asked for the Dependency will have it returned
+to it, and they can then use it.</p>
+<p>We store it in each XContext that Dependency passes though so in the future it can
+just directly answer the question and return the Dependency quickly.</p>
+</dd>
+<dt><strong><code>attributes_to_skip_while_copying</code></strong></dt>
+<dd>
+<p>If subclass sets this to a list/set of attribute
+names, we will skip copying them for you
+(via <code><a title="xinject.dependency.Dependency.__copy__" href="#xinject.dependency.Dependency.__copy__">Dependency.__copy__()</a></code> and <code><a title="xinject.dependency.Dependency.__deepcopy__" href="#xinject.dependency.Dependency.__deepcopy__">Dependency.__deepcopy__()</a></code>).</p>
+<p>See <code><a title="xinject.dependency.Dependency.__copy__" href="#xinject.dependency.Dependency.__copy__">Dependency.__copy__()</a></code> for details.</p>
+<p>We ourselves need to skip copying a specific internal property,
+and there are other dependencies that need to do the same thing.</p>
+<p>This is an easy way to accomplish that goal.</p>
+<p>As a side note, we will always skip copying <code>_context_manager_stack</code> in addition to
+what's set on <code><a title="xinject.dependency.Dependency.__init_subclass__" href="#xinject.dependency.Dependency.__init_subclass__">Dependency.__init_subclass__()</a></code> attributes_to_skip_while_copying
+class argument.</p>
+<p>This can be dynamic if needed, by default it's consulted on the object each time
+it's copied.</p>
+<p>To see where it's used, look at:
+- <code><a title="xinject.dependency.Dependency.__copy__" href="#xinject.dependency.Dependency.__copy__">Dependency.__copy__()</a></code>
+- <code><a title="xinject.dependency.Dependency.__deepcopy__" href="#xinject.dependency.Dependency.__deepcopy__">Dependency.__deepcopy__()</a></code></p>
+</dd>
+</dl>
+<p>**kwargs:
+Returns:</p></div>
+</dd>
+<dt id="xinject.dependency.Dependency.grab"><code class="name flex">
+<span>def <span class="ident">grab</span></span>(<span>) ‑> ~T</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Gets a potentially shared dependency from the current <code>udpend.context.XContext</code>.</p>
+<p>Dependency subclass may add override to have additional args/kwargs when overriding this
+method if needed [rare] to customize things or return alternate dependency based on
+some passed-in value(s).</p>
+<p>(example: like passing in a hash-key of some sort).</p>
+<p>As an alterative to overriding <code>grab</code> with addtional arguments,
+you could use a type of Manager for this sort of thing, example:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; class SomeDependencyManager(Dependency):
+...     def get_resource_via(self, some_key_or_value: str) -&gt; SomeResourceType:
+...         # Lookup and return some sort of related dependency.
+...         pass
+&gt;&gt;&gt; SomeResourceManager.obj.get_resource_via(&quot;some-key-or-value&quot;)
+</code></pre></div>
+</dd>
+<dt id="xinject.dependency.Dependency.proxy"><code class="name flex">
+<span>def <span class="ident">proxy</span></span>(<span>) ‑> ~R</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a proxy-object, that when and attribute is asked for, it will
+proxy it to the current object of <code>cls</code>.</p>
+<p>ie: the equivalent of this code will run:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; # &lt;code&gt;requested\_attribute&lt;/code&gt; is the original attribute being requested
+&gt;&gt;&gt; # on returned proxy object.
+&gt;&gt;&gt; return getattr(cls.grab(), requested_attribute)
+</code></pre></div>
+</dd>
+<dt id="xinject.dependency.Dependency.proxy_attribute"><code class="name flex">
+<span>def <span class="ident">proxy_attribute</span></span>(<span>attribute_name: str) ‑> Any</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a proxy-object, that when and attribute is asked for, it will
+proxy it to the current attribute value on the current object of <code>cls</code>.</p>
+<p>ie: the equivalent of this code will run:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; # &lt;code&gt;requested\_attribute&lt;/code&gt; is the original attribute being requested
+&gt;&gt;&gt; # on returned proxy object.
+&gt;&gt;&gt; return getattr(getattr(cls.grab(), attribute_name), requested_attribute)
+</code></pre></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="xinject.dependency.Dependency.obj"><code class="name">var <span class="ident">obj</span> : ClassVar[Self]</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, instance, cls):
+    return self.fget(cls)</code></pre>
+</details>
+<div class="desc"><p>class property/attribute that will return the current dependency for the subclass
+it's asked on by calling <code><a title="xinject.dependency.Dependency.grab" href="#xinject.dependency.Dependency.grab">Dependency.grab()</a></code>, passing no extra arguments and returning the
+result.</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; class MyDependency(Dependency):
+&gt;&gt;&gt;     my_attribute: str = &quot;default-value&quot;
+&gt;&gt;&gt;
+&gt;&gt;&gt; # &lt;code&gt;.obj&lt;/code&gt; calls &lt;code&gt;.grab()&lt;/code&gt; and returns it's result, so they are equivalent;
+&gt;&gt;&gt; # but type-hinting for &lt;code&gt;.obj&lt;/code&gt; will only work property on the newest IDE's
+&gt;&gt;&gt; # (it's a new feature in Python 3.11):
+&gt;&gt;&gt;
+&gt;&gt;&gt; assert MyDependency.obj.my_attribute == &quot;default-value&quot;
+&gt;&gt;&gt; assert MyDependency.grab().my_attribute == &quot;default-value&quot;
+</code></pre>
+<p>Background Details (only if interested in implementation details):</p>
+<p>This is implemented via a <code>setattr</code> later on in the module that sets a
+<code>_private.classproperty.classproperty</code> on it. This is a private class and should not be
+used outside. I use a <code>setattr</code> to try and hide from IDE that a classproperty is being used,
+which can add confusing details to the resulting type-hint the IDE comes up with for <code>.obj</code>.</p>
+<p>This way, we hide that detail and the type-hint is cleaner, while at the same time not having
+to implement a <code>__getattribute__</code> (which would slow down attribute access to the class).</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="xinject.dependency.Dependency.__call__"><code class="name flex">
+<span>def <span class="ident">__call__</span></span>(<span>self, func)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __call__(self, func):
+    &#34;&#34;&#34;
+    This makes Resource subclasses have an ability to be used as function decorators
+    by default unless this method is overriden to provide some other funcionality.
+
+    If subclasses do need to override this, I would recemend checking the first positional
+    argument for a callable (and no other arguments are passed in) to maintain their ability
+    to be function decorators.
+    Something like this:
+
+    &gt;&gt;&gt; class MyResource(Dependency):
+    ...     some_param = None
+    ...     def __init__(self, some_param = None):
+    ...         self.some_param = some_param
+    ...
+    ...     def __call__(self, *args, **kwargs):
+    ...         if len(args) == 1 and not kwargs and callable(args[0]):
+    ...             return super().__call__(args[0])
+
+    This method will check for a callable being passed in as first argument.
+    I will raise an error with a descriptive error message if we don&#39;t get a callable.
+
+    We should get a callable if Resource subclass is used like in the example below.
+    (Config being a dependency subclass).
+
+    In this example, a new Config dependency is being created and we tell it to only use
+    the `EnvironmentalProvider` and we use it as a function decorator.
+    This means while the `some_method` function is executing,
+    that Config object is made the current one.
+
+    `some_method` and any other method called from within `some_method` will
+    only be using the `EnvironmentalProvider` for looking up configuration by default.
+
+    &gt;&gt;&gt; my_resource = MyResource.proxy()
+    &gt;&gt;&gt; assert my_resource.some_param is None
+    &gt;&gt;&gt;
+    &gt;&gt;&gt; @MyResource(some_param=&#34;alternate-value&#34;)
+    &gt;&gt;&gt; def some_method():
+    ...     # Only searches: overrides, environ-vars, defaults
+    ...     assert my_resource.some_param == &#39;alternate-value&#39;
+
+    Args:
+        func (Callable): decorated function passed in via python decorator syntax.
+
+            &gt;&gt;&gt; @MyResource()
+            &gt;&gt;&gt; def some_method():
+            ...     pass
+
+    Returns: We execute decorated method and return whatever it returns.
+    &#34;&#34;&#34;
+    if not callable(func):
+        raise XInjectError(
+            f&#34;Attempt to calling a Dependency of type ({self}) as a callable function. &#34;
+            f&#34;By default (unless dependency subclass does/says otherwise) you need to use &#34;
+            f&#34;it as a decorator when calling it. &#34;
+            f&#34;When using a Dependency subclass as a decorator, Python will call the &#34;
+            f&#34;Dependency and pass in a callable function. The dependency will then make self &#34;
+            f&#34;the current dependency via `with self` and call the passed in function inside &#34;
+            f&#34;that with statement, returning the result of calling the passed in function.&#34;
+        )
+
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        with self:
+            return func(*args, **kwargs)
+    return wrapper</code></pre>
+</details>
+<div class="desc"><p>This makes Resource subclasses have an ability to be used as function decorators
+by default unless this method is overriden to provide some other funcionality.</p>
+<p>If subclasses do need to override this, I would recemend checking the first positional
+argument for a callable (and no other arguments are passed in) to maintain their ability
+to be function decorators.
+Something like this:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; class MyResource(Dependency):
+...     some_param = None
+...     def __init__(self, some_param = None):
+...         self.some_param = some_param
+...
+...     def __call__(self, *args, **kwargs):
+...         if len(args) == 1 and not kwargs and callable(args[0]):
+...             return super().__call__(args[0])
+</code></pre>
+<p>This method will check for a callable being passed in as first argument.
+I will raise an error with a descriptive error message if we don't get a callable.</p>
+<p>We should get a callable if Resource subclass is used like in the example below.
+(Config being a dependency subclass).</p>
+<p>In this example, a new Config dependency is being created and we tell it to only use
+the <code>EnvironmentalProvider</code> and we use it as a function decorator.
+This means while the <code>some_method</code> function is executing,
+that Config object is made the current one.</p>
+<p><code>some_method</code> and any other method called from within <code>some_method</code> will
+only be using the <code>EnvironmentalProvider</code> for looking up configuration by default.</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; my_resource = MyResource.proxy()
+&gt;&gt;&gt; assert my_resource.some_param is None
+&gt;&gt;&gt;
+&gt;&gt;&gt; @MyResource(some_param=&quot;alternate-value&quot;)
+&gt;&gt;&gt; def some_method():
+...     # Only searches: overrides, environ-vars, defaults
+...     assert my_resource.some_param == 'alternate-value'
+</code></pre>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>func</code></strong> :&ensp;<code>Callable</code></dt>
+<dd>
+<p>decorated function passed in via python decorator syntax.</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>@MyResource()
+def some_method():
+&hellip;
+pass</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</dd>
+</dl>
+<p>Returns: We execute decorated method and return whatever it returns.</p></div>
+</dd>
+<dt id="xinject.dependency.Dependency.__copy__"><code class="name flex">
+<span>def <span class="ident">__copy__</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __copy__(self):
+    &#34;&#34;&#34;
+    Basic shallow copy protection
+    (I am wondering if I should just remove this default copy code).
+
+    `Dependency` overrides the default copy operation to shallow copy everything,
+    except it will make a shallow copy for any normal dict/list types.
+    (so old a new dependencies don&#39;t share the same list/dict instance).
+
+    It will also look skip copying any attributes that are named in the
+    `attributes_to_skip_while_copying` class parameter (if anything),
+    if a super-class of the `Dependency` has specified any `attributes_to_skip_while_copying`
+    subclasses will inherit any items in that parents list of attributes to skip while copying.
+
+    If you want different behavior, then override `Dependency.__copy__`.
+
+    A dependency could also use `deepcopy` instead when making a copy, if desirable.
+
+    Copying a dependency may be useful if you want to activate a new dependency but have its
+    configuration similar to a current dependency (with some tweaks/modifications).
+    &#34;&#34;&#34;
+    clone = type(self)()
+    dict_copy = self.__dict__.copy()
+
+    # Pop out of the dict-copy any attributes we should skip.
+    attrs_to_skip = attributes_to_skip_while_copying(self) or []
+    for attr_to_skip in [&#39;_context_manager_stack&#39;, *attrs_to_skip]:
+        dict_copy.pop(attr_to_skip, None)
+
+    for k, v in dict_copy.items():
+        if isinstance(v, (list, dict)):
+            dict_copy[k] = copy(v)
+    clone.__dict__.update(dict_copy)
+    return clone</code></pre>
+</details>
+<div class="desc"><p>Basic shallow copy protection
+(I am wondering if I should just remove this default copy code).</p>
+<p><code><a title="xinject.dependency.Dependency" href="#xinject.dependency.Dependency">Dependency</a></code> overrides the default copy operation to shallow copy everything,
+except it will make a shallow copy for any normal dict/list types.
+(so old a new dependencies don't share the same list/dict instance).</p>
+<p>It will also look skip copying any attributes that are named in the
+<code><a title="xinject.dependency.attributes_to_skip_while_copying" href="#xinject.dependency.attributes_to_skip_while_copying">attributes_to_skip_while_copying()</a></code> class parameter (if anything),
+if a super-class of the <code><a title="xinject.dependency.Dependency" href="#xinject.dependency.Dependency">Dependency</a></code> has specified any <code><a title="xinject.dependency.attributes_to_skip_while_copying" href="#xinject.dependency.attributes_to_skip_while_copying">attributes_to_skip_while_copying()</a></code>
+subclasses will inherit any items in that parents list of attributes to skip while copying.</p>
+<p>If you want different behavior, then override <code><a title="xinject.dependency.Dependency.__copy__" href="#xinject.dependency.Dependency.__copy__">Dependency.__copy__()</a></code>.</p>
+<p>A dependency could also use <code>deepcopy</code> instead when making a copy, if desirable.</p>
+<p>Copying a dependency may be useful if you want to activate a new dependency but have its
+configuration similar to a current dependency (with some tweaks/modifications).</p></div>
+</dd>
+<dt id="xinject.dependency.Dependency.__deepcopy__"><code class="name flex">
+<span>def <span class="ident">__deepcopy__</span></span>(<span>self, memo=None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __deepcopy__(self, memo=None):
+    # Collect a list of things to skip....
+    # We always need to have `_context_manager_stack`, subclasses can set
+    # `attributes_to_skip_while_copying` if they have additional ones they want to skip.
+    skip_attributes = {
+        x for x in [&#39;_context_manager_stack&#39;, *(attributes_to_skip_while_copying(self) or [])]
+    }
+
+    # If we get called without a memo, allocate a blank dict.
+    if memo is None:
+        memo = {}
+
+    # Check to see if we are already in the memo, if we are then use that instead of
+    # making a copy of self again.
+    already_copied = memo.get(id(self))
+    if already_copied:
+        return already_copied
+
+    # Make new object, put it in memo so if we encounter `self` in the future we will reuse it.
+    copy = type(self)()
+    memo[id(self)] = copy
+
+    # Deepcopy everything except the ones user wants to ignore.
+    for k, v in self.__dict__.items():
+        try:
+            if k in skip_attributes:
+                continue
+            copy.__dict__[k] = deepcopy(v, memo)
+        except TypeError:
+            continue  # Ignore type errors
+
+    return copy</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="xinject.dependency.DependencyPerThread"><code class="flex name class">
+<span>class <span class="ident">DependencyPerThread</span></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class DependencyPerThread(Dependency, thread_sharable=False):
+    &#34;&#34;&#34;
+    Same as `Dependency`, except we set the `thread_sharable` flag to False (via class argument),
+    this means when an instance of us is created by the system lazily,
+    it will not be shared between threads.
+
+    Basically, when some other thread asks for this dependency,
+    the system will lazily create another one just for that thread to use.
+    This happens when a particular thread asks for the dependency for the first time.
+
+    When the same thread asks for the dependency a second time, it will not create a new one but
+    return the dependency instance that was originally created just for that thread.
+
+    ## Details
+
+    Normally, when a new `Dependency` subclass needs to be created on-demand for the first time
+    the new Dependency will be placed in the app&#39;s root `xinject.context.XContext`,
+    which each thread&#39;s root-context has set as its parent.
+    This makes the object available to be seen/used by other threads.
+
+    When a dependency makes a subclass from `DependencyPerThread` or otherwise set&#39;s
+    the `Dependency.__init_subclass__`&#39;s `thread_sharable` to `False` via the Dependency
+    class arguments (so that `is_dependency_thread_sharable` will return `False` when its passed
+    the new Dependency subclass/type).
+    When a thread asks for that dependency for first time it will be lazily created like expected,
+    but the resulting object is placed in the root-context instead (and NOT the app-root-context).
+
+    That way, only the specific thread the Dependency was lazily created on will see the object;
+    no other thread will.
+
+    Therefore, when other threads also ask for the dependency, they will each create their own
+    the first time they ask for it, and place it in their thread-root
+    `xinject.context.XContext`.
+    &#34;&#34;&#34;
+    pass</code></pre>
+</details>
+<div class="desc"><p>Same as <code><a title="xinject.dependency.Dependency" href="#xinject.dependency.Dependency">Dependency</a></code>, except we set the <code>thread_sharable</code> flag to False (via class argument),
+this means when an instance of us is created by the system lazily,
+it will not be shared between threads.</p>
+<p>Basically, when some other thread asks for this dependency,
+the system will lazily create another one just for that thread to use.
+This happens when a particular thread asks for the dependency for the first time.</p>
+<p>When the same thread asks for the dependency a second time, it will not create a new one but
+return the dependency instance that was originally created just for that thread.</p>
+<h2 id="details">Details</h2>
+<p>Normally, when a new <code><a title="xinject.dependency.Dependency" href="#xinject.dependency.Dependency">Dependency</a></code> subclass needs to be created on-demand for the first time
+the new Dependency will be placed in the app's root <code><a title="xinject.context.XContext" href="context.html#xinject.context.XContext">XContext</a></code>,
+which each thread's root-context has set as its parent.
+This makes the object available to be seen/used by other threads.</p>
+<p>When a dependency makes a subclass from <code><a title="xinject.dependency.DependencyPerThread" href="#xinject.dependency.DependencyPerThread">DependencyPerThread</a></code> or otherwise set's
+the <code><a title="xinject.dependency.Dependency.__init_subclass__" href="#xinject.dependency.Dependency.__init_subclass__">Dependency.__init_subclass__()</a></code>'s <code>thread_sharable</code> to <code>False</code> via the Dependency
+class arguments (so that <code><a title="xinject.dependency.is_dependency_thread_sharable" href="#xinject.dependency.is_dependency_thread_sharable">is_dependency_thread_sharable()</a></code> will return <code>False</code> when its passed
+the new Dependency subclass/type).
+When a thread asks for that dependency for first time it will be lazily created like expected,
+but the resulting object is placed in the root-context instead (and NOT the app-root-context).</p>
+<p>That way, only the specific thread the Dependency was lazily created on will see the object;
+no other thread will.</p>
+<p>Therefore, when other threads also ask for the dependency, they will each create their own
+the first time they ask for it, and place it in their thread-root
+<code><a title="xinject.context.XContext" href="context.html#xinject.context.XContext">XContext</a></code>.</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="xinject.dependency.Dependency" href="#xinject.dependency.Dependency">Dependency</a></li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li>dynamo_pydantic._internal.batching.DynBatchResource</li>
+<li><a title="dynamo_pydantic.table.TableRepo" href="../dynamo_pydantic/table.html#dynamo_pydantic.table.TableRepo">TableRepo</a></li>
+</ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="xinject.dependency.DependencyPerThread.__init_subclass__"><code class="name flex">
+<span>def <span class="ident">__init_subclass__</span></span>(<span>thread_sharable: bool | <a title="xsentinels.default.DefaultType" href="../xsentinels/default.html#xsentinels.default.DefaultType">DefaultType</a> = Default,<br>remove_between_unittests: bool | <a title="xsentinels.default.DefaultType" href="../xsentinels/default.html#xsentinels.default.DefaultType">DefaultType</a> = Default,<br>attributes_to_skip_while_copying: Iterable[str] | None = Default,<br>**kwargs)</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="xinject.dependency.Dependency" href="#xinject.dependency.Dependency">Dependency</a></code>.<code><a title="xinject.dependency.Dependency.__init_subclass__" href="#xinject.dependency.Dependency.__init_subclass__">__init_subclass__</a></code>
+</p>
+<div class="desc inherited"><h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>remove_between_unittests</code></strong></dt>
+<dd>If <code>False</code> (default): Dependency will be removed from global context before/after
+as each individual …</dd>
+</dl></div>
+</dd>
+<dt id="xinject.dependency.DependencyPerThread.grab"><code class="name flex">
+<span>def <span class="ident">grab</span></span>(<span>) ‑> ~T</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="xinject.dependency.Dependency" href="#xinject.dependency.Dependency">Dependency</a></code>.<code><a title="xinject.dependency.Dependency.grab" href="#xinject.dependency.Dependency.grab">grab</a></code>
+</p>
+<div class="desc inherited"><p>Gets a potentially shared dependency from the current <code>udpend.context.XContext</code> …</p></div>
+</dd>
+<dt id="xinject.dependency.DependencyPerThread.proxy"><code class="name flex">
+<span>def <span class="ident">proxy</span></span>(<span>) ‑> ~R</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="xinject.dependency.Dependency" href="#xinject.dependency.Dependency">Dependency</a></code>.<code><a title="xinject.dependency.Dependency.proxy" href="#xinject.dependency.Dependency.proxy">proxy</a></code>
+</p>
+<div class="desc inherited"><p>Returns a proxy-object, that when and attribute is asked for, it will
+proxy it to the current object of <code>cls</code> …</p></div>
+</dd>
+<dt id="xinject.dependency.DependencyPerThread.proxy_attribute"><code class="name flex">
+<span>def <span class="ident">proxy_attribute</span></span>(<span>attribute_name: str) ‑> Any</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="xinject.dependency.Dependency" href="#xinject.dependency.Dependency">Dependency</a></code>.<code><a title="xinject.dependency.Dependency.proxy_attribute" href="#xinject.dependency.Dependency.proxy_attribute">proxy_attribute</a></code>
+</p>
+<div class="desc inherited"><p>Returns a proxy-object, that when and attribute is asked for, it will
+proxy it to the current attribute value on the current object of <code>cls</code> …</p></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="xinject.dependency.DependencyPerThread.obj"><code class="name">var <span class="ident">obj</span> : ClassVar[Self]</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="xinject.dependency.Dependency" href="#xinject.dependency.Dependency">Dependency</a></code>.<code><a title="xinject.dependency.Dependency.obj" href="#xinject.dependency.Dependency.obj">obj</a></code>
+</p>
+<div class="desc inherited"><p>class property/attribute that will return the current dependency for the subclass
+it's asked on by calling <code><a title="xinject.dependency.Dependency.grab" href="#xinject.dependency.Dependency.grab">Dependency.grab()</a></code>, passing no extra …</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="xinject.dependency.DependencyPerThread.__call__"><code class="name flex">
+<span>def <span class="ident">__call__</span></span>(<span>self, func)</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="xinject.dependency.Dependency" href="#xinject.dependency.Dependency">Dependency</a></code>.<code><a title="xinject.dependency.Dependency.__call__" href="#xinject.dependency.Dependency.__call__">__call__</a></code>
+</p>
+<div class="desc inherited"><p>This makes Resource subclasses have an ability to be used as function decorators
+by default unless this method is overriden to provide some other …</p></div>
+</dd>
+<dt id="xinject.dependency.DependencyPerThread.__copy__"><code class="name flex">
+<span>def <span class="ident">__copy__</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="xinject.dependency.Dependency" href="#xinject.dependency.Dependency">Dependency</a></code>.<code><a title="xinject.dependency.Dependency.__copy__" href="#xinject.dependency.Dependency.__copy__">__copy__</a></code>
+</p>
+<div class="desc inherited"><p>Basic shallow copy protection
+(I am wondering if I should just remove this default copy code) …</p></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul>
+<li><a href="#to-do-first">To Do First</a></li>
+<li><a href="#dependency-refrence-summary">Dependency Refrence Summary</a></li>
+<li><a href="#dependencies">Dependencies</a><ul>
+<li><a href="#get-current">Get Current</a></li>
+<li><a href="#activating-new-resource">Activating New Resource</a></li>
+</ul>
+</li>
+<li><a href="#active-resource-proxy">Active Resource Proxy</a></li>
+</ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="xinject" href="index.html">xinject</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="xinject.dependency.attributes_to_skip_while_copying" href="#xinject.dependency.attributes_to_skip_while_copying">attributes_to_skip_while_copying</a></code></li>
+<li><code><a title="xinject.dependency.is_dependency_removed_between_unittests" href="#xinject.dependency.is_dependency_removed_between_unittests">is_dependency_removed_between_unittests</a></code></li>
+<li><code><a title="xinject.dependency.is_dependency_thread_sharable" href="#xinject.dependency.is_dependency_thread_sharable">is_dependency_thread_sharable</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="xinject.dependency.Dependency" href="#xinject.dependency.Dependency">Dependency</a></code></h4>
+<ul class="two-column">
+<li><code><a title="xinject.dependency.Dependency.__call__" href="#xinject.dependency.Dependency.__call__">__call__</a></code></li>
+<li><code><a title="xinject.dependency.Dependency.__copy__" href="#xinject.dependency.Dependency.__copy__">__copy__</a></code></li>
+<li><code><a title="xinject.dependency.Dependency.__deepcopy__" href="#xinject.dependency.Dependency.__deepcopy__">__deepcopy__</a></code></li>
+<li><code><a title="xinject.dependency.Dependency.__init_subclass__" href="#xinject.dependency.Dependency.__init_subclass__">__init_subclass__</a></code></li>
+<li><code><a title="xinject.dependency.Dependency.grab" href="#xinject.dependency.Dependency.grab">grab</a></code></li>
+<li><code><a title="xinject.dependency.Dependency.obj" href="#xinject.dependency.Dependency.obj">obj</a></code></li>
+<li><code><a title="xinject.dependency.Dependency.proxy" href="#xinject.dependency.Dependency.proxy">proxy</a></code></li>
+<li><code><a title="xinject.dependency.Dependency.proxy_attribute" href="#xinject.dependency.Dependency.proxy_attribute">proxy_attribute</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="xinject.dependency.DependencyPerThread" href="#xinject.dependency.DependencyPerThread">DependencyPerThread</a></code></h4>
+<ul class="two-column">
+<li><code><a title="xinject.dependency.DependencyPerThread.__call__" href="#xinject.dependency.DependencyPerThread.__call__">__call__</a></code></li>
+<li><code><a title="xinject.dependency.DependencyPerThread.__copy__" href="#xinject.dependency.DependencyPerThread.__copy__">__copy__</a></code></li>
+<li><code><a title="xinject.dependency.DependencyPerThread.__init_subclass__" href="#xinject.dependency.DependencyPerThread.__init_subclass__">__init_subclass__</a></code></li>
+<li><code><a title="xinject.dependency.DependencyPerThread.grab" href="#xinject.dependency.DependencyPerThread.grab">grab</a></code></li>
+<li><code><a title="xinject.dependency.DependencyPerThread.obj" href="#xinject.dependency.DependencyPerThread.obj">obj</a></code></li>
+<li><code><a title="xinject.dependency.DependencyPerThread.proxy" href="#xinject.dependency.DependencyPerThread.proxy">proxy</a></code></li>
+<li><code><a title="xinject.dependency.DependencyPerThread.proxy_attribute" href="#xinject.dependency.DependencyPerThread.proxy_attribute">proxy_attribute</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
+</footer>
+</body>
+</html>
