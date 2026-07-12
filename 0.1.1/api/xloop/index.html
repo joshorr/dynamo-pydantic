@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.6">
+<title>xloop API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Package <code>xloop</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="xloop.xloop"><code class="name flex">
+<span>def <span class="ident">xloop</span></span>(<span>*args: Iterable[~T] | ~T,<br>not_iterate: Iterable[Type] | None = None,<br>default_not_iterate: Iterable[Type] | <a title="xsentinels.default.DefaultType" href="../xsentinels/default.html#xsentinels.default.DefaultType">DefaultType</a> = Default,<br>yield_items_for_dicts=False) ‑> Iterator[~T]</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def xloop(
+    *args: Union[Iterable[T], T],
+    not_iterate: Iterable[Type] | None = None,
+    default_not_iterate: Iterable[Type] | DefaultType = Default,
+    yield_items_for_dicts=False
+) -&gt; Iterator[T]:
+    &#34;&#34;&#34;
+    The intention behind this method is to easily iterate though things that are like &#39;lists&#39;.
+    Lists of dicts, lists of objects, etc.... but if it&#39;s a None, don&#39;t iterate that (or raise
+    an error), we would rather skip that. Or if the value is not a list like thing, then we
+    would simply just want to yield only that. Basically you can do things like this:
+
+
+    &gt;&gt;&gt; from xloop import xloop
+    &gt;&gt;&gt;
+    &gt;&gt;&gt; for obj in xloop(None):
+    &gt;&gt;&gt;     # Won&#39;t loop at all, as only value is `None`.
+    &gt;&gt;&gt;     assert False, &#39;Looped when we should not have.&#39;
+    &gt;&gt;&gt;
+    &gt;&gt;&gt; for obj in xloop(&#39;hello!&#39;):
+    &gt;&gt;&gt;     assert obj == &#39;hello!&#39;
+    &gt;&gt;&gt;
+    &gt;&gt;&gt; for obj in xloop([&#39;v1&#39;, &#39;v2&#39;]):
+    &gt;&gt;&gt;     assert obj in [&#39;v1&#39;, &#39;v2&#39;]
+    &gt;&gt;&gt;
+    &gt;&gt;&gt; for obj in xloop({&#39;some_key&#39;: &#39;some_value&#39;}):
+    &gt;&gt;&gt;     assert obj == &#39;some_key&#39;
+    &gt;&gt;&gt;
+    &gt;&gt;&gt; for key, value in xloop({&#39;some_key&#39;: &#39;some_value&#39;}, yield_items_for_dicts=True):
+    &gt;&gt;&gt;     assert key == &#39;some_key&#39;
+    &gt;&gt;&gt;     assert value == &#39;some_value&#39;
+
+
+    Can also pass multiple items into xloop function, each one will be evaluated the same way,
+    in order:
+
+    &gt;&gt;&gt; for obj in xloop(&#39;v1&#39;, &#39;v2&#39;):
+    &gt;&gt;&gt;     assert obj in [&#39;v1&#39;, &#39;v2&#39;]
+    &gt;&gt;&gt;
+    &gt;&gt;&gt; # Each passed in positional argument will be iterated, if needed:
+    &gt;&gt;&gt; for obj in xloop([&#39;v1-1&#39;, &#39;v1-2&#39;], &#39;v2&#39;):
+    &gt;&gt;&gt;     assert obj in [&#39;v1-1&#39;, &#39;v1-2&#39;, &#39;v2&#39;]
+
+    &gt;&gt;&gt; # If any argument is None, it will be skipped:
+    &gt;&gt;&gt; for obj in xloop([&#39;v1-1&#39;, &#39;v1-2&#39;], None, &#39;v2&#39;):
+    &gt;&gt;&gt;     assert obj in [&#39;v1-1&#39;, &#39;v1-2&#39;, &#39;v2&#39;]
+
+
+    &gt;&gt;&gt; # If a `None` is inside a list to be iterated, it will be skipped.
+    &gt;&gt;&gt; # Basically, `xloop` will never directly yield a `None` by its self.
+    &gt;&gt;&gt; result = []
+    &gt;&gt;&gt; for obj in xloop([&#39;v1-1&#39;, None], &#39;v2&#39;):
+    &gt;&gt;&gt;     result.append(obj)
+    &gt;&gt;&gt; assert result == [&#39;v1-1&#39;, &#39;v2&#39;]
+
+    xloop will try to iterate anything that is not in the `not_iterate` argument.
+    If we get a TypeError while trying to iterate something we will just yeild the object
+    and not iterate it
+    (so you don&#39;t have to worry about causing an error with something that is not-iterable,
+    it just loops/iterates though anything it can like you would want).
+
+    Every argument passed in will be yielded if it can&#39;t be iterated or is in the `not_iterate`
+    list. If argument can be iterated without a TypeError, every iterated value will be
+    yielded instead. Only exception is if any yielded values are `None`, which are skipped.
+
+    If the argument is of type in `not_iterate` (default: str|bytes|int)
+    or is non-iterable (ie: TypeError while trying to get an iterator for it),
+    then will I will yield that argument by its self without iterating it.
+
+    If the argument is in any way iterable (except if it&#39;s type is in `not_iterate`),
+    then will yield every value inside it. Only `None` value are skipped, I will never direcly
+    yield a value of exactly `None`.
+
+    `xloop` is useful if a var could be a list or just a normal value.
+    Using `xloop` you can easily for &#34;loop&#34; though the value(s) of the var without inspecting,
+    filtering, or combining them together.
+
+    Future:
+        Right now we don&#39;t loop recursively (ie: `[[&#39;hello&#39;]]` will yield a list: `[&#39;hello&#39;]`).
+        In the future I may add a named-param &#39;recursively=True&#39; flag you can pass to support this.
+
+    Other Basic Examples:
+
+
+    &gt;&gt;&gt; some_var = &#39;some str&#39;
+    &gt;&gt;&gt; for value in xloop(some_var):
+    &gt;&gt;&gt;     assert value == &#39;some str&#39;
+
+    Or another way that will do the same thing:
+
+    &gt;&gt;&gt; some_var = [&#39;some str&#39;]
+    &gt;&gt;&gt; for value in xloop(some_var):
+    &gt;&gt;&gt;     assert value == &#39;some str&#39;
+
+    Other Examples:
+
+    This: `list(loop(&#34;a-str&#34;, 1, [&#39;hi-1&#39;, &#39;hi-2&#39;]))`
+    Produces: `[&#34;a-str&#34;, 1, &#39;hi-1&#39;, &#39;hi-2&#39;]`
+
+    This: `list(loop(None, &#34;hello!&#34;))`
+    Produces: `[&#34;hello!&#34;]`
+
+    This: `list(loop(None, [&#34;next!&#34;, None]))`
+    Produces: `[&#34;next!&#34;]`
+
+    Args:
+        not_iterate: Set of addtional types (added to the default set) to directly yield and not iterate.
+            This can be any iterable (ie: list/tuple/etc).
+
+        default_not_iterate: Default types to not iterate (added with `not_iterate` above),
+            This is normally just `str`, `int`, `bytes` and `dict` (see `DEFAULT_NOT_ITERATE`).
+            Also, if `pydantic` is avaliable we also add pydantic.BaseModel to the DEFAULT_NOT_ITERATE.
+
+        yield_items_for_dicts: If True: Will yeild items from dicts, which are their key/value pairs as a tuple.
+            The same as if you did this:
+
+                &gt;&gt;&gt; some_dict = {&#39;key1&#39;: &#39;value1&#39;, &#39;key2&#39;: &#39;value2&#39;}
+                &gt;&gt;&gt; for key, value in some_dict.items():
+                ...     ...
+
+                When True, `dict` will still be iterated by `.items()`, even if `dict` in the not iterated list.
+    &#34;&#34;&#34;
+    # Reminder: &#39;anything&#39; is all positional arguments passed into method.
+    if not args:
+        return
+
+    if not_iterate is None and default_not_iterate is Default:
+        not_iterate = DEFAULT_NOT_ITERATE
+    else:
+        if default_not_iterate is Default:
+            default_not_iterate = DEFAULT_NOT_ITERATE
+
+        if not_iterate is None:
+            not_iterate = ()
+
+        not_iterate = (*default_not_iterate, *not_iterate)
+
+    for arg in args:
+        if arg is None:
+            continue
+
+        if yield_items_for_dicts and isinstance(arg, dict):
+            arg = arg.items()
+        elif isinstance(arg, not_iterate):
+            yield arg
+            continue
+
+        try:
+            arg_iter = iter(arg)
+        except TypeError:
+            yield arg
+        else:
+            for item in arg_iter:
+                if item is not None:
+                    yield item</code></pre>
+</details>
+<div class="desc"><p>The intention behind this method is to easily iterate though things that are like 'lists'.
+Lists of dicts, lists of objects, etc.... but if it's a None, don't iterate that (or raise
+an error), we would rather skip that. Or if the value is not a list like thing, then we
+would simply just want to yield only that. Basically you can do things like this:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; from xloop import xloop
+&gt;&gt;&gt;
+&gt;&gt;&gt; for obj in xloop(None):
+&gt;&gt;&gt;     # Won't loop at all, as only value is &lt;code&gt;None&lt;/code&gt;.
+&gt;&gt;&gt;     assert False, 'Looped when we should not have.'
+&gt;&gt;&gt;
+&gt;&gt;&gt; for obj in xloop('hello!'):
+&gt;&gt;&gt;     assert obj == 'hello!'
+&gt;&gt;&gt;
+&gt;&gt;&gt; for obj in xloop(['v1', 'v2']):
+&gt;&gt;&gt;     assert obj in ['v1', 'v2']
+&gt;&gt;&gt;
+&gt;&gt;&gt; for obj in xloop({'some_key': 'some_value'}):
+&gt;&gt;&gt;     assert obj == 'some_key'
+&gt;&gt;&gt;
+&gt;&gt;&gt; for key, value in xloop({'some_key': 'some_value'}, yield_items_for_dicts=True):
+&gt;&gt;&gt;     assert key == 'some_key'
+&gt;&gt;&gt;     assert value == 'some_value'
+</code></pre>
+<p>Can also pass multiple items into xloop function, each one will be evaluated the same way,
+in order:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; for obj in xloop('v1', 'v2'):
+&gt;&gt;&gt;     assert obj in ['v1', 'v2']
+&gt;&gt;&gt;
+&gt;&gt;&gt; # Each passed in positional argument will be iterated, if needed:
+&gt;&gt;&gt; for obj in xloop(['v1-1', 'v1-2'], 'v2'):
+&gt;&gt;&gt;     assert obj in ['v1-1', 'v1-2', 'v2']
+</code></pre>
+<pre><code class="language-python-repl">&gt;&gt;&gt; # If any argument is None, it will be skipped:
+&gt;&gt;&gt; for obj in xloop(['v1-1', 'v1-2'], None, 'v2'):
+&gt;&gt;&gt;     assert obj in ['v1-1', 'v1-2', 'v2']
+</code></pre>
+<pre><code class="language-python-repl">&gt;&gt;&gt; # If a &lt;code&gt;None&lt;/code&gt; is inside a list to be iterated, it will be skipped.
+&gt;&gt;&gt; # Basically, &lt;code&gt;&lt;a title=&quot;xloop.xloop&quot; href=&quot;#xloop.xloop&quot;&gt;xloop()&lt;/a&gt;&lt;/code&gt; will never directly yield a &lt;code&gt;None&lt;/code&gt; by its self.
+&gt;&gt;&gt; result = []
+&gt;&gt;&gt; for obj in xloop(['v1-1', None], 'v2'):
+&gt;&gt;&gt;     result.append(obj)
+&gt;&gt;&gt; assert result == ['v1-1', 'v2']
+</code></pre>
+<p>xloop will try to iterate anything that is not in the <code>not_iterate</code> argument.
+If we get a TypeError while trying to iterate something we will just yeild the object
+and not iterate it
+(so you don't have to worry about causing an error with something that is not-iterable,
+it just loops/iterates though anything it can like you would want).</p>
+<p>Every argument passed in will be yielded if it can't be iterated or is in the <code>not_iterate</code>
+list. If argument can be iterated without a TypeError, every iterated value will be
+yielded instead. Only exception is if any yielded values are <code>None</code>, which are skipped.</p>
+<p>If the argument is of type in <code>not_iterate</code> (default: str|bytes|int)
+or is non-iterable (ie: TypeError while trying to get an iterator for it),
+then will I will yield that argument by its self without iterating it.</p>
+<p>If the argument is in any way iterable (except if it's type is in <code>not_iterate</code>),
+then will yield every value inside it. Only <code>None</code> value are skipped, I will never direcly
+yield a value of exactly <code>None</code>.</p>
+<p><code><a title="xloop.xloop" href="#xloop.xloop">xloop()</a></code> is useful if a var could be a list or just a normal value.
+Using <code><a title="xloop.xloop" href="#xloop.xloop">xloop()</a></code> you can easily for "loop" though the value(s) of the var without inspecting,
+filtering, or combining them together.</p>
+<h2 id="future">Future</h2>
+<p>Right now we don't loop recursively (ie: <code>[['hello']]</code> will yield a list: <code>['hello']</code>).
+In the future I may add a named-param 'recursively=True' flag you can pass to support this.</p>
+<p>Other Basic Examples:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; some_var = 'some str'
+&gt;&gt;&gt; for value in xloop(some_var):
+&gt;&gt;&gt;     assert value == 'some str'
+</code></pre>
+<p>Or another way that will do the same thing:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; some_var = ['some str']
+&gt;&gt;&gt; for value in xloop(some_var):
+&gt;&gt;&gt;     assert value == 'some str'
+</code></pre>
+<p>Other Examples:</p>
+<p>This: <code>list(loop("a-str", 1, ['hi-1', 'hi-2']))</code>
+Produces: <code>["a-str", 1, 'hi-1', 'hi-2']</code></p>
+<p>This: <code>list(loop(None, "hello!"))</code>
+Produces: <code>["hello!"]</code></p>
+<p>This: <code>list(loop(None, ["next!", None]))</code>
+Produces: <code>["next!"]</code></p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>not_iterate</code></strong></dt>
+<dd>Set of addtional types (added to the default set) to directly yield and not iterate.
+This can be any iterable (ie: list/tuple/etc).</dd>
+<dt><strong><code>default_not_iterate</code></strong></dt>
+<dd>Default types to not iterate (added with <code>not_iterate</code> above),
+This is normally just <code>str</code>, <code>int</code>, <code>bytes</code> and <code>dict</code> (see <code>DEFAULT_NOT_ITERATE</code>).
+Also, if <code>pydantic</code> is avaliable we also add pydantic.BaseModel to the DEFAULT_NOT_ITERATE.</dd>
+<dt><strong><code>yield_items_for_dicts</code></strong></dt>
+<dd>If True: Will yeild items from dicts, which are their key/value pairs as a tuple.
+The same as if you did this:<pre><code>&gt;&gt;&gt; some_dict = {'key1': 'value1', 'key2': 'value2'}
+&gt;&gt;&gt; for key, value in some_dict.items():
+...     ...
+
+When True, &lt;code&gt;dict&lt;/code&gt; will still be iterated by &lt;code&gt;.items()&lt;/code&gt;, even if &lt;code&gt;dict&lt;/code&gt; in the not iterated list.
+</code></pre>
+</dd>
+</dl></div>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="xloop.xloop" href="#xloop.xloop">xloop</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,2609 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.6">
+<title>xurls.url API documentation</title>
+<meta name="description" content="Helper classes to work with Url&#39;s …">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>xurls.url</code></h1>
+</header>
+<section id="section-intro">
+<p>Helper classes to work with Url's.</p>
+<p>Allows you to easily create, work with and append Urls together.</p>
+<p>Main classes:
+- <code><a title="xurls.url.Url" href="#xurls.url.Url">Url</a></code></p>
+<h2 id="path-formatting-placeholders">Path Formatting Placeholders:</h2>
+<p>The <code>path</code> can contain template formatting placeholders, just like you would do in a
+normal python string. These ones MUST be named, however, and not positional formatting
+placeholders.</p>
+<p>At some point in the future, I will probably support formatting placeholders for
+a query value. For now, it's only for the path.</p>
+<p>Here is an example:
+<code>"http://api.com/v1/accounts/{id}"</code></p>
+<p>If later on, we add a query like this to the Url:
+<code><a title="xurls.url.Url.query_add" href="#xurls.url.Url.query_add">Url.query_add()</a></code>('id', 1)</p>
+<p>And then call <code>url.url()</code>, we will get back this:
+<code>"http://api.com/v1/accounts/1"</code></p>
+<p>You can also pass in a secondary/backup list of key/values into the .url(&hellip;) method,
+like so:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; url = Url(&quot;https://api.com/some/endpoint/{id}&quot;)
+&gt;&gt;&gt; url.url(secondary_values={'id': 9})
+&quot;https://api.com/some/endpoint/9&quot;
+</code></pre>
+<p>It can also be an object, which in this case it will look for an attribute of <code>id</code>.</p>
+<p><code><a title="xurls.url.Url.url" href="#xurls.url.Url.url">Url.url()</a></code> will return <code>None</code> if it can't construct the Url due to an absent format
+value that it can't find. In this way, you could have a list of Url's and the first
+one that can be formatted is the one you use.</p>
+<p>You can also use <code><a title="xurls.url.Url.is_valid" href="#xurls.url.Url.is_valid">Url.is_valid()</a></code> to see if the url is valid in a more efficent way,
+as it won't need to format the full url to determine this.</p>
+<p>Value for formatting placeholders come from these sources:</p>
+<ol>
+<li>First look in Url's query values (<code><a title="xurls.url.Url.query" href="#xurls.url.Url.query">Url.query</a></code>), looking for a value with same key-name.</li>
+<li>We next look in any secondary_values passed into the <code><a title="xurls.url.Url.url" href="#xurls.url.Url.url">Url.url()</a></code> method for the value
+we need if not found in query-value.</li>
+<li>Finally, we will fallback attached values, you can attach values to a mutable url
+via <code><a title="xurls.url.Url.is_valid" href="#xurls.url.Url.is_valid">Url.is_valid()</a></code>; see doc-comment in that method for more details.</li>
+</ol>
+<div class="admonition todo">
+<p class="admonition-title">TODO</p>
+<p>At some point in the future I'll probably support place-holders for
+query-key/values.
+The <code>format_placeholders</code> argument would also control
+this too once we get around to supporting that.</p>
+</div>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-variables">Global variables</h2>
+<dl>
+<dt id="xurls.url.DefaultQueryValueListFormat"><code class="name">var <span class="ident">DefaultQueryValueListFormat</span></code></dt>
+<dd>
+<div class="desc"><p>The default if <code>formatting_options</code> is None.</p>
+<p>Produces a format that does this when you have a query-key with multiple values:
+"http://host/path?key-name__in=value1,value2"</p>
+<p>When you do this:
+<code>query_add('key-name', ['value1', 'value2'])</code></p></div>
+</dd>
+<dt id="xurls.url.DuplicateKeyNamesQueryValueListFormat"><code class="name">var <span class="ident">DuplicateKeyNamesQueryValueListFormat</span></code></dt>
+<dd>
+<div class="desc"><p>Produces a format that does this when you have a query-key with multiple values:
+"http://host/path?key-name=value1&amp;key-name=value2"</p>
+<p>When you do this:
+<code>query_add('key-name', ['value1', 'value2']</code></p></div>
+</dd>
+<dt id="xurls.url.HTTPPatch"><code class="name">var <span class="ident">HTTPPatch</span></code></dt>
+<dd>
+<div class="desc"><p>Represents http PATCH method.</p></div>
+</dd>
+<dt id="xurls.url.Query"><code class="name">var <span class="ident">Query</span></code></dt>
+<dd>
+<div class="desc"><p>Type that represents the entire query portion of a Url.</p></div>
+</dd>
+<dt id="xurls.url.QueryValue"><code class="name">var <span class="ident">QueryValue</span></code></dt>
+<dd>
+<div class="desc"><p>A query value can be either a str, or a list of str.</p>
+<p>If it is a list of str, then the key will have __in appended and the values will be delimited
+by a comma ',' if Url.use_in_operator_for_query_lists is True, ie: <code>?someKey__in=A,B</code>.</p>
+<p>Otherwise they will be duplicated, ie: <code>?someKey=A&amp;someKey=B</code>.</p>
+<p>If Url.use_in_operator_for_query_lists is False, we instead duplicate the key
+for each value in the list in final url, ie: (1, 2) turns into: 'a_key=1&amp;a_key=2'.</p>
+<p>use_in_operator_for_query_lists is True by default.</p></div>
+</dd>
+<dt id="xurls.url.UrlStr"><code class="name">var <span class="ident">UrlStr</span></code></dt>
+<dd>
+<div class="desc"><p>A type that can be either a string or Url.</p></div>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="xurls.url.Url"><code class="flex name class">
+<span>class <span class="ident">Url</span></span>
+<span>(</span><span>url: Union[str, <a title="xurls.url.Url" href="#xurls.url.Url">Url</a>] = None,<br>*,<br>scheme: str = Default,<br>username: str = Default,<br>password: str = Default,<br>host: str = Default,<br>port: int = Default,<br>path: str = Default,<br>query: <a title="xurls.url.Query" href="#xurls.url.Query">Query</a> = Default,<br>fragment: str = Default,<br>metadata: dict = Default,<br>formatting_options: <a title="xurls.url.UrlFormattingOptions" href="#xurls.url.UrlFormattingOptions">UrlFormattingOptions</a> = Default,<br>singular: bool = None,<br>methods: Union[str, Iterable[str]] = None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Url:
+    &#34;&#34;&#34;
+    Allows you to easily create, work with and append Urls together.
+
+    You can pass a normal Url or string into the first argument of `Url.__init__`, and if you do
+    it as a string it will be parsed as a Url and it&#39;s components will be set into the
+    returned as a Url with it&#39;s various components parsed into Url&#39;s various attributes.
+
+    There is also a parameter for each Url component attribute in the `Url.__init__` method.
+
+    If no value is provided for a particular url component, it will be assigned a `None` value.
+
+    Use `Url.url()` method to get a url `str` back from components.
+
+    For more details on path features,
+    see [Path Formatting Placeholders](#path-formatting-placeholders)
+
+    ## Mutating Methods
+
+    A big way to use Url is to `Url.append_url` `Url`&#39;s together.  You can then take
+    different `Url`&#39;s that have different components and construct a final `Url` to use.
+
+    When appending a Url to another [via `Url.append_url`], if any particular component
+    has a None value, it will not change the Url it&#39;s being appended to for that particular
+    component. This allows you to append Urls together and only relevant/set-values will
+    be what&#39;s appended. This allows you to construct Urls based on pieces of Urls to construct
+    the final Url.
+
+    When you append a Url, the path and query and methods are treated in a special way:
+
+    - `Url.path`: it will be appended to the destination Url via
+        `Url.append_path`, and therefore, the path will be appended onto the existing
+        path (with a `/` if needed to separate them).
+
+    - `Url.query`: Keys will be added via `Url.query_add`, and therefore the only
+        keys that will be replaced are ones where the same key-name exists in both Urls.
+        Otherwise, the keys are &#39;added&#39; together.
+
+    - `Url.methods`: This will get union&#39;d with the existing `methods` in the destination
+        url.
+
+    The methods that mutate self [such as &#39;append_path&#39;, etc] return self, so you can chain
+    them together with other mutating methods.
+
+    Example Usages:
+    &gt;&gt;&gt; urlc = Url()
+    &gt;&gt;&gt; urlc.scheme = &#39;http&#39;
+    &gt;&gt;&gt; urlc.host = &#39;www.google.com&#39;
+    &gt;&gt;&gt; urlc.format()
+    &#34;http://www.google.com&#34;
+    &gt;&gt;&gt; urlc = Url(&#34;http://www.google.com&#34;).append_url(&#34;/hello&#34;)
+    &gt;&gt;&gt; urlc.format()
+    &#34;http://www.google.com/hello&#34;
+
+    &#34;&#34;&#34;
+
+    @classmethod
+    def ensure_url(
+        cls: Type[T],
+        value: Optional[UrlStr],
+        *,
+        default_formatting_options: UrlFormattingOptions = Default,
+    ) -&gt; T:
+        &#34;&#34;&#34;Will check to see if the passed in value is a `Url` (depending on the
+            class you call `Url.ensure_url` on). If so, will return value unchanged.
+            This is an optimization and the reason to use this method over just constructing
+            a new `Url` and passing the value into that. If the value is already a Url,
+            and it&#39;s formatting_options don&#39;t need to be set to `default_formatting_options`
+            it will just return it without any extra work.
+
+            If not then will create a new instance of cls and pass value to `__init__`
+            and return result.
+
+            ### If you provide `default_formatting_options`:
+
+            If you pass in a `str` to this method, then any `formatting_options` you passed in
+            will be checked and used if provided.
+
+            If you pass in a Url, and it has not explicitly set formatting_options, we
+            will make a copy of passed in Url and set `default_formatting_options` on it
+            and return copy.
+
+            Otherwise, Url will use the usual `DefaultQueryValueListFormat` for the default format.
+
+        Args:
+            value: You can pass in a UrlStr (which is either a `str` or `Url`), and you will get
+                back a `Url` object from it. If the value is exactly the same as the class you call
+                this class method on, you will get it back unchanged. If not then we create a new
+                object of type `cls` and give value to it as a init parameter.
+
+                If `value` is not a `Url` or `str`, we will try and convert it to a `str` for
+                you in an attempt to extract a url string from the passed in object.
+
+            default_formatting_options (UrlFormattingOptions): Formatting options to use IF
+                passed in value is a string.  If the passed in value is a Url object, we use
+                whatever it has set on it. If no formatting options are set on the `Url` object
+                that is passed in, and you pass in a default_formatting_options, we will copy
+                passed in Url and set that formatting option on it, and return copy.
+
+        Returns:
+             Url: Object of same type as `cls`, which is the class you called `Url.ensure_url` on.
+        &#34;&#34;&#34;
+        if type(value) is cls and (not default_formatting_options or value.formatting_options):
+            return value
+
+        if isinstance(value, Url) and value.formatting_options:
+            # Url already has explicitly set formatting-options, keep whatever it has.
+            return cls(value)
+
+        # Otherwise, we are some other non-Url value (ie: a `str` probably),
+        # try tp convert value to string and any default_formatting_options the user provided.
+        return cls(value, formatting_options=default_formatting_options)
+
+    def __init__(
+        self,
+        url: Union[str, Url] = None,
+        *,
+        scheme: str = Default,
+        username: str = Default,
+        password: str = Default,
+        host: str = Default,
+        port: int = Default,
+        path: str = Default,
+        query: Query = Default,
+        fragment: str = Default,
+
+        metadata: dict = Default,
+        formatting_options: UrlFormattingOptions = Default,
+
+        # Params below are extra metadata about Url that is useful to communicate about:
+        # TODO: Find a more generalized way to include &#39;mergeable&#39;/&#39;appendable&#39; metadata
+        #   in the Url object; For now keeping them, but need to remove in the
+        #   next major release.
+        singular: bool = None,
+        methods: Union[str, Iterable[str]] = None,
+    ):
+        &#34;&#34;&#34;
+        # `__init__` Specifics
+
+        Pass in a single &#39;url&#39; or pass in the individual components.
+
+        If you pass in both, the individual components [kw-args] will take precedence.
+        If you pass in a query parameter arg, it will completely replace entire query from
+        any that were provided in `url` string. Same goes with the &#39;path&#39;.
+        Use &#39;append_url(...)&#39; to easily merge/append query/paths together.
+
+        If `xsentinels.Default` is left in place, then that value will be ignored and not replace
+        anything that was parsed for that component from `url` string. Unless the &#39;url&#39;
+        pass in defined that particular component it will be set to None. When you append
+        a Url on another with values set to None, it will not &#39;append&#39; them into the Url.
+
+        If you pass in a None, we will replace that particular value with a None inside the
+        Url.
+
+        All parameters are optional. Providing no parameters at all creates a completely
+        blank Url. If you ask for the .url() of a blank Url, an empty string is returned.
+
+        Here is an example of all of these basic Url components in their proper place:
+        `scheme://username:password@host:port/path?query#fragment`
+
+
+        Args:
+            url (str, Url): A normal Url formatted string or Url object;
+                ie: &#34;www.google.com/hello&#34;.
+
+                If provided, forms the basis of the Url.
+                All other parameters will over-write that particular
+                component of the url provided here
+                [ie: the other parameters take priority].
+
+            scheme: Replaces/Sets scheme on new Url object.
+            password: Replaces/Sets password on new Url object.
+            host: Replaces/Sets host on new Url object.
+            port: Replaces/Sets port on new Url object.
+            path: Replaces/Sets path on new Url object.
+                Path&#39;s can have variable placeholders in them, see
+                [Path Formatting Placeholders](#path-formatting-placeholders).
+
+            fragment: Replaces/Sets fragment on new Url object.
+            query:  Replaces/Sets query on new Url object.
+
+            formatting_options:
+                Way to configure how a query value can be split up into a
+                list when parsing a url, and back again when reconstructing the url into a string.
+                For details, see the `UrlFormattingOptions` class.
+
+                If set with None, `Url` class uses `DefaultQueryValueListFormat` by default
+                for it&#39;s formatting options.
+
+            singular: (deprecated: need more generalized way to include metadata)
+                Provides a hint to indicate if the body of the request/response should be a
+                list or a single object. If &#39;None&#39; [default], then the underlying system will do
+                it&#39;s best to guess based on other factors.
+
+            methods: (deprecated: need more generalized way to include metadata)
+                If useful, you can provide a hint of which HTTP methods this Url is
+                valid for. Defaults to an empty set. When you append methods to another Url,
+                the result is a union of both sets of methods from the two Url&#39;s.
+        &#34;&#34;&#34;
+
+        if formatting_options is not Default:
+            self._formatting_options = formatting_options
+
+        if methods is not None:
+            warn(
+                &#34;Url.methods deprecated pending a more generalized way to include metadata.&#34;,
+                DeprecationWarning, 2
+            )
+            self._set_methods(methods)
+        else:
+            self._methods = set()
+
+        if singular not in (None, Default):
+            warn(
+                &#34;Url.singular deprecated pending a more generalized way to include metadata.&#34;,
+                DeprecationWarning, 2
+            )
+            self._singular = singular
+
+        if isinstance(url, str):
+            result: urlparser.ParseResult = urlparser.urlparse(url)
+
+            self._scheme = result.scheme or None
+
+            value = result.username
+            self._username = urlparser.unquote(value) if value else value
+
+            value = result.password
+            self._password = urlparser.unquote(value) if value else value
+
+            self._host = result.hostname
+            self._port = result.port
+            self._path = result.path or None
+            self._fragment = result.fragment or None
+            self._query = self._parse_string_into_query(result.query)
+            self._metadata = {}
+        elif isinstance(url, Url):
+            self._copy_from_url(url)
+        elif url in (None, Default):
+            self._query = {}
+            self._metadata = {}
+        else:
+            raise TypeError(f&#34;Type passed into Url(...) is not a str/Url/None, but ({type(url)}).&#34;)
+
+        if scheme is not Default:
+            self._scheme = scheme
+
+        if username is not Default:
+            self._username = username
+
+        if password is not Default:
+            self._password = password
+
+        if host is not Default:
+            self._host = host
+
+        if port is not Default:
+            self._port = port
+
+        if path is not Default:
+            self._path = path
+
+        if fragment is not Default:
+            self._fragment = fragment
+
+        if query is not Default:
+            self._set_query(query)
+
+        if metadata is not Default:
+            self._metadata = metadata
+    # ----------------------------------------
+    # --------- Basic Url attributes ---------
+
+    @property
+    def scheme(self) -&gt; Optional[str]:
+        return self._scheme
+
+    @property
+    def username(self) -&gt; Optional[str]:
+        return self._username
+
+    @property
+    def password(self) -&gt; Optional[str]:
+        return self._password
+
+    @property
+    def host(self) -&gt; Optional[str]:
+        return self._host
+
+    @property
+    def port(self) -&gt; Optional[int]:
+        return self._port
+
+    @property
+    def path(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;Path&#39;s can have variable placeholders in them, for more details see
+        [Path Formatting Placeholders](#path-formatting-placeholders).
+        &#34;&#34;&#34;
+        return self._path
+
+    @property
+    def fragment(self) -&gt; Optional[str]:
+        return self._fragment
+
+    @property
+    def query(self) -&gt; MappingProxyType:
+        &#34;&#34;&#34;Returns a live-updating mapping of the url query values as a read-only proxy map.&#34;&#34;&#34;
+        # Mapping proxy is a read-only view of the passed in dict.
+        # This will LIVE update the mapping if _query is directly changed!
+        return MappingProxyType(self._query)
+
+    @scheme.setter
+    def scheme(self, value: Optional[str]):
+        self._scheme = value
+        pass
+
+    @username.setter
+    def username(self, value: Optional[str]):
+        self._username = value
+        pass
+
+    @password.setter
+    def password(self, value: Optional[str]):
+        self._password = value
+        pass
+
+    @host.setter
+    def host(self, value: Optional[str]):
+        self._host = value
+        pass
+
+    @port.setter
+    def port(self, value: Optional[int]):
+        self._port = value
+        pass
+
+    @path.setter
+    def path(self, value: Optional[str]):
+        &#34;&#34;&#34;Path&#39;s can have variable placeholders in them, for more details see
+        [Path Formatting Placeholders](#path-formatting-placeholders).
+        &#34;&#34;&#34;
+        self._path = value
+        self._path_changed()
+        pass
+
+    @fragment.setter
+    def fragment(self, value: Optional[str]):
+        self._fragment = value
+        pass
+
+    @query.setter
+    def query(self, value: Query):
+        &#34;&#34;&#34;Each value in query dictionary can be either a str/int, or a list of str/int.
+        If it is a list, see self.formatting_options for details on what happens.
+        &#34;&#34;&#34;
+        # Filter out None values from dictionary.
+        self._set_query(value)
+
+    # ---------------------------------
+    # --------- Configuration ---------
+
+    @property
+    def metadata(self) -&gt; dict:
+        return self._metadata
+
+    @metadata.setter
+    def metadata(self, value: dict):
+        assert isinstance(value, dict)
+        # Shallow Copy the dict into self.
+        self._metadata = copy(value)
+
+    @property
+    def singular(self) -&gt; Optional[bool]:
+        &#34;&#34;&#34;This is a hint to the underlying system that the query will return a singular object
+        instead of potentially many.  If this is None, then underlying system may try to
+        inspect results to try and determine if it&#39;s many or one/singular.
+
+        todo: Implement &#39;None&#39; value in api.RestClient, right now it treats None as False.
+        &#34;&#34;&#34;
+        return self._singular
+
+    @singular.setter
+    def singular(self, value: Optional[bool]):
+        warn(
+            &#34;Url.singular deprecated pending a more generalized way to include metadata.&#34;,
+            DeprecationWarning, 2
+        )
+        self._singular = value
+
+    @property
+    def formatting_options(self) -&gt; UrlFormattingOptions:
+        &#34;&#34;&#34;
+        This tells Url how to encode/decode multiple values [ie: list] for a particular
+        query name-key.
+
+        If `formatting_options` is None, then by default `DefaultQueryValueListFormat`
+        will be used.
+
+        Just like other Url attributes, if `formatting_options` is None, it will, and you
+        append this Url to another Url, `formatting_options` will not change.
+
+        A query value can be either a str/int, or a list of str/int.
+
+        If it is a list of str/int, and if self.formatting_options is True,
+        then the key will have a suffix appended [`__in` by default] and the values will
+        be delimited by a string [`,` - comma by default].
+
+        If self.formatting_options is None, we instead duplicate the key
+        for each value in the list in final url.
+
+        Examples for `key=&#39;someKey&#39;, value=[&#39;A&#39;, &#39;B&#39;]`:
+
+        - self.formatting_options is None:
+            `?someKey=A&amp;someKey=B`
+
+        - self.formatting_options is QueryValueListFormat(&#39;__in&#39;, &#39;,&#39;):
+            `?someKey__in=A,B`.
+        &#34;&#34;&#34;
+        return self._formatting_options
+
+    @formatting_options.setter
+    def formatting_options(self, value: UrlFormattingOptions):
+        self._formatting_options = value
+
+    @property
+    def methods(self) -&gt; Optional[tuple]:
+        # Return a read-only copy of the methods.
+        return tuple(self._methods)
+
+    @methods.setter
+    def methods(self, value: Union[Iterable[str], str]):
+        warn(
+            &#34;Url.methods deprecated pending a more generalized way to include metadata.&#34;,
+            DeprecationWarning, 2
+        )
+        self._set_methods(value)
+
+    def methods_contain(self, method: str) -&gt; bool:
+        &#34;&#34;&#34;Returns True if method is one of my methods, or if I have not assigned methods.
+        Otherwise, returns False.
+
+        It&#39;s faster to use this method then to get all methods and look yourself since I
+        use a set internally and can more quickly lookup things in the set.
+        &#34;&#34;&#34;
+        if not self._methods:
+            return True
+
+        return method in self._methods
+
+    def methods_have_one_in(self, methods: Set[str]) -&gt; bool:
+        return not self._methods.isdisjoint(methods or set())
+
+    @property
+    def secondary_values(self) -&gt; SecondaryValues:
+        &#34;&#34;&#34;Returns any SecondaryValues that have been attached to Url.
+        See `self.is_valid(...)` and/or `self.url(...)` for more details.
+        &#34;&#34;&#34;
+        return self._secondary_values
+
+    # ------------------------------
+    # --------- Copy/Utils ---------
+
+    def copy(self) -&gt; Url:
+        &#34;&#34;&#34; We are immutable, so return self without needing to copy. &#34;&#34;&#34;
+        return Url(self)
+
+    def copy_mutable(self) -&gt; Url:
+        &#34;&#34;&#34; Returns a copy of self as a Url. &#34;&#34;&#34;
+        return Url(self)
+
+    def __copy__(self):
+        # Creates a new object of type self, with self as first param.
+        # This should make a copy of self.
+        return Url(self)
+
+    # ---------------------------------
+    # ------------ Methods ------------
+
+    # todo: Not sure if this really should be here or not...
+    def query_id_if_singular(self):
+        val = self._query.get(&#39;id&#39;)
+        if val is None:
+            return None
+
+        if isinstance(val, (str, int)):
+            return val
+
+        new_val = list(map(str, val))
+        if len(new_val) == 1:
+            return new_val[0]
+
+        return None
+
+    def is_valid(
+            self, secondary_values: SecondaryValues = Default, attach_values: bool = False
+    ) -&gt; bool:
+        &#34;&#34;&#34;
+        A more efficient way to determine if we can produce a valid url string.
+        The efficiency comes from not needing to actually format and produce the url string.
+
+        Return True if self.url() would return a valid url, else False.
+
+        The Url version of this method allows you to &#39;attach&#39; the secondary values
+        to the url. If so, will use the attached values when calling self.url(...) and passing
+        no secondary values into that method.
+
+        Args:
+            secondary_values: If query does not have a needed value to satisfy a formatting
+                placeholder, we will look at values in here.
+                It can be a object, dict or a sequence of objects.
+                If the object(s) or dict has the needed value, then we will use that to satisfy
+                the url placeholder.
+
+            attach_values: If `True`, will &#39;attach&#39; the secondary values **IF** url is valid with
+                them.
+                Attaching means that they are the default secondary values used when generating
+                the Url or when calling is_valid(...) in the future.
+
+                If attach_values is a Class/Object, it will directly set this value into the new
+                copy.
+                We will do a shallow-copy IF the value is a dict/list.
+
+        Returns:
+            True: `Url` is valid and you can call `Url.url` without a problem
+                (with same secondary_values if you did not attach them).
+            False: `Url` is invalid, it needs more formatting params or there is some other issue.
+        &#34;&#34;&#34;
+
+        format_map = self._formatted_map(secondary_values=secondary_values)
+        if format_map and attach_values:
+            # Do a shallow copy if it&#39;s a list/dict, like we document we do.
+            # We don&#39;t make a copy for anything else (like a normal object).
+            if isinstance(secondary_values, (list, dict)):
+                secondary_values = copy(secondary_values)
+            # Attach these as the default secondary_values when formatting self.url()
+            self._secondary_values = secondary_values
+        return format_map is not None
+
+    def url(
+        self,
+        *,
+        default_scheme: str = None,
+        secondary_values: SecondaryValues = Default,
+        allow_invalid_url: bool = False,
+    ):
+        warn(
+            &#34;Url.url is deprecated, instead use `Url.format` &#34;
+            &#34;or directly convert url object to a str.&#34;,
+            DeprecationWarning, 2
+        )
+
+        return self.format(
+            default_scheme=default_scheme,
+            secondary_values=secondary_values,
+            allow_invalid_url=allow_invalid_url
+        )
+
+    def format(
+        self,
+        *,
+        default_scheme: str = None,
+        secondary_values: SecondaryValues = Default,
+        allow_invalid_url: bool = False,
+    ) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+        Returns url as a string, with an optional `default_scheme`.
+
+        You can get the same value (with all args left at their default values)
+        by simply converting object to a string:
+
+        ```python
+        some_url = Url(&#34;https://www.some-url.com/&#34;)
+
+        # Ways to convert to string:
+        print(some_url.format())
+        print(str(some_url))
+        print(f&#39;Formatted Url: {some_url}&#39;)
+        ```
+
+        Output:
+        ```
+        https://www.some-url.com/
+        https://www.some-url.com/
+        Formatted Url: https://www.some-url.com/
+        ```
+
+        Path&#39;s can have variable placeholders in them, for more details see
+        [Path Formatting Placeholders](#path-formatting-placeholders)
+
+        If any placeholder can&#39;t find it&#39;s value, we return `None`.
+        If you always need a string, pass False to the `format_placeholders` argument.
+
+        At some point in the future I&#39;ll probably support place-holders for
+        query-key/values.  The `format_placeholders` argument would also control
+        this too once we get around to supporting that.
+
+        Args:
+            default_scheme: If self.scheme is None or blank, use this passed in default scheme.
+
+            secondary_values: If path needs formatting and there is no valid query value I can use,
+                see if obj has an attribute with a valid value. The attribute name will be same as
+                formatting key name.
+
+                If `None`, will check to see if we have any attached self.secondary_values and
+                try to use that if it has something when needed.
+
+            allow_invalid_url: If `True`: Always return a `str` with as much as the url formatted
+                as possible. We will never return None in this case.
+
+                If `False` (default): Always return a fully formatted url, and if we can&#39;t do
+                that then return `None` instead.
+
+                .. important:: If you indirectly convert a `Url` object into a string via
+                    `f&#34;some url {url_obj}&#34;`, that will pass True to `allow_invalid_url`
+                    in order to always produce a non-None string, as Python requires this.
+                    This is mostly used when logging url objects.
+                    Code that always requires a valid url should use this method to explicitly
+                    format the `Url` object into a fully-formatted url string!
+        Returns:
+            Normal string as a fully constructed url.
+
+            If `None` is returned, the Url could not be formatted (see `Url.is_valid`).
+            There is a missing or invalid value for one of the required formatting key-names.
+
+            See Url class doc section
+            [Path Formatting Placeholders](#path-formatting-placeholders).
+            for more details.
+        &#34;&#34;&#34;
+
+        used_query_keys: List[str] = []
+
+        path = self._formatted_path(
+            secondary_values=secondary_values, query_keys_used=used_query_keys
+        )
+        # If we can&#39;t format the path due to finding all placeholders,
+        # then we return None to indicate we can&#39;t format the url.
+        if path is None:
+            if not allow_invalid_url:
+                return None
+            # Use unformatted / raw url path as we can&#39;t format it and we have allow_invalid_url.
+            path = self.path
+
+        netloc = &#39;&#39;
+        if self._host is not None:
+            netloc = self._host
+
+        userpass = None
+        if self._username is not None:
+            userpass = urlparser.quote(self._username)
+
+        if self._password is not None:
+            userpass = f&#34;{userpass}:{urlparser.quote(self._password)}&#34;
+
+        if userpass is not None:
+            netloc = f&#34;{userpass}@{netloc}&#34;
+
+        if self._port is not None:
+            netloc = f&#34;{netloc}:{self._port}&#34;
+
+        scheme = self._scheme or default_scheme or &#39;&#39;
+
+        fragment = self._fragment or &#39;&#39;
+        query_dict = self._query
+
+        if used_query_keys:
+            # Filter out any keys that we should ignore.
+            # Filters dict and makes a copy at the same time, exactly what we need!
+            query_dict = {k: query_dict[k] for k in query_dict if k not in used_query_keys}
+
+        query = self._format_query_into_string(query_dict)
+
+        return urlparser.urlunparse((scheme, netloc, path or &#39;&#39;, &#39;&#39;, query, fragment))
+
+    def __str__(self):
+        &#34;&#34;&#34;
+        Will return self.url(), which should return a formatted url string.
+
+        If that returns None, it means we have some part of the Url that can&#39;t be formatted,
+        so we then return an unformatted/raw version of the Url.
+
+        This means placeholders like `hello/{some_value}/`, if we don&#39;t have a value
+        for `{some_value}` then we would have to return the Url with the placeholder as-is
+        instead of formatting the Url and replacing `{some_value}` with the real value.
+        &#34;&#34;&#34;
+        # If we can&#39;t generate a valid url, then return the best invalid version we have.
+        return self.url(allow_invalid_url=True)
+
+    def __repr__(self):
+        return f&#34;{type(self).__name__}(&#39;{self}&#39;)&#34;
+
+    # ---------------------------------------------
+    # --------- Advanced Mutation Methods ---------
+
+    def set_methods(self, methods: Union[Iterable[str], str], *args):
+        &#34;&#34;&#34;Sets methods and returns self, so you can chain it with other mods.
+        You can pass in an iterable or a direct string, for any number of arguments.
+        We will iterate each argument if it&#39;s not a string to combine all of them
+        together in one list, which will be set on self.methods.
+
+        `self` is returned, so you can chain this with other method calls.
+        &#34;&#34;&#34;
+        self._set_methods(xloop(methods, args))
+        return self
+
+    def set_singular(self, value: Optional[bool]) -&gt; Url:
+        &#34;&#34;&#34;Sets singular to value.
+        `self` is returned, so you can chain this with other method calls.
+        &#34;&#34;&#34;
+        self.singular = value
+        return self
+
+    def set_formatting_options(self, value: Optional[UrlFormattingOptions]) -&gt; Url:
+        &#34;&#34;&#34;Does  `self.formatting_options = value` for you while returning `self`.
+        `self` is returned, so you can easily chain this with other method calls if you wish.
+        &#34;&#34;&#34;
+        self.formatting_options = value
+        return self
+
+    def append_url(self, url: Optional[UrlStr]) -&gt; Url:
+        &#34;&#34;&#34;Takes the components of url, and any that look true [ie: are not False or None]
+        are set on myself.
+
+        In the case of the path, `append_path` is called instead, so the path provided in
+        `url` is appended to any already existing path.
+
+        For the query, the `append_query()` is used, and only keys with the same key-name
+        will be replaced. Otherwise, the query key/value is added to any already existing
+        query key/value pairs.
+
+        For methods, `append_methods` is called, and will add any methods not already present.
+
+        `self` is returned, so you can chain this with other method calls.
+        &#34;&#34;&#34;
+        if url is None:
+            return self
+
+        # Make sure we have a Url, we want to look at it&#39;s various components...
+        url = Url.ensure_url(url, default_formatting_options=self.formatting_options)
+
+        self.append_path(url.path)
+        self.append_query(url._query)
+        self.append_methods(url._methods)
+        self.append_metadata(url._metadata)
+
+        for attr_name in _attributes_to_set_when_appending:
+            other_value = getattr(url, attr_name, None)
+            if other_value is not None:
+                setattr(self, attr_name, other_value)
+
+        return self
+
+    def append_metadata(self, value: dict | None):
+        &#34;&#34;&#34; Merge all dict values passed in into internal metadata dict,
+            setting the value inside self for every key in provided dict.
+
+            Any metadata keys on self that are not in passed in value dict will be left as-is.
+
+            A shallow copy will be made of value, ie: `copy(value)` before it&#39;s added to self.
+
+            `self` is returned, so you can chain this with other method calls.
+
+            If `None` is passed in, does nothing.
+        &#34;&#34;&#34;
+        if value is None:
+            return self
+
+        metadata = self._metadata
+        if metadata is None:
+            metadata = {}
+            self._metadata = metadata
+
+        for k, v in value.items():
+            metadata[k] = copy(v)
+
+        return self
+
+    def append_path(self, path_component: Optional[str]) -&gt; Url:
+        &#34;&#34;&#34;Appends path with path_component, making sure to add a slash if needed to separate
+        new component from any current path.
+
+        `self` is returned, so you can chain this with other method calls.
+        &#34;&#34;&#34;
+        if not path_component:
+            return self
+
+        path_component = str(path_component)
+        if not path_component:
+            return self
+
+        # Remove any starting slash if needed, we will be providing our own slash later.
+        if path_component[0] == &#39;/&#39;:
+            path_component = path_component[1:]
+
+        current_path = self._path
+
+        if not current_path:
+            current_path = &#39;&#39;
+
+        # If the current path ends in a slash, remove it.
+        if len(current_path) &gt; 0 and current_path[-1] == &#39;/&#39;:
+            current_path = current_path[:-1]
+
+        # Append the new path component with a slash to separate it.
+        self._path = f&#39;{current_path}/{path_component}&#39;
+        self._path_changed()
+        return self
+
+    def append_query(self, query: Optional[Query]) -&gt; Url:
+        &#34;&#34;&#34;Calls `Url.query_add` for each key/value pair in query. Only keys with the
+        same key-name will be replaced. Otherwise, the query key/value is added to any already
+        existing query key/value pairs.
+
+        `self` is returned, so you can chain this with other method calls.
+        &#34;&#34;&#34;
+        if not query:
+            return self
+
+        for key, value in query.items():
+            self.query_add(key, value)
+        return self
+
+    def append_methods(self, methods: Iterable[str]) -&gt; Url:
+        if methods:
+            self._methods.update(methods)
+        return self
+
+    def methods_add(self, method: str) -&gt; Url:
+        if method:
+            self._methods.add(method)
+        return self
+
+    def methods_remove(self, method: str) -&gt; Url:
+        if method:
+            self._methods.discard(method)
+        return self
+
+    # ---------------------------------
+    # --------- Query Methods ---------
+
+    def query_add(self, key: str = None, value: QueryValue = None) -&gt; Url:
+        &#34;&#34;&#34;Use to set a key in query easily. This will entirely replace query with name `key`
+        if the value is not None. If value is None, nothing will happen/change.
+        If you want to remove a query item, use &#39;self.query_remove(...)&#39; instead.
+
+        A query value can be either a str/int, or a list of str/int.
+        If it is a list, then see self.formatting_options for details on what happens.
+
+        A shallow copy will be made of value, ie: `copy(value)` before it&#39;s added to url.
+
+        `self` is returned, so you can chain this with other method calls.
+        &#34;&#34;&#34;
+
+        if value is None:
+            return self
+
+        if self._query is None:
+            self._query = {}
+
+        self._query[key] = copy(value)
+        return self
+
+    def query_remove(self, key) -&gt; Url:
+        &#34;&#34;&#34;Remove value for key in query, if key does not exist nothing happens.
+        `self` is returned, so you can chain this with other method calls.
+        &#34;&#34;&#34;
+        self._query.pop(key, None)
+        return self
+
+    def query_value(self, key: str) -&gt; Optional[QueryValue]:
+        &#34;&#34;&#34; Returns the value in query assigned to key, if key not found returns `None`. &#34;&#34;&#34;
+        return self._query.get(key, None)
+
+    # -----------------------------------------------------------------
+    # --------- Dict Access into Query Values Special Methods ---------
+
+    def __setitem__(self, key, item):
+        self.query_add(key, item)
+
+    def __getitem__(self, key):
+        return self.query_value(key)
+
+    def __len__(self):
+        v = self._query
+        if not v:
+            return 0
+        return len(v)
+
+    def __delitem__(self, key):
+        self.query_remove(key)
+
+    def __bool__(self):
+        # Check to see if `url` is empty in terms of any url string it would generate.
+        return bool(str(self))
+
+    # ---------------------------
+    # --------- Private ---------
+
+    def _copy_from_url(self, url: Url):
+        &#34;&#34;&#34;Correctly copies in an optimized way, everything in url into self.&#34;&#34;&#34;
+        self.__dict__.update(url.__dict__)
+        self._query = copy(url._query)
+        self._methods = copy(url._methods)
+        self._cached_format_keys = copy(url._cached_format_keys)
+        self._metadata = copy(url._metadata)
+
+    def _set_query(self, query: Query):
+        &#34;&#34;&#34;Makes _query the same as query, filter out None values and making a first-level deep
+        copy of the dict. This is needed in case we have lists of strings as a value.
+        &#34;&#34;&#34;
+        if query is None:
+            query = {}
+
+        # Filter out None values from dictionary.
+        self._query = {k: copy(v) for k, v in query.items() if v is not None}
+
+    def _set_methods(self, methods: Union[Iterable[str], str]):
+        if methods is None:
+            methods = tuple()
+
+        if isinstance(methods, str):
+            methods = (methods,)
+
+        self._methods = set(methods)
+
+    def _path_changed(self):
+        &#34;&#34;&#34; Called when path changes, mainly to reset format_keys cache. &#34;&#34;&#34;
+        self._cached_format_keys = None
+
+    def _format_keys(self) -&gt; List[str]:
+        &#34;&#34;&#34;Returns a list of format keys that are in the path. It caches this information
+        lazily. Be sure to call `Url._path_changed()` when the path changes, which throws away
+        this cached info.
+        &#34;&#34;&#34;
+        keys = self._cached_format_keys
+        if keys is not None:
+            return keys
+
+        path = self.path
+        if path:
+            keys = [t[1] for t in string.Formatter().parse(path) if t[1] is not None]
+        else:
+            keys = []
+
+        self._cached_format_keys = keys
+        return keys
+
+    def _parse_string_into_query(self, query_string: str) -&gt; Query:
+        &#34;&#34;&#34;Go through each query value and parse it according to the self.formatting_options.
+        Keeps single-values as non-list items.  If there is more than one value for a
+        particular query key-name, it will put all the values into a list.
+        &#34;&#34;&#34;
+        query = {}
+
+        formatting = self.formatting_options or DefaultQueryValueListFormat
+        delimiter = formatting.list_value_delimiter
+        suffix = formatting.list_key_suffix
+        suffix_len = len(suffix)
+        check_formatting = True if delimiter else False
+
+        for k, v in urlparser.parse_qs(query_string).items():
+            k: str
+            v: List[str]
+
+            all_values = []
+            force_list = False
+            is_list_keep_suffix = False
+
+            if check_formatting:
+                for keep_suffix in (formatting.list_key_suffixes_to_keep or []):
+                    if k.endswith(keep_suffix):
+                        is_list_keep_suffix = True
+                        break
+
+            if check_formatting and (is_list_keep_suffix or k.endswith(suffix)):
+                # If we do have something like `__in=a`, we want to keep it as a list
+                # even if it only has a single item.  That way when we construct the url
+                # again in the future, the `__in=a` will be preserved.
+                force_list = True
+                if not is_list_keep_suffix:
+                    k = k[:-suffix_len]
+
+                for item in v:
+                    all_values.extend(item.split(delimiter))
+            else:
+                all_values.extend(v)
+
+            existing_value = query.get(k)
+            if existing_value:
+                all_values.extend(xloop(existing_value))
+
+            if force_list or len(all_values) &gt; 1:
+                query[k] = all_values
+            else:
+                query[k] = all_values[0]
+
+        return query
+
+    def _format_query_into_string(self, query: Query) -&gt; str:
+        if not query:
+            return &#34;&#34;
+
+        options = self.formatting_options or DefaultQueryValueListFormat
+        query_filtered = {}
+        for key, val in query.items():
+            values = list(xloop(val))
+
+            if not values:
+                continue
+
+            # TODO: Probably remove this, seem strange.
+            formatter = values[0]
+            if not isinstance(formatter, _FormattedQueryValue):
+                formatter = _default_query_formatter
+
+            formatted_query = formatter.url_query(
+                key=key, url=self, url_options=options, values=values
+            )
+            query_filtered.update(formatted_query)
+
+        # It&#39;s legal to have query-values contain commas and so we declare them safe.
+        # This prevents them from being encoded (easier to read Url, makes them smaller).
+        return urlparser.urlencode(query_filtered, doseq=True, safe=&#39;,&#39;)
+
+    def _formatted_map(
+        self, secondary_values: SecondaryValues = Default, query_keys_used: List[str] = None
+    ) -&gt; Optional[dict]:
+        &#34;&#34;&#34;
+
+        Args:
+            secondary_values: Right now this method will return None [ie: invalid url]
+                if we have more than one
+                object passed into this. In the future, I want to support formatting placeholders
+                that support multiple objects. It&#39;s just not needed right now. But the interface
+                allows for it in the future, when we get around to support it.
+
+                If left as `xsentinels.Default` then we will use self.secondary_values,
+                if any are there. You can &#39;attach&#39; secondary values to a Url via:
+
+                &gt;&gt;&gt; Url.is_valid(secondary_values={&#39;id&#39;: 2}, attach_values=True)
+
+                If `None`, then no secondary values will be used.
+
+            query_keys_used: List will be modified (if provided) with keys we used for placeholders
+                from the query-part of the url. Normally, you would remove the query-params
+                we used for this purpose before producing the final url.
+        Returns:
+            A dict/map of formatted query key/values.
+        &#34;&#34;&#34;
+        keys = self._format_keys()
+        if query_keys_used is None:
+            query_keys_used = []
+
+        if not keys:
+            return {}
+
+        if secondary_values is Default:
+            secondary_values = self._secondary_values
+
+        format_map = {}
+        query = self._query
+        for k in keys:
+            query_value = query.get(k)
+
+            # TODO:  ********
+            # TODO:  ******** Look for a single item in query_value, and if so use that?!?
+            # TODO:  ********
+
+            if not isinstance(query_value, str):
+                query_value = list(xloop(query_value))
+
+                if len(query_value) == 1:
+                    query_value = query_value[0]
+
+            # We consider blank-strings same as &#39;None&#39; for our purposes here.
+            if not query_value and isinstance(query_value, str):
+                query_value = None
+
+            if query_value is not None and not isinstance(query_value, list):
+                # todo: convert any dates via .isoformat() ?
+                format_map[k] = str(query_value)
+                query_keys_used.append(k)
+                continue
+
+            if secondary_values:
+                if hasattr(secondary_values, k):
+                    obj_value = getattr(secondary_values, k)
+                elif isinstance(secondary_values, dict):
+                    obj_value = secondary_values.get(k)
+                else:
+                    all_objs = list(xloop(secondary_values))
+                    if len(all_objs) == 1 and hasattr(all_objs[0], k):
+                        obj_value = getattr(all_objs[0], k)
+                    else:
+                        obj_value = None
+
+                if obj_value is not None and not isinstance(obj_value, list):
+                    format_map[k] = str(obj_value)
+                    continue
+
+            return None
+
+        return format_map
+
+    def _formatted_path(
+        self, secondary_values: Union[object, dict] = None, query_keys_used: List[str] = None
+    ) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+        Formats my path and returns that. If the path could not be formatted returns False.
+        If this returns False it means a missing or invalid value for the formatting key-name.
+
+        A valid value is a str or int; NOT a list.
+
+        In the future, I&#39;ll support dates and auto-convert them into a string. But for right
+        now the value must be an int or str.
+        Args:
+            secondary_values: If passed in, and self.query does not have a valid value, will check
+                to see
+                if attribute with same format-key-name exists as an attribute on this object
+                or a key if it&#39;s a dict. If the value is NOT a list, it will be used. Otherwise,
+                it will be ignored as an invalid value.
+
+            query_keys_used: If you pass in a list, and I use a query as a value for
+                formatting the path, I will
+                put the key of each query I use inside this list.  Normally you would not output
+                the query anymore [since it&#39;s inside the path now], but you can do whatever you
+                want with them.
+
+        Returns:
+            String if we have a valid path, otherwise False if we can&#39;t generate Path due to
+            lack of values in `Url.query` or `secondary_values`.
+        &#34;&#34;&#34;
+
+        mapped_values = self._formatted_map(
+            secondary_values=secondary_values, query_keys_used=query_keys_used
+        )
+
+        if mapped_values is None:
+            # We were unable to find values for one ore more format placeholders for our url path.
+            return None
+
+        # Url encode/quote all the values into a new dict.
+        mapped_values = {k: urlparser.quote(v, safe=&#39;&#39;) for (k, v) in mapped_values.items()}
+        path = self._path or &#39;&#39;
+        if mapped_values:
+            return path.format_map(mapped_values)
+
+        return path
+
+    _formatting_options: Optional[UrlFormattingOptions] = None
+    &#34;&#34;&#34;
+        If the value is `None`, it means we use DefaultQueryValueListFormat when constructing the
+        url.
+
+        BUT it also means we DON&#39;T append this value into another Url via `Url.append_url(...)`,
+        we don&#39;t want to let this value ever override another value when appending Url&#39;s.
+    &#34;&#34;&#34;
+
+    _singular: Optional[bool] = None
+    _scheme: Optional[str] = None
+    _username: Optional[str] = None
+    _password: Optional[str] = None
+    _host: Optional[str] = None
+    _port: Optional[int] = None
+    _path: Optional[str] = None
+    _fragment: Optional[str] = None
+
+    # These are always set by init method, to ensure that they are never `None`.
+    _query: Query
+    _methods: Set[str]
+
+    # Others
+    _cached_format_keys: Optional[List[str]] = None
+
+    _secondary_values: SecondaryValues = None</code></pre>
+</details>
+<div class="desc"><p>Allows you to easily create, work with and append Urls together.</p>
+<p>You can pass a normal Url or string into the first argument of <code><a title="xurls.url.Url" href="#xurls.url.Url">Url</a></code>, and if you do
+it as a string it will be parsed as a Url and it's components will be set into the
+returned as a Url with it's various components parsed into Url's various attributes.</p>
+<p>There is also a parameter for each Url component attribute in the <code><a title="xurls.url.Url" href="#xurls.url.Url">Url</a></code> method.</p>
+<p>If no value is provided for a particular url component, it will be assigned a <code>None</code> value.</p>
+<p>Use <code><a title="xurls.url.Url.url" href="#xurls.url.Url.url">Url.url()</a></code> method to get a url <code>str</code> back from components.</p>
+<p>For more details on path features,
+see <a href="#path-formatting-placeholders">Path Formatting Placeholders</a></p>
+<h2 id="mutating-methods">Mutating Methods</h2>
+<p>A big way to use Url is to <code><a title="xurls.url.Url.append_url" href="#xurls.url.Url.append_url">Url.append_url()</a></code> <code><a title="xurls.url.Url" href="#xurls.url.Url">Url</a></code>'s together.
+You can then take
+different <code><a title="xurls.url.Url" href="#xurls.url.Url">Url</a></code>'s that have different components and construct a final <code><a title="xurls.url.Url" href="#xurls.url.Url">Url</a></code> to use.</p>
+<p>When appending a Url to another [via <code>Url.append_url</code>], if any particular component
+has a None value, it will not change the Url it's being appended to for that particular
+component. This allows you to append Urls together and only relevant/set-values will
+be what's appended. This allows you to construct Urls based on pieces of Urls to construct
+the final Url.</p>
+<p>When you append a Url, the path and query and methods are treated in a special way:</p>
+<ul>
+<li>
+<p><code><a title="xurls.url.Url.path" href="#xurls.url.Url.path">Url.path</a></code>: it will be appended to the destination Url via
+<code><a title="xurls.url.Url.append_path" href="#xurls.url.Url.append_path">Url.append_path()</a></code>, and therefore, the path will be appended onto the existing
+path (with a <code>/</code> if needed to separate them).</p>
+</li>
+<li>
+<p><code><a title="xurls.url.Url.query" href="#xurls.url.Url.query">Url.query</a></code>: Keys will be added via <code><a title="xurls.url.Url.query_add" href="#xurls.url.Url.query_add">Url.query_add()</a></code>, and therefore the only
+keys that will be replaced are ones where the same key-name exists in both Urls.
+Otherwise, the keys are 'added' together.</p>
+</li>
+<li>
+<p><code><a title="xurls.url.Url.methods" href="#xurls.url.Url.methods">Url.methods</a></code>: This will get union'd with the existing <code>methods</code> in the destination
+url.</p>
+</li>
+</ul>
+<p>The methods that mutate self [such as 'append_path', etc] return self, so you can chain
+them together with other mutating methods.</p>
+<p>Example Usages:</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; urlc = Url()
+&gt;&gt;&gt; urlc.scheme = 'http'
+&gt;&gt;&gt; urlc.host = 'www.google.com'
+&gt;&gt;&gt; urlc.format()
+&quot;http://www.google.com&quot;
+&gt;&gt;&gt; urlc = Url(&quot;http://www.google.com&quot;).append_url(&quot;/hello&quot;)
+&gt;&gt;&gt; urlc.format()
+&quot;http://www.google.com/hello&quot;
+</code></pre>
+<h1 id="__init__-specifics"><code>__init__</code> Specifics</h1>
+<p>Pass in a single 'url' or pass in the individual components.</p>
+<p>If you pass in both, the individual components [kw-args] will take precedence.
+If you pass in a query parameter arg, it will completely replace entire query from
+any that were provided in <code>url</code> string. Same goes with the 'path'.
+Use 'append_url(&hellip;)' to easily merge/append query/paths together.</p>
+<p>If <code>xsentinels.Default</code> is left in place, then that value will be ignored and not replace
+anything that was parsed for that component from <code>url</code> string. Unless the 'url'
+pass in defined that particular component it will be set to None. When you append
+a Url on another with values set to None, it will not 'append' them into the Url.</p>
+<p>If you pass in a None, we will replace that particular value with a None inside the
+Url.</p>
+<p>All parameters are optional. Providing no parameters at all creates a completely
+blank Url. If you ask for the .url() of a blank Url, an empty string is returned.</p>
+<p>Here is an example of all of these basic Url components in their proper place:
+<code>scheme://username:password@host:port/path?query#fragment</code></p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>url</code></strong> :&ensp;<code>str, <a title="xurls.url.Url" href="#xurls.url.Url">Url</a></code></dt>
+<dd>
+<p>A normal Url formatted string or Url object;
+ie: "www.google.com/hello".</p>
+<p>If provided, forms the basis of the Url.
+All other parameters will over-write that particular
+component of the url provided here
+[ie: the other parameters take priority].</p>
+</dd>
+<dt><strong><code>scheme</code></strong></dt>
+<dd>Replaces/Sets scheme on new Url object.</dd>
+<dt><strong><code>password</code></strong></dt>
+<dd>Replaces/Sets password on new Url object.</dd>
+<dt><strong><code>host</code></strong></dt>
+<dd>Replaces/Sets host on new Url object.</dd>
+<dt><strong><code>port</code></strong></dt>
+<dd>Replaces/Sets port on new Url object.</dd>
+<dt><strong><code>path</code></strong></dt>
+<dd>Replaces/Sets path on new Url object.
+Path's can have variable placeholders in them, see
+<a href="#path-formatting-placeholders">Path Formatting Placeholders</a>.</dd>
+<dt><strong><code>fragment</code></strong></dt>
+<dd>Replaces/Sets fragment on new Url object.</dd>
+<dt><strong><code>query</code></strong></dt>
+<dd>Replaces/Sets query on new Url object.</dd>
+</dl>
+<p>formatting_options:
+Way to configure how a query value can be split up into a
+list when parsing a url, and back again when reconstructing the url into a string.
+For details, see the <code><a title="xurls.url.UrlFormattingOptions" href="#xurls.url.UrlFormattingOptions">UrlFormattingOptions</a></code> class.</p>
+<pre><code>If set with None, &lt;code&gt;&lt;a title="xurls.url.Url" href="#xurls.url.Url"&gt;Url&lt;/a&gt;&lt;/code&gt; class uses &lt;code&gt;&lt;a title="xurls.url.DefaultQueryValueListFormat" href="#xurls.url.DefaultQueryValueListFormat"&gt;DefaultQueryValueListFormat&lt;/a&gt;&lt;/code&gt; by default
+for it's formatting options.
+</code></pre>
+<dl>
+<dt><strong><code>singular</code></strong></dt>
+<dd>(deprecated: need more generalized way to include metadata)
+Provides a hint to indicate if the body of the request/response should be a
+list or a single object. If 'None' [default], then the underlying system will do
+it's best to guess based on other factors.</dd>
+<dt><strong><code>methods</code></strong></dt>
+<dd>(deprecated: need more generalized way to include metadata)
+If useful, you can provide a hint of which HTTP methods this Url is
+valid for. Defaults to an empty set. When you append methods to another Url,
+the result is a union of both sets of methods from the two Url's.</dd>
+</dl></div>
+<h3>Static methods</h3>
+<dl>
+<dt id="xurls.url.Url.ensure_url"><code class="name flex">
+<span>def <span class="ident">ensure_url</span></span>(<span>value: Optional[<a title="xurls.url.UrlStr" href="#xurls.url.UrlStr">UrlStr</a>],<br>*,<br>default_formatting_options: <a title="xurls.url.UrlFormattingOptions" href="#xurls.url.UrlFormattingOptions">UrlFormattingOptions</a> = Default) ‑> ~T</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Will check to see if the passed in value is a <code><a title="xurls.url.Url" href="#xurls.url.Url">Url</a></code> (depending on the
+class you call <code><a title="xurls.url.Url.ensure_url" href="#xurls.url.Url.ensure_url">Url.ensure_url()</a></code> on). If so, will return value unchanged.
+This is an optimization and the reason to use this method over just constructing
+a new <code><a title="xurls.url.Url" href="#xurls.url.Url">Url</a></code> and passing the value into that. If the value is already a Url,
+and it's formatting_options don't need to be set to <code>default_formatting_options</code>
+it will just return it without any extra work.</p>
+<pre><code>If not then will create a new instance of cls and pass value to &lt;code&gt;\_\_init\_\_&lt;/code&gt;
+and return result.
+
+### If you provide &lt;code&gt;default\_formatting\_options&lt;/code&gt;:
+
+If you pass in a &lt;code&gt;str&lt;/code&gt; to this method, then any &lt;code&gt;formatting\_options&lt;/code&gt; you passed in
+will be checked and used if provided.
+
+If you pass in a Url, and it has not explicitly set formatting_options, we
+will make a copy of passed in Url and set &lt;code&gt;default\_formatting\_options&lt;/code&gt; on it
+and return copy.
+
+Otherwise, Url will use the usual &lt;code&gt;&lt;a title="xurls.url.DefaultQueryValueListFormat" href="#xurls.url.DefaultQueryValueListFormat"&gt;DefaultQueryValueListFormat&lt;/a&gt;&lt;/code&gt; for the default format.
+</code></pre>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>value</code></strong></dt>
+<dd>
+<p>You can pass in a UrlStr (which is either a <code>str</code> or <code><a title="xurls.url.Url" href="#xurls.url.Url">Url</a></code>), and you will get
+back a <code><a title="xurls.url.Url" href="#xurls.url.Url">Url</a></code> object from it. If the value is exactly the same as the class you call
+this class method on, you will get it back unchanged. If not then we create a new
+object of type <code>cls</code> and give value to it as a init parameter.</p>
+<p>If <code>value</code> is not a <code><a title="xurls.url.Url" href="#xurls.url.Url">Url</a></code> or <code>str</code>, we will try and convert it to a <code>str</code> for
+you in an attempt to extract a url string from the passed in object.</p>
+</dd>
+<dt><strong><code>default_formatting_options</code></strong> :&ensp;<code><a title="xurls.url.UrlFormattingOptions" href="#xurls.url.UrlFormattingOptions">UrlFormattingOptions</a></code></dt>
+<dd>Formatting options to use IF
+passed in value is a string.
+If the passed in value is a Url object, we use
+whatever it has set on it. If no formatting options are set on the <code><a title="xurls.url.Url" href="#xurls.url.Url">Url</a></code> object
+that is passed in, and you pass in a default_formatting_options, we will copy
+passed in Url and set that formatting option on it, and return copy.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="xurls.url.Url" href="#xurls.url.Url">Url</a></code></dt>
+<dd>Object of same type as <code>cls</code>, which is the class you called <code><a title="xurls.url.Url.ensure_url" href="#xurls.url.Url.ensure_url">Url.ensure_url()</a></code> on.</dd>
+</dl></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="xurls.url.Url.formatting_options"><code class="name">prop <span class="ident">formatting_options</span> : <a title="xurls.url.UrlFormattingOptions" href="#xurls.url.UrlFormattingOptions">UrlFormattingOptions</a></code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def formatting_options(self) -&gt; UrlFormattingOptions:
+    &#34;&#34;&#34;
+    This tells Url how to encode/decode multiple values [ie: list] for a particular
+    query name-key.
+
+    If `formatting_options` is None, then by default `DefaultQueryValueListFormat`
+    will be used.
+
+    Just like other Url attributes, if `formatting_options` is None, it will, and you
+    append this Url to another Url, `formatting_options` will not change.
+
+    A query value can be either a str/int, or a list of str/int.
+
+    If it is a list of str/int, and if self.formatting_options is True,
+    then the key will have a suffix appended [`__in` by default] and the values will
+    be delimited by a string [`,` - comma by default].
+
+    If self.formatting_options is None, we instead duplicate the key
+    for each value in the list in final url.
+
+    Examples for `key=&#39;someKey&#39;, value=[&#39;A&#39;, &#39;B&#39;]`:
+
+    - self.formatting_options is None:
+        `?someKey=A&amp;someKey=B`
+
+    - self.formatting_options is QueryValueListFormat(&#39;__in&#39;, &#39;,&#39;):
+        `?someKey__in=A,B`.
+    &#34;&#34;&#34;
+    return self._formatting_options</code></pre>
+</details>
+<div class="desc"><p>This tells Url how to encode/decode multiple values [ie: list] for a particular
+query name-key.</p>
+<p>If <code>formatting_options</code> is None, then by default <code><a title="xurls.url.DefaultQueryValueListFormat" href="#xurls.url.DefaultQueryValueListFormat">DefaultQueryValueListFormat</a></code>
+will be used.</p>
+<p>Just like other Url attributes, if <code>formatting_options</code> is None, it will, and you
+append this Url to another Url, <code>formatting_options</code> will not change.</p>
+<p>A query value can be either a str/int, or a list of str/int.</p>
+<p>If it is a list of str/int, and if self.formatting_options is True,
+then the key will have a suffix appended [<code>__in</code> by default] and the values will
+be delimited by a string [<code>,</code> - comma by default].</p>
+<p>If self.formatting_options is None, we instead duplicate the key
+for each value in the list in final url.</p>
+<p>Examples for <code>key='someKey', value=['A', 'B']</code>:</p>
+<ul>
+<li>
+<p>self.formatting_options is None:
+<code>?someKey=A&amp;someKey=B</code></p>
+</li>
+<li>
+<p>self.formatting_options is QueryValueListFormat('__in', ','):
+<code>?someKey__in=A,B</code>.</p>
+</li>
+</ul></div>
+</dd>
+<dt id="xurls.url.Url.fragment"><code class="name">prop <span class="ident">fragment</span> : Optional[str]</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def fragment(self) -&gt; Optional[str]:
+    return self._fragment</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="xurls.url.Url.host"><code class="name">prop <span class="ident">host</span> : Optional[str]</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def host(self) -&gt; Optional[str]:
+    return self._host</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="xurls.url.Url.metadata"><code class="name">prop <span class="ident">metadata</span> : dict</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def metadata(self) -&gt; dict:
+    return self._metadata</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="xurls.url.Url.methods"><code class="name">prop <span class="ident">methods</span> : Optional[tuple]</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def methods(self) -&gt; Optional[tuple]:
+    # Return a read-only copy of the methods.
+    return tuple(self._methods)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="xurls.url.Url.password"><code class="name">prop <span class="ident">password</span> : Optional[str]</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def password(self) -&gt; Optional[str]:
+    return self._password</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="xurls.url.Url.path"><code class="name">prop <span class="ident">path</span> : Optional[str]</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def path(self) -&gt; Optional[str]:
+    &#34;&#34;&#34;Path&#39;s can have variable placeholders in them, for more details see
+    [Path Formatting Placeholders](#path-formatting-placeholders).
+    &#34;&#34;&#34;
+    return self._path</code></pre>
+</details>
+<div class="desc"><p>Path's can have variable placeholders in them, for more details see
+<a href="#path-formatting-placeholders">Path Formatting Placeholders</a>.</p></div>
+</dd>
+<dt id="xurls.url.Url.port"><code class="name">prop <span class="ident">port</span> : Optional[int]</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def port(self) -&gt; Optional[int]:
+    return self._port</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="xurls.url.Url.query"><code class="name">prop <span class="ident">query</span> : MappingProxyType</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def query(self) -&gt; MappingProxyType:
+    &#34;&#34;&#34;Returns a live-updating mapping of the url query values as a read-only proxy map.&#34;&#34;&#34;
+    # Mapping proxy is a read-only view of the passed in dict.
+    # This will LIVE update the mapping if _query is directly changed!
+    return MappingProxyType(self._query)</code></pre>
+</details>
+<div class="desc"><p>Returns a live-updating mapping of the url query values as a read-only proxy map.</p></div>
+</dd>
+<dt id="xurls.url.Url.scheme"><code class="name">prop <span class="ident">scheme</span> : Optional[str]</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def scheme(self) -&gt; Optional[str]:
+    return self._scheme</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="xurls.url.Url.secondary_values"><code class="name">prop <span class="ident">secondary_values</span> : SecondaryValues</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def secondary_values(self) -&gt; SecondaryValues:
+    &#34;&#34;&#34;Returns any SecondaryValues that have been attached to Url.
+    See `self.is_valid(...)` and/or `self.url(...)` for more details.
+    &#34;&#34;&#34;
+    return self._secondary_values</code></pre>
+</details>
+<div class="desc"><p>Returns any SecondaryValues that have been attached to Url.
+See <code>self.is_valid(&hellip;)</code> and/or <code>self.url(&hellip;)</code> for more details.</p></div>
+</dd>
+<dt id="xurls.url.Url.singular"><code class="name">prop <span class="ident">singular</span> : Optional[bool]</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def singular(self) -&gt; Optional[bool]:
+    &#34;&#34;&#34;This is a hint to the underlying system that the query will return a singular object
+    instead of potentially many.  If this is None, then underlying system may try to
+    inspect results to try and determine if it&#39;s many or one/singular.
+
+    todo: Implement &#39;None&#39; value in api.RestClient, right now it treats None as False.
+    &#34;&#34;&#34;
+    return self._singular</code></pre>
+</details>
+<div class="desc"><p>This is a hint to the underlying system that the query will return a singular object
+instead of potentially many.
+If this is None, then underlying system may try to
+inspect results to try and determine if it's many or one/singular.</p>
+<p>todo: Implement 'None' value in api.RestClient, right now it treats None as False.</p></div>
+</dd>
+<dt id="xurls.url.Url.username"><code class="name">prop <span class="ident">username</span> : Optional[str]</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def username(self) -&gt; Optional[str]:
+    return self._username</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="xurls.url.Url.append_metadata"><code class="name flex">
+<span>def <span class="ident">append_metadata</span></span>(<span>self, value: dict | None)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def append_metadata(self, value: dict | None):
+    &#34;&#34;&#34; Merge all dict values passed in into internal metadata dict,
+        setting the value inside self for every key in provided dict.
+
+        Any metadata keys on self that are not in passed in value dict will be left as-is.
+
+        A shallow copy will be made of value, ie: `copy(value)` before it&#39;s added to self.
+
+        `self` is returned, so you can chain this with other method calls.
+
+        If `None` is passed in, does nothing.
+    &#34;&#34;&#34;
+    if value is None:
+        return self
+
+    metadata = self._metadata
+    if metadata is None:
+        metadata = {}
+        self._metadata = metadata
+
+    for k, v in value.items():
+        metadata[k] = copy(v)
+
+    return self</code></pre>
+</details>
+<div class="desc"><p>Merge all dict values passed in into internal metadata dict,
+setting the value inside self for every key in provided dict.</p>
+<p>Any metadata keys on self that are not in passed in value dict will be left as-is.</p>
+<p>A shallow copy will be made of value, ie: <code>copy(value)</code> before it's added to self.</p>
+<p><code>self</code> is returned, so you can chain this with other method calls.</p>
+<p>If <code>None</code> is passed in, does nothing.</p></div>
+</dd>
+<dt id="xurls.url.Url.append_methods"><code class="name flex">
+<span>def <span class="ident">append_methods</span></span>(<span>self, methods: Iterable[str]) ‑> <a title="xurls.url.Url" href="#xurls.url.Url">Url</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def append_methods(self, methods: Iterable[str]) -&gt; Url:
+    if methods:
+        self._methods.update(methods)
+    return self</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="xurls.url.Url.append_path"><code class="name flex">
+<span>def <span class="ident">append_path</span></span>(<span>self, path_component: Optional[str]) ‑> <a title="xurls.url.Url" href="#xurls.url.Url">Url</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def append_path(self, path_component: Optional[str]) -&gt; Url:
+    &#34;&#34;&#34;Appends path with path_component, making sure to add a slash if needed to separate
+    new component from any current path.
+
+    `self` is returned, so you can chain this with other method calls.
+    &#34;&#34;&#34;
+    if not path_component:
+        return self
+
+    path_component = str(path_component)
+    if not path_component:
+        return self
+
+    # Remove any starting slash if needed, we will be providing our own slash later.
+    if path_component[0] == &#39;/&#39;:
+        path_component = path_component[1:]
+
+    current_path = self._path
+
+    if not current_path:
+        current_path = &#39;&#39;
+
+    # If the current path ends in a slash, remove it.
+    if len(current_path) &gt; 0 and current_path[-1] == &#39;/&#39;:
+        current_path = current_path[:-1]
+
+    # Append the new path component with a slash to separate it.
+    self._path = f&#39;{current_path}/{path_component}&#39;
+    self._path_changed()
+    return self</code></pre>
+</details>
+<div class="desc"><p>Appends path with path_component, making sure to add a slash if needed to separate
+new component from any current path.</p>
+<p><code>self</code> is returned, so you can chain this with other method calls.</p></div>
+</dd>
+<dt id="xurls.url.Url.append_query"><code class="name flex">
+<span>def <span class="ident">append_query</span></span>(<span>self,<br>query: Optional[<a title="xurls.url.Query" href="#xurls.url.Query">Query</a>]) ‑> <a title="xurls.url.Url" href="#xurls.url.Url">Url</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def append_query(self, query: Optional[Query]) -&gt; Url:
+    &#34;&#34;&#34;Calls `Url.query_add` for each key/value pair in query. Only keys with the
+    same key-name will be replaced. Otherwise, the query key/value is added to any already
+    existing query key/value pairs.
+
+    `self` is returned, so you can chain this with other method calls.
+    &#34;&#34;&#34;
+    if not query:
+        return self
+
+    for key, value in query.items():
+        self.query_add(key, value)
+    return self</code></pre>
+</details>
+<div class="desc"><p>Calls <code><a title="xurls.url.Url.query_add" href="#xurls.url.Url.query_add">Url.query_add()</a></code> for each key/value pair in query. Only keys with the
+same key-name will be replaced. Otherwise, the query key/value is added to any already
+existing query key/value pairs.</p>
+<p><code>self</code> is returned, so you can chain this with other method calls.</p></div>
+</dd>
+<dt id="xurls.url.Url.append_url"><code class="name flex">
+<span>def <span class="ident">append_url</span></span>(<span>self,<br>url: Optional[<a title="xurls.url.UrlStr" href="#xurls.url.UrlStr">UrlStr</a>]) ‑> <a title="xurls.url.Url" href="#xurls.url.Url">Url</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def append_url(self, url: Optional[UrlStr]) -&gt; Url:
+    &#34;&#34;&#34;Takes the components of url, and any that look true [ie: are not False or None]
+    are set on myself.
+
+    In the case of the path, `append_path` is called instead, so the path provided in
+    `url` is appended to any already existing path.
+
+    For the query, the `append_query()` is used, and only keys with the same key-name
+    will be replaced. Otherwise, the query key/value is added to any already existing
+    query key/value pairs.
+
+    For methods, `append_methods` is called, and will add any methods not already present.
+
+    `self` is returned, so you can chain this with other method calls.
+    &#34;&#34;&#34;
+    if url is None:
+        return self
+
+    # Make sure we have a Url, we want to look at it&#39;s various components...
+    url = Url.ensure_url(url, default_formatting_options=self.formatting_options)
+
+    self.append_path(url.path)
+    self.append_query(url._query)
+    self.append_methods(url._methods)
+    self.append_metadata(url._metadata)
+
+    for attr_name in _attributes_to_set_when_appending:
+        other_value = getattr(url, attr_name, None)
+        if other_value is not None:
+            setattr(self, attr_name, other_value)
+
+    return self</code></pre>
+</details>
+<div class="desc"><p>Takes the components of url, and any that look true [ie: are not False or None]
+are set on myself.</p>
+<p>In the case of the path, <code>append_path</code> is called instead, so the path provided in
+<code>url</code> is appended to any already existing path.</p>
+<p>For the query, the <code>append_query()</code> is used, and only keys with the same key-name
+will be replaced. Otherwise, the query key/value is added to any already existing
+query key/value pairs.</p>
+<p>For methods, <code>append_methods</code> is called, and will add any methods not already present.</p>
+<p><code>self</code> is returned, so you can chain this with other method calls.</p></div>
+</dd>
+<dt id="xurls.url.Url.copy"><code class="name flex">
+<span>def <span class="ident">copy</span></span>(<span>self) ‑> <a title="xurls.url.Url" href="#xurls.url.Url">Url</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def copy(self) -&gt; Url:
+    &#34;&#34;&#34; We are immutable, so return self without needing to copy. &#34;&#34;&#34;
+    return Url(self)</code></pre>
+</details>
+<div class="desc"><p>We are immutable, so return self without needing to copy.</p></div>
+</dd>
+<dt id="xurls.url.Url.copy_mutable"><code class="name flex">
+<span>def <span class="ident">copy_mutable</span></span>(<span>self) ‑> <a title="xurls.url.Url" href="#xurls.url.Url">Url</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def copy_mutable(self) -&gt; Url:
+    &#34;&#34;&#34; Returns a copy of self as a Url. &#34;&#34;&#34;
+    return Url(self)</code></pre>
+</details>
+<div class="desc"><p>Returns a copy of self as a Url.</p></div>
+</dd>
+<dt id="xurls.url.Url.format"><code class="name flex">
+<span>def <span class="ident">format</span></span>(<span>self,<br>*,<br>default_scheme: str = None,<br>secondary_values: SecondaryValues = Default,<br>allow_invalid_url: bool = False) ‑> str | None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def format(
+    self,
+    *,
+    default_scheme: str = None,
+    secondary_values: SecondaryValues = Default,
+    allow_invalid_url: bool = False,
+) -&gt; Optional[str]:
+    &#34;&#34;&#34;
+    Returns url as a string, with an optional `default_scheme`.
+
+    You can get the same value (with all args left at their default values)
+    by simply converting object to a string:
+
+    ```python
+    some_url = Url(&#34;https://www.some-url.com/&#34;)
+
+    # Ways to convert to string:
+    print(some_url.format())
+    print(str(some_url))
+    print(f&#39;Formatted Url: {some_url}&#39;)
+    ```
+
+    Output:
+    ```
+    https://www.some-url.com/
+    https://www.some-url.com/
+    Formatted Url: https://www.some-url.com/
+    ```
+
+    Path&#39;s can have variable placeholders in them, for more details see
+    [Path Formatting Placeholders](#path-formatting-placeholders)
+
+    If any placeholder can&#39;t find it&#39;s value, we return `None`.
+    If you always need a string, pass False to the `format_placeholders` argument.
+
+    At some point in the future I&#39;ll probably support place-holders for
+    query-key/values.  The `format_placeholders` argument would also control
+    this too once we get around to supporting that.
+
+    Args:
+        default_scheme: If self.scheme is None or blank, use this passed in default scheme.
+
+        secondary_values: If path needs formatting and there is no valid query value I can use,
+            see if obj has an attribute with a valid value. The attribute name will be same as
+            formatting key name.
+
+            If `None`, will check to see if we have any attached self.secondary_values and
+            try to use that if it has something when needed.
+
+        allow_invalid_url: If `True`: Always return a `str` with as much as the url formatted
+            as possible. We will never return None in this case.
+
+            If `False` (default): Always return a fully formatted url, and if we can&#39;t do
+            that then return `None` instead.
+
+            .. important:: If you indirectly convert a `Url` object into a string via
+                `f&#34;some url {url_obj}&#34;`, that will pass True to `allow_invalid_url`
+                in order to always produce a non-None string, as Python requires this.
+                This is mostly used when logging url objects.
+                Code that always requires a valid url should use this method to explicitly
+                format the `Url` object into a fully-formatted url string!
+    Returns:
+        Normal string as a fully constructed url.
+
+        If `None` is returned, the Url could not be formatted (see `Url.is_valid`).
+        There is a missing or invalid value for one of the required formatting key-names.
+
+        See Url class doc section
+        [Path Formatting Placeholders](#path-formatting-placeholders).
+        for more details.
+    &#34;&#34;&#34;
+
+    used_query_keys: List[str] = []
+
+    path = self._formatted_path(
+        secondary_values=secondary_values, query_keys_used=used_query_keys
+    )
+    # If we can&#39;t format the path due to finding all placeholders,
+    # then we return None to indicate we can&#39;t format the url.
+    if path is None:
+        if not allow_invalid_url:
+            return None
+        # Use unformatted / raw url path as we can&#39;t format it and we have allow_invalid_url.
+        path = self.path
+
+    netloc = &#39;&#39;
+    if self._host is not None:
+        netloc = self._host
+
+    userpass = None
+    if self._username is not None:
+        userpass = urlparser.quote(self._username)
+
+    if self._password is not None:
+        userpass = f&#34;{userpass}:{urlparser.quote(self._password)}&#34;
+
+    if userpass is not None:
+        netloc = f&#34;{userpass}@{netloc}&#34;
+
+    if self._port is not None:
+        netloc = f&#34;{netloc}:{self._port}&#34;
+
+    scheme = self._scheme or default_scheme or &#39;&#39;
+
+    fragment = self._fragment or &#39;&#39;
+    query_dict = self._query
+
+    if used_query_keys:
+        # Filter out any keys that we should ignore.
+        # Filters dict and makes a copy at the same time, exactly what we need!
+        query_dict = {k: query_dict[k] for k in query_dict if k not in used_query_keys}
+
+    query = self._format_query_into_string(query_dict)
+
+    return urlparser.urlunparse((scheme, netloc, path or &#39;&#39;, &#39;&#39;, query, fragment))</code></pre>
+</details>
+<div class="desc"><p>Returns url as a string, with an optional <code>default_scheme</code>.</p>
+<p>You can get the same value (with all args left at their default values)
+by simply converting object to a string:</p>
+<pre><code class="language-python">some_url = Url(&quot;https://www.some-url.com/&quot;)
+
+# Ways to convert to string:
+print(some_url.format())
+print(str(some_url))
+print(f'Formatted Url: {some_url}')
+</code></pre>
+<p>Output:</p>
+<pre><code>https://www.some-url.com/
+https://www.some-url.com/
+Formatted Url: https://www.some-url.com/
+</code></pre>
+<p>Path's can have variable placeholders in them, for more details see
+<a href="#path-formatting-placeholders">Path Formatting Placeholders</a></p>
+<p>If any placeholder can't find it's value, we return <code>None</code>.
+If you always need a string, pass False to the <code>format_placeholders</code> argument.</p>
+<p>At some point in the future I'll probably support place-holders for
+query-key/values.
+The <code>format_placeholders</code> argument would also control
+this too once we get around to supporting that.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>default_scheme</code></strong></dt>
+<dd>If self.scheme is None or blank, use this passed in default scheme.</dd>
+<dt><strong><code>secondary_values</code></strong></dt>
+<dd>
+<p>If path needs formatting and there is no valid query value I can use,
+see if obj has an attribute with a valid value. The attribute name will be same as
+formatting key name.</p>
+<p>If <code>None</code>, will check to see if we have any attached self.secondary_values and
+try to use that if it has something when needed.</p>
+</dd>
+<dt><strong><code>allow_invalid_url</code></strong></dt>
+<dd>
+<p>If <code>True</code>: Always return a <code>str</code> with as much as the url formatted
+as possible. We will never return None in this case.</p>
+<p>If <code>False</code> (default): Always return a fully formatted url, and if we can't do
+that then return <code>None</code> instead.</p>
+<div class="admonition important">
+<p class="admonition-title">Important:&ensp;If you indirectly convert a <code><a title="xurls.url.Url" href="#xurls.url.Url">Url</a></code> object into a string via</p>
+<p><code>f"some url {url_obj}"</code>, that will pass True to <code>allow_invalid_url</code>
+in order to always produce a non-None string, as Python requires this.
+This is mostly used when logging url objects.
+Code that always requires a valid url should use this method to explicitly
+format the <code><a title="xurls.url.Url" href="#xurls.url.Url">Url</a></code> object into a fully-formatted url string!</p>
+</div>
+</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Normal string as a fully constructed url.</p>
+<p>If <code>None</code> is returned, the Url could not be formatted (see <code><a title="xurls.url.Url.is_valid" href="#xurls.url.Url.is_valid">Url.is_valid()</a></code>).
+There is a missing or invalid value for one of the required formatting key-names.</p>
+<p>See Url class doc section
+<a href="#path-formatting-placeholders">Path Formatting Placeholders</a>.
+for more details.</p></div>
+</dd>
+<dt id="xurls.url.Url.is_valid"><code class="name flex">
+<span>def <span class="ident">is_valid</span></span>(<span>self, secondary_values: SecondaryValues = Default, attach_values: bool = False) ‑> bool</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def is_valid(
+        self, secondary_values: SecondaryValues = Default, attach_values: bool = False
+) -&gt; bool:
+    &#34;&#34;&#34;
+    A more efficient way to determine if we can produce a valid url string.
+    The efficiency comes from not needing to actually format and produce the url string.
+
+    Return True if self.url() would return a valid url, else False.
+
+    The Url version of this method allows you to &#39;attach&#39; the secondary values
+    to the url. If so, will use the attached values when calling self.url(...) and passing
+    no secondary values into that method.
+
+    Args:
+        secondary_values: If query does not have a needed value to satisfy a formatting
+            placeholder, we will look at values in here.
+            It can be a object, dict or a sequence of objects.
+            If the object(s) or dict has the needed value, then we will use that to satisfy
+            the url placeholder.
+
+        attach_values: If `True`, will &#39;attach&#39; the secondary values **IF** url is valid with
+            them.
+            Attaching means that they are the default secondary values used when generating
+            the Url or when calling is_valid(...) in the future.
+
+            If attach_values is a Class/Object, it will directly set this value into the new
+            copy.
+            We will do a shallow-copy IF the value is a dict/list.
+
+    Returns:
+        True: `Url` is valid and you can call `Url.url` without a problem
+            (with same secondary_values if you did not attach them).
+        False: `Url` is invalid, it needs more formatting params or there is some other issue.
+    &#34;&#34;&#34;
+
+    format_map = self._formatted_map(secondary_values=secondary_values)
+    if format_map and attach_values:
+        # Do a shallow copy if it&#39;s a list/dict, like we document we do.
+        # We don&#39;t make a copy for anything else (like a normal object).
+        if isinstance(secondary_values, (list, dict)):
+            secondary_values = copy(secondary_values)
+        # Attach these as the default secondary_values when formatting self.url()
+        self._secondary_values = secondary_values
+    return format_map is not None</code></pre>
+</details>
+<div class="desc"><p>A more efficient way to determine if we can produce a valid url string.
+The efficiency comes from not needing to actually format and produce the url string.</p>
+<p>Return True if self.url() would return a valid url, else False.</p>
+<p>The Url version of this method allows you to 'attach' the secondary values
+to the url. If so, will use the attached values when calling self.url(&hellip;) and passing
+no secondary values into that method.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>secondary_values</code></strong></dt>
+<dd>If query does not have a needed value to satisfy a formatting
+placeholder, we will look at values in here.
+It can be a object, dict or a sequence of objects.
+If the object(s) or dict has the needed value, then we will use that to satisfy
+the url placeholder.</dd>
+<dt><strong><code>attach_values</code></strong></dt>
+<dd>
+<p>If <code>True</code>, will 'attach' the secondary values <strong>IF</strong> url is valid with
+them.
+Attaching means that they are the default secondary values used when generating
+the Url or when calling is_valid(&hellip;) in the future.</p>
+<p>If attach_values is a Class/Object, it will directly set this value into the new
+copy.
+We will do a shallow-copy IF the value is a dict/list.</p>
+</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>True</code></dt>
+<dd><code><a title="xurls.url.Url" href="#xurls.url.Url">Url</a></code> is valid and you can call <code><a title="xurls.url.Url.url" href="#xurls.url.Url.url">Url.url()</a></code> without a problem
+(with same secondary_values if you did not attach them).</dd>
+<dt><code>False</code></dt>
+<dd><code><a title="xurls.url.Url" href="#xurls.url.Url">Url</a></code> is invalid, it needs more formatting params or there is some other issue.</dd>
+</dl></div>
+</dd>
+<dt id="xurls.url.Url.methods_add"><code class="name flex">
+<span>def <span class="ident">methods_add</span></span>(<span>self, method: str) ‑> <a title="xurls.url.Url" href="#xurls.url.Url">Url</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def methods_add(self, method: str) -&gt; Url:
+    if method:
+        self._methods.add(method)
+    return self</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="xurls.url.Url.methods_contain"><code class="name flex">
+<span>def <span class="ident">methods_contain</span></span>(<span>self, method: str) ‑> bool</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def methods_contain(self, method: str) -&gt; bool:
+    &#34;&#34;&#34;Returns True if method is one of my methods, or if I have not assigned methods.
+    Otherwise, returns False.
+
+    It&#39;s faster to use this method then to get all methods and look yourself since I
+    use a set internally and can more quickly lookup things in the set.
+    &#34;&#34;&#34;
+    if not self._methods:
+        return True
+
+    return method in self._methods</code></pre>
+</details>
+<div class="desc"><p>Returns True if method is one of my methods, or if I have not assigned methods.
+Otherwise, returns False.</p>
+<p>It's faster to use this method then to get all methods and look yourself since I
+use a set internally and can more quickly lookup things in the set.</p></div>
+</dd>
+<dt id="xurls.url.Url.methods_have_one_in"><code class="name flex">
+<span>def <span class="ident">methods_have_one_in</span></span>(<span>self, methods: Set[str]) ‑> bool</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def methods_have_one_in(self, methods: Set[str]) -&gt; bool:
+    return not self._methods.isdisjoint(methods or set())</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="xurls.url.Url.methods_remove"><code class="name flex">
+<span>def <span class="ident">methods_remove</span></span>(<span>self, method: str) ‑> <a title="xurls.url.Url" href="#xurls.url.Url">Url</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def methods_remove(self, method: str) -&gt; Url:
+    if method:
+        self._methods.discard(method)
+    return self</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="xurls.url.Url.query_add"><code class="name flex">
+<span>def <span class="ident">query_add</span></span>(<span>self,<br>key: str = None,<br>value: <a title="xurls.url.QueryValue" href="#xurls.url.QueryValue">QueryValue</a> = None) ‑> <a title="xurls.url.Url" href="#xurls.url.Url">Url</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def query_add(self, key: str = None, value: QueryValue = None) -&gt; Url:
+    &#34;&#34;&#34;Use to set a key in query easily. This will entirely replace query with name `key`
+    if the value is not None. If value is None, nothing will happen/change.
+    If you want to remove a query item, use &#39;self.query_remove(...)&#39; instead.
+
+    A query value can be either a str/int, or a list of str/int.
+    If it is a list, then see self.formatting_options for details on what happens.
+
+    A shallow copy will be made of value, ie: `copy(value)` before it&#39;s added to url.
+
+    `self` is returned, so you can chain this with other method calls.
+    &#34;&#34;&#34;
+
+    if value is None:
+        return self
+
+    if self._query is None:
+        self._query = {}
+
+    self._query[key] = copy(value)
+    return self</code></pre>
+</details>
+<div class="desc"><p>Use to set a key in query easily. This will entirely replace query with name <code>key</code>
+if the value is not None. If value is None, nothing will happen/change.
+If you want to remove a query item, use 'self.query_remove(&hellip;)' instead.</p>
+<p>A query value can be either a str/int, or a list of str/int.
+If it is a list, then see self.formatting_options for details on what happens.</p>
+<p>A shallow copy will be made of value, ie: <code>copy(value)</code> before it's added to url.</p>
+<p><code>self</code> is returned, so you can chain this with other method calls.</p></div>
+</dd>
+<dt id="xurls.url.Url.query_id_if_singular"><code class="name flex">
+<span>def <span class="ident">query_id_if_singular</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def query_id_if_singular(self):
+    val = self._query.get(&#39;id&#39;)
+    if val is None:
+        return None
+
+    if isinstance(val, (str, int)):
+        return val
+
+    new_val = list(map(str, val))
+    if len(new_val) == 1:
+        return new_val[0]
+
+    return None</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="xurls.url.Url.query_remove"><code class="name flex">
+<span>def <span class="ident">query_remove</span></span>(<span>self, key) ‑> <a title="xurls.url.Url" href="#xurls.url.Url">Url</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def query_remove(self, key) -&gt; Url:
+    &#34;&#34;&#34;Remove value for key in query, if key does not exist nothing happens.
+    `self` is returned, so you can chain this with other method calls.
+    &#34;&#34;&#34;
+    self._query.pop(key, None)
+    return self</code></pre>
+</details>
+<div class="desc"><p>Remove value for key in query, if key does not exist nothing happens.
+<code>self</code> is returned, so you can chain this with other method calls.</p></div>
+</dd>
+<dt id="xurls.url.Url.query_value"><code class="name flex">
+<span>def <span class="ident">query_value</span></span>(<span>self, key: str) ‑> str | int | datetime.date | xurls.url._FormattedQueryValue | uuid.UUID | Iterable[str | int | uuid.UUID | datetime.date | xurls.url._FormattedQueryValue] | None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def query_value(self, key: str) -&gt; Optional[QueryValue]:
+    &#34;&#34;&#34; Returns the value in query assigned to key, if key not found returns `None`. &#34;&#34;&#34;
+    return self._query.get(key, None)</code></pre>
+</details>
+<div class="desc"><p>Returns the value in query assigned to key, if key not found returns <code>None</code>.</p></div>
+</dd>
+<dt id="xurls.url.Url.set_formatting_options"><code class="name flex">
+<span>def <span class="ident">set_formatting_options</span></span>(<span>self,<br>value: Optional[<a title="xurls.url.UrlFormattingOptions" href="#xurls.url.UrlFormattingOptions">UrlFormattingOptions</a>]) ‑> <a title="xurls.url.Url" href="#xurls.url.Url">Url</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_formatting_options(self, value: Optional[UrlFormattingOptions]) -&gt; Url:
+    &#34;&#34;&#34;Does  `self.formatting_options = value` for you while returning `self`.
+    `self` is returned, so you can easily chain this with other method calls if you wish.
+    &#34;&#34;&#34;
+    self.formatting_options = value
+    return self</code></pre>
+</details>
+<div class="desc"><p>Does
+<code>self.formatting_options = value</code> for you while returning <code>self</code>.
+<code>self</code> is returned, so you can easily chain this with other method calls if you wish.</p></div>
+</dd>
+<dt id="xurls.url.Url.set_methods"><code class="name flex">
+<span>def <span class="ident">set_methods</span></span>(<span>self, methods: Union[Iterable[str], str], *args)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_methods(self, methods: Union[Iterable[str], str], *args):
+    &#34;&#34;&#34;Sets methods and returns self, so you can chain it with other mods.
+    You can pass in an iterable or a direct string, for any number of arguments.
+    We will iterate each argument if it&#39;s not a string to combine all of them
+    together in one list, which will be set on self.methods.
+
+    `self` is returned, so you can chain this with other method calls.
+    &#34;&#34;&#34;
+    self._set_methods(xloop(methods, args))
+    return self</code></pre>
+</details>
+<div class="desc"><p>Sets methods and returns self, so you can chain it with other mods.
+You can pass in an iterable or a direct string, for any number of arguments.
+We will iterate each argument if it's not a string to combine all of them
+together in one list, which will be set on self.methods.</p>
+<p><code>self</code> is returned, so you can chain this with other method calls.</p></div>
+</dd>
+<dt id="xurls.url.Url.set_singular"><code class="name flex">
+<span>def <span class="ident">set_singular</span></span>(<span>self, value: Optional[bool]) ‑> <a title="xurls.url.Url" href="#xurls.url.Url">Url</a></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_singular(self, value: Optional[bool]) -&gt; Url:
+    &#34;&#34;&#34;Sets singular to value.
+    `self` is returned, so you can chain this with other method calls.
+    &#34;&#34;&#34;
+    self.singular = value
+    return self</code></pre>
+</details>
+<div class="desc"><p>Sets singular to value.
+<code>self</code> is returned, so you can chain this with other method calls.</p></div>
+</dd>
+<dt id="xurls.url.Url.url"><code class="name flex">
+<span>def <span class="ident">url</span></span>(<span>self,<br>*,<br>default_scheme: str = None,<br>secondary_values: SecondaryValues = Default,<br>allow_invalid_url: bool = False)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def url(
+    self,
+    *,
+    default_scheme: str = None,
+    secondary_values: SecondaryValues = Default,
+    allow_invalid_url: bool = False,
+):
+    warn(
+        &#34;Url.url is deprecated, instead use `Url.format` &#34;
+        &#34;or directly convert url object to a str.&#34;,
+        DeprecationWarning, 2
+    )
+
+    return self.format(
+        default_scheme=default_scheme,
+        secondary_values=secondary_values,
+        allow_invalid_url=allow_invalid_url
+    )</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="xurls.url.UrlFormattingOptions"><code class="flex name class">
+<span>class <span class="ident">UrlFormattingOptions</span></span>
+<span>(</span><span>list_key_suffix: str = '__in', list_value_delimiter: str = ',')</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class UrlFormattingOptions:
+    # TODO: Allow for a configurable formatting callback function/object.
+
+    list_key_suffix: str = &#39;__in&#39;
+    &#34;&#34;&#34; What to strip/append to query key-name if the value is a list.
+        When parsing a Url, if the key name does not end with this, we won&#39;t try to split the value
+        by the `list_value_delimiter`, the value will be left unchanged.
+
+        When parsing a Url, the list_key_suffix will be striped from the key-name. When
+        constructing the Url into a string, list_key_suffix will be added to a key-name if the
+        value is a list.
+
+        Default is &#39;__in&#39;, which is the standard way Django Rest Framework&#39;s filters work.
+    &#34;&#34;&#34;
+
+    list_key_suffixes_to_keep = [
+        &#39;__fields__include&#39;,
+        &#39;__fields__only&#39;,
+        &#39;__fields__exclude&#39;,
+        &#39;__in!&#39;
+    ]
+    &#34;&#34;&#34; Suffixes listed here can implicitly take a delimited list of values
+        without using the generalized `UrlFormattingOptions.list_key_suffix` (see above).
+
+        The `UrlFormattingOptions.list_key_suffix` won&#39;t be used if a key ends with one of
+        these keys, but instead the list will be directly formatted/parsed directly out of
+        the value without modifying the key.
+    &#34;&#34;&#34;
+
+    list_value_delimiter: str = &#39;,&#39;
+    &#34;&#34;&#34; This tells the Url the character to split query value by.
+
+        If there is no delimiter in value, then a list with a single value is the result.
+        Keep in mind that list won&#39;t be parsed from a queries value if the queries key-name
+        does not end with `list_key_suffix`.  The `list_key_suffix` is what controls if the
+        query value is a list or not.
+
+        Default is a comma `,`.
+    &#34;&#34;&#34;</code></pre>
+</details>
+<div class="desc"><p>UrlFormattingOptions(list_key_suffix: 'str' = '__in', list_value_delimiter: 'str' = ',')</p></div>
+<h3>Class variables</h3>
+<dl>
+<dt id="xurls.url.UrlFormattingOptions.list_key_suffixes_to_keep"><code class="name">var <span class="ident">list_key_suffixes_to_keep</span></code></dt>
+<dd>
+<div class="desc"><p>Suffixes listed here can implicitly take a delimited list of values
+without using the generalized <code><a title="xurls.url.UrlFormattingOptions.list_key_suffix" href="#xurls.url.UrlFormattingOptions.list_key_suffix">UrlFormattingOptions.list_key_suffix</a></code> (see above).</p>
+<p>The <code><a title="xurls.url.UrlFormattingOptions.list_key_suffix" href="#xurls.url.UrlFormattingOptions.list_key_suffix">UrlFormattingOptions.list_key_suffix</a></code> won't be used if a key ends with one of
+these keys, but instead the list will be directly formatted/parsed directly out of
+the value without modifying the key.</p></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="xurls.url.UrlFormattingOptions.list_key_suffix"><code class="name">var <span class="ident">list_key_suffix</span> : str</code></dt>
+<dd>
+<div class="desc"><p>What to strip/append to query key-name if the value is a list.
+When parsing a Url, if the key name does not end with this, we won't try to split the value
+by the <code>list_value_delimiter</code>, the value will be left unchanged.</p>
+<p>When parsing a Url, the list_key_suffix will be striped from the key-name. When
+constructing the Url into a string, list_key_suffix will be added to a key-name if the
+value is a list.</p>
+<p>Default is '__in', which is the standard way Django Rest Framework's filters work.</p></div>
+</dd>
+<dt id="xurls.url.UrlFormattingOptions.list_value_delimiter"><code class="name">var <span class="ident">list_value_delimiter</span> : str</code></dt>
+<dd>
+<div class="desc"><p>This tells the Url the character to split query value by.</p>
+<p>If there is no delimiter in value, then a list with a single value is the result.
+Keep in mind that list won't be parsed from a queries value if the queries key-name
+does not end with <code>list_key_suffix</code>.
+The <code>list_key_suffix</code> is what controls if the
+query value is a list or not.</p>
+<p>Default is a comma <code>,</code>.</p></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul>
+<li><a href="#path-formatting-placeholders">Path Formatting Placeholders:</a></li>
+</ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="xurls" href="index.html">xurls</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-variables">Global variables</a></h3>
+<ul class="">
+<li><code><a title="xurls.url.DefaultQueryValueListFormat" href="#xurls.url.DefaultQueryValueListFormat">DefaultQueryValueListFormat</a></code></li>
+<li><code><a title="xurls.url.DuplicateKeyNamesQueryValueListFormat" href="#xurls.url.DuplicateKeyNamesQueryValueListFormat">DuplicateKeyNamesQueryValueListFormat</a></code></li>
+<li><code><a title="xurls.url.HTTPPatch" href="#xurls.url.HTTPPatch">HTTPPatch</a></code></li>
+<li><code><a title="xurls.url.Query" href="#xurls.url.Query">Query</a></code></li>
+<li><code><a title="xurls.url.QueryValue" href="#xurls.url.QueryValue">QueryValue</a></code></li>
+<li><code><a title="xurls.url.UrlStr" href="#xurls.url.UrlStr">UrlStr</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="xurls.url.Url" href="#xurls.url.Url">Url</a></code></h4>
+<ul class="">
+<li><code><a title="xurls.url.Url.append_metadata" href="#xurls.url.Url.append_metadata">append_metadata</a></code></li>
+<li><code><a title="xurls.url.Url.append_methods" href="#xurls.url.Url.append_methods">append_methods</a></code></li>
+<li><code><a title="xurls.url.Url.append_path" href="#xurls.url.Url.append_path">append_path</a></code></li>
+<li><code><a title="xurls.url.Url.append_query" href="#xurls.url.Url.append_query">append_query</a></code></li>
+<li><code><a title="xurls.url.Url.append_url" href="#xurls.url.Url.append_url">append_url</a></code></li>
+<li><code><a title="xurls.url.Url.copy" href="#xurls.url.Url.copy">copy</a></code></li>
+<li><code><a title="xurls.url.Url.copy_mutable" href="#xurls.url.Url.copy_mutable">copy_mutable</a></code></li>
+<li><code><a title="xurls.url.Url.ensure_url" href="#xurls.url.Url.ensure_url">ensure_url</a></code></li>
+<li><code><a title="xurls.url.Url.format" href="#xurls.url.Url.format">format</a></code></li>
+<li><code><a title="xurls.url.Url.formatting_options" href="#xurls.url.Url.formatting_options">formatting_options</a></code></li>
+<li><code><a title="xurls.url.Url.fragment" href="#xurls.url.Url.fragment">fragment</a></code></li>
+<li><code><a title="xurls.url.Url.host" href="#xurls.url.Url.host">host</a></code></li>
+<li><code><a title="xurls.url.Url.is_valid" href="#xurls.url.Url.is_valid">is_valid</a></code></li>
+<li><code><a title="xurls.url.Url.metadata" href="#xurls.url.Url.metadata">metadata</a></code></li>
+<li><code><a title="xurls.url.Url.methods" href="#xurls.url.Url.methods">methods</a></code></li>
+<li><code><a title="xurls.url.Url.methods_add" href="#xurls.url.Url.methods_add">methods_add</a></code></li>
+<li><code><a title="xurls.url.Url.methods_contain" href="#xurls.url.Url.methods_contain">methods_contain</a></code></li>
+<li><code><a title="xurls.url.Url.methods_have_one_in" href="#xurls.url.Url.methods_have_one_in">methods_have_one_in</a></code></li>
+<li><code><a title="xurls.url.Url.methods_remove" href="#xurls.url.Url.methods_remove">methods_remove</a></code></li>
+<li><code><a title="xurls.url.Url.password" href="#xurls.url.Url.password">password</a></code></li>
+<li><code><a title="xurls.url.Url.path" href="#xurls.url.Url.path">path</a></code></li>
+<li><code><a title="xurls.url.Url.port" href="#xurls.url.Url.port">port</a></code></li>
+<li><code><a title="xurls.url.Url.query" href="#xurls.url.Url.query">query</a></code></li>
+<li><code><a title="xurls.url.Url.query_add" href="#xurls.url.Url.query_add">query_add</a></code></li>
+<li><code><a title="xurls.url.Url.query_id_if_singular" href="#xurls.url.Url.query_id_if_singular">query_id_if_singular</a></code></li>
+<li><code><a title="xurls.url.Url.query_remove" href="#xurls.url.Url.query_remove">query_remove</a></code></li>
+<li><code><a title="xurls.url.Url.query_value" href="#xurls.url.Url.query_value">query_value</a></code></li>
+<li><code><a title="xurls.url.Url.scheme" href="#xurls.url.Url.scheme">scheme</a></code></li>
+<li><code><a title="xurls.url.Url.secondary_values" href="#xurls.url.Url.secondary_values">secondary_values</a></code></li>
+<li><code><a title="xurls.url.Url.set_formatting_options" href="#xurls.url.Url.set_formatting_options">set_formatting_options</a></code></li>
+<li><code><a title="xurls.url.Url.set_methods" href="#xurls.url.Url.set_methods">set_methods</a></code></li>
+<li><code><a title="xurls.url.Url.set_singular" href="#xurls.url.Url.set_singular">set_singular</a></code></li>
+<li><code><a title="xurls.url.Url.singular" href="#xurls.url.Url.singular">singular</a></code></li>
+<li><code><a title="xurls.url.Url.url" href="#xurls.url.Url.url">url</a></code></li>
+<li><code><a title="xurls.url.Url.username" href="#xurls.url.Url.username">username</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="xurls.url.UrlFormattingOptions" href="#xurls.url.UrlFormattingOptions">UrlFormattingOptions</a></code></h4>
+<ul class="">
+<li><code><a title="xurls.url.UrlFormattingOptions.list_key_suffix" href="#xurls.url.UrlFormattingOptions.list_key_suffix">list_key_suffix</a></code></li>
+<li><code><a title="xurls.url.UrlFormattingOptions.list_key_suffixes_to_keep" href="#xurls.url.UrlFormattingOptions.list_key_suffixes_to_keep">list_key_suffixes_to_keep</a></code></li>
+<li><code><a title="xurls.url.UrlFormattingOptions.list_value_delimiter" href="#xurls.url.UrlFormattingOptions.list_value_delimiter">list_value_delimiter</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
+</footer>
+</body>
+</html>
