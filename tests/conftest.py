@@ -10,6 +10,8 @@ os.environ.update(dict(
     AWS_SECRET_ACCESS_KEY='testing',
     AWS_SECURITY_TOKEN='testing',
     AWS_SESSION_TOKEN='testing',
+    AWS_DEFAULT_REGION="us-west-2",
+    AWS_REGION="us-west-2",
 ))
 
 
