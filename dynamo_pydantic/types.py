@@ -85,6 +85,11 @@ class DynField:
             is_key = self.key_type is not None
             self.dy_type = _internal.get_dynamo_type_from_python_type(self.py_type, is_key_type=is_key)
 
+    # TODO: Additional setting/feature to allow function to generate default value for a field,
+    #  to query dynamo by when not provided in the original query provided by user.
+    #  This would be useful for a field that represented a tenet-id.
+    #  The function could inject the current tenet-id being used for the current request/process/etc.
+
     key_type: KeyType | None | DefaultType = Default
     py_type: Type | DefaultType = Default
     dy_type: str | DefaultType = Default
