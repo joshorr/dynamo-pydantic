@@ -2,10 +2,18 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      skip-release-please:
+        required: false
+        type: boolean
+        default: false
+        description: If true, skips release please.
 name: Push Main
 jobs:
   reusable:
     uses: joshorr/workflows/.github/workflows/py-push-main.yml@main
     with:
       real-publish: true
+      skip-release-please: ${{ inputs.skip-release-please || false }}
     secrets: inherit
