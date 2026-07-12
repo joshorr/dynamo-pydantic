@@ -171,5 +171,5 @@ class DynFieldInfo:
     key_type: KeyType | None = None
 
 
-HashKey = Annotated[_T, DynField(key_type=KeyType.hash)]
-SortKey = Annotated[_T, DynField(key_type=KeyType.sort)]
+HashField = Annotated[_T, DynField(key_type=KeyType.hash)]
+SortField = Annotated[_T, DynField(key_type=KeyType.sort)]

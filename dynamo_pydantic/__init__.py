@@ -1,4 +1,6 @@
 from .obj_manager import DynObjManager
 from .settings import dyn_settings
-from .types import KeyType, HashKey, SortKey, DynField
+from .types import KeyType, HashField, SortField, DynField
 from .dynamo_model import DynamoModel
+
+__version__ = "0.6.0"

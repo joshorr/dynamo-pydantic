@@ -1,6 +1,6 @@
 [project]
-name = "pydantic-dyn"
-version = "0.1.0"
+name = "dynamo-pydantic"
+version = "0.6.0"
 description = "Pydantic models that dynamically verify types when attributes are set."
 authors = [{ name = "Josh Orr", email = "josh@orr.blue" }]
 requires-python = ">=3.14,<4"
@@ -26,7 +26,7 @@ dependencies = [
 ]
 
 [project.urls]
-Repository = "https://github.com/joshorr/pydantic-dynamic"
+Repository = "https://github.com/joshorr/dynamo-pydantic"
 
 [dependency-groups]
 dev = [

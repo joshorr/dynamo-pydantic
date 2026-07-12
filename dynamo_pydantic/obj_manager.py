@@ -31,14 +31,6 @@ log = getLogger(__name__)
 
 
 class DynObjManager(Dependency, Generic[M]):
-    """
-    Skeleton/Placeholder Class for future work, see story and the other classes in
-    this file for more details: https://app.clubhouse.io/xyngular/story/13989
-    """
-
-    # This is only here to give IDE's a more concrete-class to use for type/code completion.
-    # The type-hint is not otherwise used. That var is valid/gettable on an instance.
-    # See `xmodel.remote.client.RemoteClient.api` for more details.
     obj_type: Type[M] = dict
     """ This also works when using the generic type directly, ie: `DynObjManager[SomeModel].obj_type is SomeMode`;
         although type-checkers will flag it, but it still works.
@@ -51,6 +43,14 @@ class DynObjManager(Dependency, Generic[M]):
     """
 
     name: str
+    """ Defaults to lower-casing the first letter of class name, and then the rest of the class name as-is.
+        This is the main part of the table name.  The `DynObjManager.table_prefix` is added to this name (if one is set)
+        to generate the final table name to use.
+        
+        You can override this by setting this directly yourself, or in the model class definition,
+        use class argument `dyn_name`, ie: `class SomeModel(DynamoModel, dyn_name='differentName')`.
+    """
+
     table_prefix: str | None | DefaultType = Default
     """ Prefix for table name, prepended before `DynObjManager.name` when constructing the full table name.
     
@@ -60,12 +60,17 @@ class DynObjManager(Dependency, Generic[M]):
         for the prefix, whenever it's needed, if one is set there.
         
         Otherwise, if one is not set directly here, there is no prefix generator,
-        or DynObjManager.table_prefix is `None`, prefix won't be used.
+        or DynObjManager.table_prefix is `None`, prefix won't be used and `self.name` will be used by it's self
+        to generate the table name.
     """
 
     dyn_fields: dict[str, DynFieldInfo] = Default
+    """ DnyFieldInfo's for each model field, dict-key is the field-name.
+    """
 
     consistent_read: bool | DefaultType = Default
+    """ If we should use consistent reads by default or not; defaults to not using them.
+    """
 
     def __init__(self, fields: list[DynFieldInfo] | DefaultType = Default):
         if fields is not Default:
@@ -222,6 +227,16 @@ class DynObjManager(Dependency, Generic[M]):
         return f'{prefix}-{name}'
 
     def id_for(self, obj: M) -> str:
+        """ A more convenient way to get to this might be via the `DynamoModel.dyn_id` property.
+
+            If we only have a hash key, we return that by its self as a string.
+            Otherwise, we combine the hash and sort keys together into a single string.
+            Uses the `DynamoModel.dyn_objs.full_key_deliminator` for the deliminator to use
+            to separate the hash and sort keys (defaults to two-pipes: "||").
+
+            In some cases, this may need to be parsed back into components, so use a delimiter
+            that ideally would normally never be in either the hash or sort key.
+        """
         hash_key = self.hash_key_info
         sort_key = self.sort_key_info
 

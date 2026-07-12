@@ -14,33 +14,63 @@ class DynamoModel(BaseModel):
     dyn_objs: ClassVar[DynObjManager[Self]]
 
     def dyn_save(self, *, condition: Query | None = None):
+        """ Convenience for `self.dyn_objs.put(self, condition=condition)`;
+            Saves/Puts self into dynamodb table.
+
+            See `dynamo_pydantic.obj_manager.DynObjManager.put` for more details.
+        """
         self.dyn_objs.put(self, condition=condition)
 
     def dyn_delete(self, *, condition: Query | None = None):
+        """ Convenience for `self.dyn_objs.delete(self, condition=condition)`;
+            Deletes self from dynamodb table.
+
+            See `dynamo_pydantic.obj_manager.DynObjManager.delete` for more details.
+        """
         self.dyn_objs.delete(self, condition=condition)
 
     @property
     def dyn_id(self):
+        """ Convenience for `self.dyn_objs.id_for(self)`.
+
+            If we only have a hash key, we return that by its self as a string.
+            Otherwise, we combine the hash and sort keys together into a single string.
+            Uses the `DynamoModel.dyn_objs.full_key_deliminator` for the deliminator to use
+            to separate the hash and sort keys (defaults to two-pipes: "||").
+
+            In some cases, this may need to be parsed back into components, so use a delimiter
+            that ideally would normally never be in either the hash or sort key.
+
+            See `dynamo_pydantic.obj_manager.DynObjManager.id_for` for more details.
+        """
         return self.dyn_objs.id_for(self)
 
     @classmethod
     def __init_subclass__(
             cls, *,
-            dyn_table_name: str | DefaultType = Default,
+            dyn_name: str | DefaultType = Default,
             dyn_table_prefix: str | None | DefaultType = Default,
             dyn_consistent_reads: bool | DefaultType = Default,
             **kwargs
     ):
+        # For now, we will deal with these extra class arguments/paramters in `__pydantic_init_subclass__`
+        # when pydantic has more guarantees around the pydantic fields being read to examine, etc.
+        # We are here to 'absorbe' these arguments so we don't get errors from superclass about
+        # unused class arguments/paramters.
         super().__init_subclass__(**kwargs)
 
     @classmethod
     def __pydantic_init_subclass__(
             cls, *,
-            dyn_table_name: str | DefaultType = Default,
+            dyn_name: str | DefaultType = Default,
             dyn_table_prefix: str | None | DefaultType = Default,
             dyn_consistent_reads: bool | DefaultType = Default,
             **kwargs
     ):
+        # For now, we will deal with these extra class arguments/paramters here because
+        #  pydantic has more guarantees around the pydantic fields being read to examine, etc;
+        #  at this point in time.
+
         # TODO: may want an option to prevent inheriting the keys (so one can more easily redefine them).
         super().__pydantic_init_subclass__()
 
@@ -62,11 +92,11 @@ class DynamoModel(BaseModel):
         if dyn_consistent_reads is not Default:
             client._cls_consistent_reads = bool(dyn_consistent_reads)
 
-        if not dyn_table_name:
+        if not dyn_name:
             model_name = cls.__name__
             client.name = f'{model_name[:1].lower()}{model_name[1:]}' if model_name else ''
         else:
-            client.name = str(dyn_table_name)
+            client.name = str(dyn_name)
 
         # Collect all the dyn-fields from the immediate parent classes;
         # They should already be fully created from their own base classes, and so no need to dive/look further.

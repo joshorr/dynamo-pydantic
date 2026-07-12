@@ -3,13 +3,12 @@ from zoneinfo import ZoneInfo
 from pydantic import BaseModel, BeforeValidator
 from pydantic.fields import FieldInfo, Field
 
-from dynamo_pydantic import DynObjManager, KeyType, SortKey, HashKey, DynField, DynamoModel as DynModel
+from dynamo_pydantic import DynObjManager, KeyType, SortField, HashField, DynField, DynamoModel as DynModel
 from dynamo_pydantic.settings import DynSettings
 from dynamo_pydantic import _internal
 from typing import List, Dict, Union, Optional, Type, Any, Callable, Tuple, ClassVar, Annotated
 from typing import TypeVar
 import pytest
-from moto import mock_aws
 import dataclasses
 from xmodel.remote import XRemoteError
 import datetime as dt
@@ -71,11 +70,11 @@ class ItemWithRangeKeyClient(DynObjManager):
 AlwaysConvertToStr = Annotated[str, BeforeValidator(lambda x: str(x))]
 
 
-class ItemWithRangeKey(DynModel, dyn_table_name=None, validate_assignment=True, coerce_numbers_to_str=True):
+class ItemWithRangeKey(DynModel, dyn_name=None, validate_assignment=True, coerce_numbers_to_str=True):
     dyn_objs: ClassVar[ItemWithRangeKeyClient]
 
-    hash_field: HashKey[str]
-    range_field: SortKey[str]
+    hash_field: HashField[str]
+    range_field: SortField[str]
     name: AlwaysConvertToStr | None = None
     basic_bool: bool | None = None
     items: List[Dict[str, str]] | None = None
@@ -96,23 +95,23 @@ class ItemWithRangeKey(DynModel, dyn_table_name=None, validate_assignment=True, 
         assert self.basic_bool == other.basic_bool
 
 
-class ItemWithRangeKeyForStr(ItemWithRangeKey, dyn_table_name="testItemWithRangeKey"):
-    hash_field: HashKey[str]
-    range_field: SortKey[str]
+class ItemWithRangeKeyForStr(ItemWithRangeKey, dyn_name="testItemWithRangeKey"):
+    hash_field: HashField[str]
+    range_field: SortField[str]
 
 
-class ItemWithRangeKeyForInt(ItemWithRangeKey, dyn_table_name="testItemWithRangeWithIntKeys"):
-    hash_field: HashKey[int]
-    range_field: SortKey[int]
+class ItemWithRangeKeyForInt(ItemWithRangeKey, dyn_name="testItemWithRangeWithIntKeys"):
+    hash_field: HashField[int]
+    range_field: SortField[int]
 
 
-class ItemWithRangeKeyForDateTime(ItemWithRangeKey, dyn_table_name="testItemWithRangeWithIntKeys"):
-    hash_field: HashKey[dt.datetime]
-    range_field: SortKey[dt.datetime]
+class ItemWithRangeKeyForDateTime(ItemWithRangeKey, dyn_name="testItemWithRangeWithIntKeys"):
+    hash_field: HashField[dt.datetime]
+    range_field: SortField[dt.datetime]
 
 
-class ItemOnlyHash(DynModel, dyn_table_name="testItemOnlyHash"):
-    hash_field_id: HashKey[str]
+class ItemOnlyHash(DynModel, dyn_name="testItemOnlyHash"):
+    hash_field_id: HashField[str]
     basic_int: int | None = None
     dict_list: List[Dict[str, str]] | None = None
     basic_str: str | None = None
@@ -318,18 +317,12 @@ def simple_obj_get_with_read_consistency(simple_obj, simple_obj_def) -> Optional
     return obj
 
 
-@pytest.fixture(autouse=True)
-def mock_all_aws_fixture():
-    with mock_aws() as mock:
-        yield mock
-
-
 # --------------------------
 # ***** My Unit Tests ******
 
 def test_basic_dyn_class():
-    class ItemOnlyHash(DynModel, dyn_table_name="testItemOnlyHash"):
-        hash_field_id: HashKey[str]
+    class ItemOnlyHash(DynModel, dyn_name="testItemOnlyHash"):
+        hash_field_id: HashField[str]
         basic_int: int
 
     fields = ItemOnlyHash.dyn_objs.dyn_fields
@@ -565,7 +558,7 @@ def test_pagination(simple_obj_values):
 #
 # class MultipleRanges(DynModel, name="tableWithError2"):
 #     """ This class has an intentional error, it has two range fields. """
-#     hash_field_1: HashKey[int]
+#     hash_field_1: HashField[int]
 #     range_field_1: int = RangeField()
 #     range_field_2: str = RangeField()
 
@@ -618,8 +611,8 @@ def test_see_if_read_consistency_used(test_input):
     # Next test the class arg `dyn_consistent_read` works correctly.
     class ItemWithRangeKeyForStrWithDefaultConsistent(ItemWithRangeKeyForStr, dyn_consistent_reads=True):
         # TODO: Figure out and fix why we can't inherit hash/range fields, we must define it again?
-        hash_field: HashKey[str]
-        range_field: SortKey[str]
+        hash_field: HashField[str]
+        range_field: SortField[str]
 
     client = ItemWithRangeKeyForStrWithDefaultConsistent.dyn_objs
 
@@ -710,8 +703,8 @@ def test_reverse():
 
 def test_multiple_hash_fields():
     class MultiHashFieldModel(DynModel):
-        hash_field1: HashKey[str]
-        hash_field2: HashKey[str]
+        hash_field1: HashField[str]
+        hash_field2: HashField[str]
 
     o1 = MultiHashFieldModel(hash_field1='h1', hash_field2='h2')
     MultiHashFieldModel.dyn_objs.put(o1)
@@ -724,9 +717,9 @@ def test_multiple_hash_fields():
 
 def test_multiple_hash_fields__w_sort():
     class MultiHashFieldModel(DynModel):
-        hash_field1: HashKey[str]
-        hash_field2: HashKey[str]
-        sort_field1: SortKey[str]
+        hash_field1: HashField[str]
+        hash_field2: HashField[str]
+        sort_field1: SortField[str]
 
     o1 = MultiHashFieldModel(hash_field1='h1', hash_field2='h2', sort_field1='s1')
     MultiHashFieldModel.dyn_objs.put(o1)
@@ -739,10 +732,10 @@ def test_multiple_hash_fields__w_sort():
 
 def test_multiple_hash_and_sort_fields():
     class MultiHashFieldModel(DynModel):
-        hash_field1: HashKey[str]
-        hash_field2: HashKey[str]
-        sort_field1: SortKey[str]
-        sort_field2: SortKey[str]
+        hash_field1: HashField[str]
+        hash_field2: HashField[str]
+        sort_field1: SortField[str]
+        sort_field2: SortField[str]
 
     o1 = MultiHashFieldModel(hash_field1='h1', hash_field2='h2', sort_field1='s1', sort_field2='s2')
     MultiHashFieldModel.dyn_objs.put(o1)
@@ -755,9 +748,9 @@ def test_multiple_hash_and_sort_fields():
 
 def test_single_hash_and_multiple_sort_fields():
     class MultiHashFieldModel(DynModel):
-        hash_field1: HashKey[str]
-        sort_field1: SortKey[str]
-        sort_field2: SortKey[str]
+        hash_field1: HashField[str]
+        sort_field1: SortField[str]
+        sort_field2: SortField[str]
 
     o1 = MultiHashFieldModel(hash_field1='h1', sort_field1='s1', sort_field2='s2')
     MultiHashFieldModel.dyn_objs.put(o1)
