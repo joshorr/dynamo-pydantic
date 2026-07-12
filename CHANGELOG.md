@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/joshorr/dynamo-pydantic/compare/v0.1.0...v0.1.1) (2026-07-12)
+
+
+### Bug Fixes
+
+* pdoc generator, for API reference doc generation. ([755ea17](https://github.com/joshorr/dynamo-pydantic/commit/755ea17645374630f6e483fc66f332b7000077c0))
+
 ## 0.1.0 (2026-07-12)
 
 
