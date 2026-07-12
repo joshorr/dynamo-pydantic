@@ -1,7 +1,7 @@
 [project]
 name = "dynamo-pydantic"
 version = "0.1.0"
-description = "Pydantic models that dynamically verify types when attributes are set."
+description = "Pydantic base models for DynamoDB, with easy to use save/delete/query/get."
 authors = [{ name = "Josh Orr", email = "josh@orr.blue" }]
 requires-python = ">=3.14,<4"
 readme = "README.md"

@@ -514,7 +514,7 @@ class DynObjManager(Dependency, Generic[M]):
         Args:
             query: Dict keys are the attribute/key names and values are what
                 to filter on for that name.  Operators after double `__` work just like you
-                would expect for our xyngular API's... here is an example:
+                would expect for Django Rest Framework API's... here is an example:
 
                 ```python
                 { "some_attr_name__gte": 2 }
@@ -837,7 +837,7 @@ class DynObjManager(Dependency, Generic[M]):
             query (Query): You can give a simple dict here, modeled after how the standard rest-api
                 query dict's work. Dict keys are the attribute/key names and values are what
                 to filter on for that name.  Operators after double `__` work just like you
-                would expect for our xyngular API's... here is an example:
+                would expect for Django Rest Framework API's... here is an example:
 
                 ```python
                 { "some_attr_name__gte": 2 }

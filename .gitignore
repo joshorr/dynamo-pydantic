@@ -4,6 +4,7 @@
 # For now, just ignore all .idea files
 .idea
 
+/api
 /scripts
 
 # User-specific stuff

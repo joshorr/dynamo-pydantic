@@ -18,7 +18,7 @@ class DynSettings(Dependency):
         (but won't override True/False passed directly to client as method paramter to get/scan/etc.
     """
 
-    default_prefix_generator: Callable[[DynObjManager], str] | None = None
+    default_prefix_generator: 'Callable[[DynObjManager], str] | None '= None
 
     create_tables_if_needed: bool = False
     """ If set to `True`, will create tables lazily if needed on first get/put/delete/save/etc.
