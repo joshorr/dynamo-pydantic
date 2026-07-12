@@ -25,17 +25,27 @@ def get_caller_frame_info(depth: int = 2) -> tuple[str | None, bool]:
     return frame_globals.get('__name__'), previous_caller_frame.f_locals is frame_globals
 
 
-def create_generic_submodel(name: str, origin: Type[Any], generic_typevar: Type[Any]) -> Type[Any]:
+def create_generic_submodel(
+        name: str, origin: Type[Any], generic_typevar: Type[Any], super_classes: list[Type[Any]] | None = None
+) -> Type[Any]:
     """ Dynamically create a subclass of/for a Generic class.
+        If `super_classes` is `None`, then we use `origin` as the single super classes;
+        otherwise we use `super_classes`.  If `super_classes` is empty, we inherit from `origin`.
     """
     namespace: dict[str, Any] = {'__module__': origin.__module__}
-    bases = (origin,)
+    if super_classes is not None:
+        bases = tuple(super_classes)
+    else:
+        bases = (origin,)
+
+    if not bases:
+        bases = (origin,)
+
     meta, ns, kwargs = prepare_class(name, bases)
     namespace.update(ns)
     created_model = meta(name, bases, namespace, _generic_typevar=generic_typevar, **kwargs)
 
     model_module, called_globally = get_caller_frame_info(depth=3)
-    # create global reference and therefore allow pickling
     if called_globally:
         object_by_reference = None
         reference_name = name
