@@ -9,13 +9,13 @@ class DynamoError(Exception):
 
 
 class DynamoConditionError(DynamoError):
-    def __init__(self, item: Item, condition: Query, original: Exception):
+    def __init__(self, item: 'Item', condition: 'Query', original: Exception):
         self.condition = condition
         self.item = item
         self.original_boto_error = original
         super().__init__(f'DynamoConditionError; condition failed: {condition}')
 
-    condition: Query
-    item: Item | Key | str
+    condition: 'Query'
+    item: 'Item | Key | str'
     original_boto_error: Exception
 

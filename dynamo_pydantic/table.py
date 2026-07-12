@@ -50,7 +50,7 @@ class TableRepo(DependencyPerThread, attributes_to_skip_while_copying=["_table",
         self._tables = {}
         self._verified = {}
 
-    def table__for_client(self, client: DynObjManager, create_if_needed: bool = False) -> Table:
+    def table__for_client(self, client: 'DynObjManager', create_if_needed: bool = False) -> Table:
         if create_if_needed:
             return self._create_table_if_needed(client)
         return self.table(client.table_name)

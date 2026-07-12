@@ -6,7 +6,7 @@ dev_addr: 127.0.0.1:7000
 nav:
   - xmodel:
     - index.md
-  - API Reference: api/xmodel/" target="_blank
+  - API Reference: api/dynamo_pydantic/" target="_blank
   - Changelog: changelog.md
 
 theme:
